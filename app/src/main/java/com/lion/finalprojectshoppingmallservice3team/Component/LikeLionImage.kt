@@ -25,10 +25,15 @@ fun LikeLionImage(
     contentScale: ContentScale = ContentScale.Fit,
     modifier: Modifier,
     tintColor : Color? = null,
+    // 이미지가 동그라미 모형인지
     isCircular: Boolean = false,
+    // 모서리 둥글기
     cornerRadius: Dp = 0.dp,
-    borderWidth: Dp = 0.dp, // 테두리 두께
-    borderColor: Color = Color.Transparent, // 테두리 색상
+    // 테두리 두께
+    borderWidth: Dp = 0.dp,
+    // 테두리 색상
+    borderColor: Color = Color.Transparent,
+    // 클릭 이벤트
     onClick: (() -> Unit)? = null
 ) {
     Image(
