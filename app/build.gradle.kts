@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -56,4 +58,17 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation("androidx.compose.material:material-icons-extended:1.7.6")
+    implementation("androidx.navigation:navigation-compose:2.8.5")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation("androidx.compose.material3:material3:1.3.1")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+}
+
+kapt {
+    correctErrorTypes = true
 }
