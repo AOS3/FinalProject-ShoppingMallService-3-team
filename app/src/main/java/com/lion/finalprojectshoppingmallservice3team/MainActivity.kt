@@ -58,7 +58,7 @@ fun ShoppingMain() {
 fun SplashScreen(navController: NavHostController) {
     // 스플래시 화면에서 2초 대기 후 로그인 화면으로 이동
     LaunchedEffect(Unit) {
-        delay(2000) // 2초 대기
+        delay(1000) // 1초 대기
         navController.navigate("login") {
             popUpTo("splash") { inclusive = true } // 스플래시 화면 제거
         }

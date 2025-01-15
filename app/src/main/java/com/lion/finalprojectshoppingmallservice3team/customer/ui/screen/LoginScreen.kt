@@ -18,7 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -28,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lion.a02_boardcloneproject.component.LikeLionImage
 import com.lion.a02_boardcloneproject.component.LikeLionOutlinedTextField
 import com.lion.a02_boardcloneproject.component.LikeLionOutlinedTextFieldEndIconMode
 import com.lion.a02_boardcloneproject.component.LikeLionOutlinedTextFieldInputType
@@ -113,7 +118,6 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                     text = "아이디 찾기",
                     color = Color.Black,
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(end = 10.dp)
                         .clickable {
 
@@ -123,7 +127,6 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                 Text(
                     text = "|",
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold,
                     color = Color.Black,
                 )
 
@@ -131,7 +134,6 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                     text = "비밀번호 찾기",
                     color = Color.Black,
                     fontSize = 14.sp,
-                    fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.padding(start = 10.dp)
                         .clickable {
 
@@ -144,8 +146,64 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                 color = Color.Gray,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.padding(bottom = 20.dp),
+                modifier = Modifier.padding(bottom = 10.dp),
             )
+
+            Row(
+                modifier = Modifier.padding(bottom = 10.dp)
+            ) {
+                LikeLionImage(
+                    painter = painterResource(id = R.drawable.kakao_login_original),
+                    modifier = Modifier.width(80.dp).height(40.dp),
+                    cornerRadius = 25.dp,
+                    onClick = {
+
+                    }
+                )
+
+                LikeLionImage(
+                    painter = painterResource(id = R.drawable.naver_logo),
+                    modifier = Modifier.width(50.dp).height(40.dp)
+                        .padding(start = 10.dp),
+                    isCircular = true,
+                    onClick = {
+
+                    }
+                )
+
+                LikeLionImage(
+                    painter = painterResource(id = R.drawable.google_logo),
+                    modifier = Modifier.width(50.dp).height(40.dp)
+                        .padding(start = 10.dp),
+                    contentScale = ContentScale.Inside,
+                    borderWidth = 1.dp, // 테두리 두께
+                    borderColor = Color.LightGray, // 테두리 색상
+                    isCircular = true,
+                    onClick = {
+
+                    }
+                )
+            }
+
+            Row(
+                modifier = Modifier.padding(top = 10.dp)
+            ) {
+                Text(
+                    text = "아직 회원이 아니신가요?",
+                    color = Color.Black,
+                    fontSize = 14.sp,
+                )
+
+                Text(
+                    text = "회원가입 하기",
+                    color = Color.Black,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(start = 10.dp)
+                        .clickable {
+
+                    },
+                )
+            }
         }
     }
 }
