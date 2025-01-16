@@ -27,10 +27,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.lion.a02_boardcloneproject.component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBigUserListView
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionChipGroup
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionSmallUserListView
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.data.model.Customer
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.MyFavoriteViewModel
 

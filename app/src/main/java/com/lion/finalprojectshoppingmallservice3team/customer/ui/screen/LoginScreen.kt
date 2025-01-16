@@ -32,12 +32,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.lion.a02_boardcloneproject.component.LikeLionImage
-import com.lion.a02_boardcloneproject.component.LikeLionOutlinedTextField
-import com.lion.a02_boardcloneproject.component.LikeLionOutlinedTextFieldEndIconMode
-import com.lion.a02_boardcloneproject.component.LikeLionOutlinedTextFieldInputType
-import com.lion.a02_boardcloneproject.component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionImage
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextField
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextFieldEndIconMode
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextFieldInputType
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.LoginViewModel
 
