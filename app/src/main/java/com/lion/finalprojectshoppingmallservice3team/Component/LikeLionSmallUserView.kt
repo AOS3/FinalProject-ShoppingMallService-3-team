@@ -53,12 +53,6 @@ fun LikeLionSmallUserView(randomUser: Customer){
                     iconTint = Color.White,
                     profileBack = Color(0xFFA16DEB)
                 )
-
-
-            Text(
-                text = randomUser.customerUserNickName,
-                style = typography.titleMedium
-            )
         }
 
     }

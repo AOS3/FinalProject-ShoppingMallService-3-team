@@ -4,6 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,6 +29,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LoginScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyFavoriteGroupScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyFavoriteScreen
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,11 +53,40 @@ fun ShoppingMain() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = "splash"
+        startDestination = "splash",
+        enterTransition = {
+            fadeIn(
+                tween(300)
+            ) +
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Start,
+                        tween(300)
+                    )
+        },
+        popExitTransition = {
+            fadeOut(
+                tween(300)
+            ) +
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.End,
+                        tween(300)
+                    )
+        },
+        exitTransition = {
+            fadeOut(
+                tween(300)
+            )
+        },
+        popEnterTransition = {
+            fadeIn(
+                tween(300)
+            )
+        },
     ) {
         composable("splash") { SplashScreen(navController) }
 
-        composable("myFavorite") { MyFavoriteScreen() }
+        // composable("myFavorite") { MyFavoriteScreen(navController) }
+        composable("myFavoriteGroup") { MyFavoriteGroupScreen(navController) }
     }
 }
 
@@ -61,7 +95,7 @@ fun SplashScreen(navController: NavHostController) {
     // 스플래시 화면에서 2초 대기 후 로그인 화면으로 이동
     LaunchedEffect(Unit) {
         delay(1000) // 1초 대기
-        navController.navigate("myFavorite") {
+        navController.navigate("myFavoriteGroup") {
             popUpTo("splash") { inclusive = true } // 스플래시 화면 제거
         }
     }
