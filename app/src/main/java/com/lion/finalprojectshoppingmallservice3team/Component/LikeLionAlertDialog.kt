@@ -1,6 +1,5 @@
-package com.lion.a02_boardcloneproject.component
+package com.lion.finalprojectshoppingmallservice3team.Component
 
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -9,8 +8,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
+import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 
 @Composable
 fun LikeLionAlertDialog(
@@ -24,6 +25,13 @@ fun LikeLionAlertDialog(
     dismissButtonOnClick : () -> Unit = {
         showDialogState.value = false
     },
+    containerColor : Color = MainColor,
+    contentColor : Color = Color.White,
+    buttomModifier: Modifier,
+    titleAlign : TextAlign? = null,
+    textModifier: Modifier = Modifier,
+    titleModifier: Modifier = Modifier,
+    textAlign: TextAlign? = null,
     icon : ImageVector? = null,
     title : String? = null,
     text : String? = null,
@@ -37,13 +45,15 @@ fun LikeLionAlertDialog(
             },
             // 확인 버튼
             confirmButton = {
-                TextButton(
+                LikeLionFilledButton(
+                    modifier = buttomModifier,
+                    containerColor = containerColor,
+                    contentColor = contentColor,
+                    text = confirmButtonTitle,
                     onClick = {
                         confirmButtonOnClick()
                     }
-                ) {
-                    Text(text = confirmButtonTitle)
-                }
+                )
             },
             // 취소 버튼
             dismissButton = if(dismissButtonTitle != null){
@@ -73,6 +83,8 @@ fun LikeLionAlertDialog(
                 {
                     Text(
                         text= title,
+                        textAlign = titleAlign,
+                        modifier = titleModifier
                     )
                 }
             } else {
@@ -80,12 +92,16 @@ fun LikeLionAlertDialog(
             },
             text = if(text != null){
                 {
-                    Text(text = text)
+                    Text(
+                        text = text,
+                        textAlign = textAlign,
+                        modifier = textModifier
+                    )
                 }
             } else {
                 null
             },
 
-        )
+            )
     }
 }

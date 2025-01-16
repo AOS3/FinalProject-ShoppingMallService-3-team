@@ -25,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LoginScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.ShopScreen
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -36,7 +37,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FinalProjectShoppingMallService3teamTheme {
-                ShoppingMain()
+                ShopScreen()
             }
         }
     }

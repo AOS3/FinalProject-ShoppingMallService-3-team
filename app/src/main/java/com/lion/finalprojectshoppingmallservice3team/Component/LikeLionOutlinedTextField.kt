@@ -1,4 +1,4 @@
-package com.lion.a02_boardcloneproject.component
+package com.lion.finalprojectshoppingmallservice3team.Component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,17 +17,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
@@ -49,7 +45,7 @@ fun LikeLionOutlinedTextField(
     // 상단 여백
     paddingTop:Dp = 0.dp,
     // 입력 모드
-    inputType:LikeLionOutlinedTextFieldInputType = LikeLionOutlinedTextFieldInputType.TEXT,
+    inputType: LikeLionOutlinedTextFieldInputType = LikeLionOutlinedTextFieldInputType.TEXT,
     // 입력 가능 여부
     readOnly:Boolean = false,
     // 포커싱 관리

@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 
 @Composable
 fun LikeLionFilledButton(
@@ -26,16 +27,22 @@ fun LikeLionFilledButton(
     paddingTop: Dp = 0.dp,
     // 버튼 활성화 여부
     isEnabled: Boolean = true,
+    // 아이콘
     icon: ImageVector? = null,
+    modifier: Modifier,
+    // 배경색
+    containerColor: Color = MainColor,
+    // 글자색
+    contentColor: Color = Color.White,
     // 클릭 이벤트
     onClick:() -> Unit = {}
 ) {
     Button(
-        modifier = Modifier.fillMaxWidth().padding(top = paddingTop),
+        modifier = modifier.padding(top = paddingTop),
         onClick = onClick,
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isEnabled) Color(0xFFA16DEB) else Color.LightGray,
-            contentColor = if (isEnabled) Color.White else Color.Gray,
+            containerColor = if (isEnabled) containerColor else Color.LightGray,
+            contentColor = if (isEnabled) contentColor else Color.Gray,
         ),
         shape = RoundedCornerShape(5.dp)
     ) {
