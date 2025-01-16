@@ -1,4 +1,4 @@
-package com.lion.a02_boardcloneproject.component
+package com.lion.finalprojectshoppingmallservice3team.Component
 
 import android.media.Image
 import androidx.compose.foundation.layout.Column

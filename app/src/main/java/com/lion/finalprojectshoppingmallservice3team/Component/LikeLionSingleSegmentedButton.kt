@@ -1,4 +1,4 @@
-package com.lion.a02_boardcloneproject.component
+package com.lion.finalprojectshoppingmallservice3team.Component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api

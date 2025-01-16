@@ -25,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LoginScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyFavoriteScreen
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -50,7 +51,8 @@ fun ShoppingMain() {
         startDestination = "splash"
     ) {
         composable("splash") { SplashScreen(navController) }
-        composable("login") { LoginScreen() }
+
+        composable("myFavorite") { MyFavoriteScreen() }
     }
 }
 
@@ -59,7 +61,7 @@ fun SplashScreen(navController: NavHostController) {
     // 스플래시 화면에서 2초 대기 후 로그인 화면으로 이동
     LaunchedEffect(Unit) {
         delay(1000) // 1초 대기
-        navController.navigate("login") {
+        navController.navigate("myFavorite") {
             popUpTo("splash") { inclusive = true } // 스플래시 화면 제거
         }
     }
