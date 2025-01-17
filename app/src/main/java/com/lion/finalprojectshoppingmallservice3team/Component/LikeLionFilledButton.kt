@@ -30,7 +30,7 @@ fun LikeLionFilledButton(
     isEnabled: Boolean = true,
     // 아이콘
     icon: ImageVector? = null,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     // 배경색
     containerColor: Color = MainColor,
     // 글자색
@@ -40,7 +40,11 @@ fun LikeLionFilledButton(
 ) {
     Button(
         modifier = modifier.padding(top = paddingTop),
-        onClick = onClick,
+        onClick = {
+            if (isEnabled) {
+                onClick()
+            }
+        },
         colors = ButtonDefaults.buttonColors(
             containerColor = if (isEnabled) containerColor else Color.LightGray,
             contentColor = if (isEnabled) contentColor else Color.Gray,
