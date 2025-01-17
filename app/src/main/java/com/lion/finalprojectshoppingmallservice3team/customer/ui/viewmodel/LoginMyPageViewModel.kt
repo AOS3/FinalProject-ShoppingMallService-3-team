@@ -1,6 +1,7 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel
 
 import android.content.Context
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.lion.finalprojectshoppingmallservice3team.ShoppingApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,6 +14,8 @@ class LoginMyPageViewModel @Inject constructor(
 ) : ViewModel(){
 
     val shoppingApplication = context as ShoppingApplication
+
+    val isCreator = mutableStateOf(true)
 
     fun logoutOnClick(){
         shoppingApplication.navHostController.navigate("logoutMyPage") {

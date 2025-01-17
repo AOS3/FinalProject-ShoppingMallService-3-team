@@ -23,11 +23,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionImage
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.LoginMyPageViewModel
+import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
+import com.lion.finalprojectshoppingmallservice3team.ui.theme.SubColor
 
 @Composable
 fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel()) {
@@ -97,6 +100,30 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                 )
             }
 
+            if (loginMyPageViewModel.isCreator.value) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 45.dp).padding(bottom = 30.dp)
+                ) {
+                    LikeLionFilledButton(
+                        text = "나의 샵",
+                        modifier = Modifier.weight(1f).padding(end = 10.dp),
+                        onClick = {
+
+                        }
+                    )
+
+                    LikeLionFilledButton(
+                        text = "마크샵 스튜디오",
+                        modifier = Modifier.weight(1f).padding(start = 10.dp),
+                        contentColor = MainColor,
+                        containerColor = SubColor,
+                        onClick = {
+
+                        }
+                    )
+                }
+            }
+
             Row(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 30.dp),
             ) {
@@ -133,6 +160,29 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                     ){
                         Text(
                             text = "최근 주문 * 배송중",
+                            fontSize = 14.sp,
+                            color = Color.LightGray,
+                        )
+
+                        Text(
+                            text = "0",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Black,
+                        )
+                    }
+                }
+
+                Row(
+                    modifier = Modifier.weight(1f),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ){
+                        Text(
+                            text = "좋아요 한 상품",
                             fontSize = 14.sp,
                             color = Color.LightGray,
                         )
