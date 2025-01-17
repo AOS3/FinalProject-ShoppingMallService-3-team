@@ -204,9 +204,11 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                     modifier = Modifier.weight(1f),
                     inputCondition = "[^a-zA-Z0-9_]",
                     trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.TEXT,
+                    onTrailingIconClick = {
+                        userSettingViewModel.modifyCheckNicknameButtonState()
+                    },
                     singleLine = true,
                     onValueChange = {
-                        userSettingViewModel.textFieldModifyNicknameValue.value = it
                         userSettingViewModel.modifyCheckNicknameButtonState()
                     }
                 )

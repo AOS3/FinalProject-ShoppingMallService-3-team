@@ -38,7 +38,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
-                backColor = Color.White,
+                backColor = Color.Transparent,
                 navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationIconOnClick = {
                     loginViewModel.navigationIconOnClick()
@@ -72,9 +72,11 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                 modifier = Modifier.fillMaxWidth(),
                 inputCondition = "[^a-zA-Z0-9_]",
                 trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.TEXT,
+                onTrailingIconClick = {
+                    loginViewModel.updateButtonState()
+                },
                 singleLine = true,
                 onValueChange = {
-                    loginViewModel.textFieldLoginIdValue.value = it
                     loginViewModel.updateButtonState()
                 }
             )
@@ -91,7 +93,6 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                 singleLine = true,
                 inputType = LikeLionOutlinedTextFieldInputType.PASSWORD,
                 onValueChange = {
-                    loginViewModel.textFieldLoginPwValue.value = it
                     loginViewModel.updateButtonState()
                 }
             )

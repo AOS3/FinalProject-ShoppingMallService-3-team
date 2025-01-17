@@ -25,13 +25,14 @@ class LoginViewModel @Inject constructor(
     }
 
     fun updateButtonState() {
-        isButtonEnabled.value = textFieldLoginIdValue.value.isNotBlank() &&
-                                textFieldLoginPwValue.value.isNotBlank()
+        isButtonEnabled.value = textFieldLoginIdValue.value.isNotEmpty() &&
+                                textFieldLoginPwValue.value.isNotEmpty()
     }
 
     fun buttonLoginClick(){
         shoppingApplication.navHostController.navigate("loginMyPage") {
             popUpTo("logoutMyPage") { inclusive = true }
+            popUpTo("login") { inclusive = true }
         }
     }
 

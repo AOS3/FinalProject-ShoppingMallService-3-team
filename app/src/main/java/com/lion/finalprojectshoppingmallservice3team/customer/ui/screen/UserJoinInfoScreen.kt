@@ -81,9 +81,11 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
                     modifier = Modifier.weight(1f),
                     inputCondition = "[^a-zA-Z0-9_]",
                     trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.TEXT,
+                    onTrailingIconClick = {
+                        userJoinInfoViewModel.updateCheckIdButtonState()
+                    },
                     singleLine = true,
                     onValueChange = {
-                        userJoinInfoViewModel.textFieldUserJoinIdValue.value = it
                         userJoinInfoViewModel.updateCheckIdButtonState()
                     }
                 )
@@ -113,9 +115,11 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
                     modifier = Modifier.weight(1f),
                     inputCondition = "[^a-zA-Z0-9_]",
                     trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.TEXT,
+                    onTrailingIconClick = {
+                        userJoinInfoViewModel.updateCheckNicknameButtonState()
+                    },
                     singleLine = true,
                     onValueChange = {
-                        userJoinInfoViewModel.textFieldUserJoinNicknameValue.value = it
                         userJoinInfoViewModel.updateCheckNicknameButtonState()
                     }
                 )
