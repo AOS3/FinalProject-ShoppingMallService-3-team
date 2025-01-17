@@ -4,6 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -59,7 +63,35 @@ fun ShoppingMain() {
 
     NavHost(
         navController = navController,
-        startDestination = "splash"
+        startDestination = "splash",
+        enterTransition = {
+            fadeIn(
+                tween(300)
+            ) +
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Start,
+                        tween(300)
+                    )
+        },
+        popExitTransition = {
+            fadeOut(
+                tween(300)
+            ) +
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.End,
+                        tween(300)
+                    )
+        },
+        exitTransition = {
+            fadeOut(
+                tween(300)
+            )
+        },
+        popEnterTransition = {
+            fadeIn(
+                tween(300)
+            )
+        },
     ) {
         composable("splash") { SplashScreen(navController) }
         composable("login") { LoginScreen() }
