@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,7 +25,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LoginMyPageScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LoginScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LogoutMyPageScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.ModifyUserPwScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserJoinInfoScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserJoinScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserSettingScreen
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -45,12 +52,23 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun ShoppingMain() {
     val navController = rememberNavController()
+
+    // Application 객체에 담는다.
+    val shoppingApplication = LocalContext.current.applicationContext as ShoppingApplication
+    shoppingApplication.navHostController = navController
+
     NavHost(
         navController = navController,
         startDestination = "splash"
     ) {
         composable("splash") { SplashScreen(navController) }
         composable("login") { LoginScreen() }
+        composable("userJoin") { UserJoinScreen() }
+        composable("userJoinInfo") { UserJoinInfoScreen() }
+        composable("logoutMyPage") { LogoutMyPageScreen() }
+        composable("loginMyPage") { LoginMyPageScreen() }
+        composable("userSetting") { UserSettingScreen() }
+        composable("modifyUserPw") { ModifyUserPwScreen() }
     }
 }
 
@@ -59,7 +77,7 @@ fun SplashScreen(navController: NavHostController) {
     // 스플래시 화면에서 2초 대기 후 로그인 화면으로 이동
     LaunchedEffect(Unit) {
         delay(1000) // 1초 대기
-        navController.navigate("login") {
+        navController.navigate("logoutMyPage") {
             popUpTo("splash") { inclusive = true } // 스플래시 화면 제거
         }
     }
