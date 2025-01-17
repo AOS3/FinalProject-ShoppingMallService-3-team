@@ -57,6 +57,7 @@ fun LikeLionOutlinedTextField(
     // 만약 입력에 대한 검사를 체크하는 기능이 필요하다면
     isCheckValue:MutableState<Boolean>? = null,
     // 입력값이 변경될 때 호출되는 콜백 함수
+    onTrailingIconClick: (() -> Unit)? = null,
     onValueChange: (String) -> Unit = {}
 ) {
 
@@ -82,17 +83,24 @@ fun LikeLionOutlinedTextField(
             Text(text = placeHolder)
         },
         onValueChange = {
-            if(inputCondition == null) {
-                textFieldValue.value = it
+            val filteredValue = if (inputCondition == null) {
+                // 조건이 없으면 원래 값 그대로 사용
+                it
             } else {
-                textFieldValue.value = it.replace(inputCondition.toRegex(), "")
+                // 정규식으로 필터링
+                it.replace(inputCondition.toRegex(), "")
             }
 
-            if(isCheckValue != null){
+            // 필터링된 값을 상태에 반영
+            textFieldValue.value = filteredValue
+
+            // isCheckValue가 null이 아니면 false로 설정
+            if (isCheckValue != null) {
                 isCheckValue.value = false
             }
 
-            onValueChange(it)
+            // 필터링된 값을 콜백으로 전달
+            onValueChange(filteredValue)
         },
         leadingIcon = if(leadingIcon != null) {
             {
@@ -112,6 +120,7 @@ fun LikeLionOutlinedTextField(
                         IconButton(
                             onClick = {
                                 textFieldValue.value = ""
+                                onTrailingIconClick?.invoke()
                             }
                         ) {
                             Icon(
