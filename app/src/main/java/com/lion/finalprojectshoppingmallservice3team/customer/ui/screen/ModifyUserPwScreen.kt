@@ -42,9 +42,6 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
                 menuItems = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(R.drawable.close_24px),
-                        text = "",
-                        iconSize = 30.dp,
-                        size = 35.dp,
                         padding = 10.dp,
                         borderNull = true,
                         iconButtonOnClick = {

@@ -45,18 +45,12 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                 menuItems = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
-                        text = "",
-                        iconSize = 30.dp,
-                        size = 35.dp,
                         padding = 10.dp,
                         borderNull = true
                     )
 
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.shopping_cart_24px),
-                        text = "",
-                        iconSize = 30.dp,
-                        size = 35.dp,
                         padding = 10.dp,
                         borderNull = true
                     )
