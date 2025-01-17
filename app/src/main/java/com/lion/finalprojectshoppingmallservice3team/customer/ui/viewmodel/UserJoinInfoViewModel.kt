@@ -23,6 +23,19 @@ class UserJoinInfoViewModel @Inject constructor(
     // 닉네임 입력 요소
     val textFieldUserJoinNicknameValue = mutableStateOf("")
 
+    // 조건 충족 여부 상태
+    // 2~10자
+    val isJoinLengthValid = mutableStateOf(false)
+    // 특수문자 불가
+    val isJoinSpecialCharInvalid = mutableStateOf(true)
+    // 자음 모음 단독 사용 불가
+    val isJoinConsonantVowelValid = mutableStateOf(false)
+
+    // 2~10자
+    val isJoinPwLengthValid = mutableStateOf(false)
+    // 아이디랑 같은지
+    val isJoinContainsIdValid = mutableStateOf(false)
+
     // 전체동의 입력 요소
     val triStateCheckBoxUserJoinInfoAllValue = mutableStateOf(ToggleableState.Off)
 
@@ -36,6 +49,35 @@ class UserJoinInfoViewModel @Inject constructor(
     val isButtonNicknameEnabled = mutableStateOf(false)
     val isButtonJoinEnabled = mutableStateOf(false)
 
+    fun joinNicknameConditions() {
+        val nickname = textFieldUserJoinNicknameValue.value
+
+        // 2~10자 조건
+        isJoinLengthValid.value = nickname.length in 2..10
+
+        // 특수문자 불가 조건 (빈 문자열 처리 추가)
+        isJoinSpecialCharInvalid.value = !nickname.contains(Regex("[^ㄱ-ㅎㅏ-ㅣ가-힣0-9a-zA-Z]"))
+
+        // 자음 모음 단독 사용 불가 조건
+        isJoinConsonantVowelValid.value = !nickname.contains(Regex("[ㄱ-ㅎㅏ-ㅣ]"))
+
+        // 버튼 활성화 상태
+        isButtonNicknameEnabled.value = isJoinLengthValid.value &&
+                isJoinSpecialCharInvalid.value && isJoinConsonantVowelValid.value
+    }
+
+    fun joinPwConditions() {
+        val password = textFieldUserJoinPwValue.value
+        val id = textFieldUserJoinIdValue.value
+
+        // 비밀번호가 10자 이상이고, 영문과 숫자를 포함해야 함
+        isJoinPwLengthValid.value = password.length >= 10 &&
+                password.contains(Regex("[a-zA-Z]")) &&
+                password.contains(Regex("[0-9]"))
+
+        isJoinContainsIdValid.value = password != id
+    }
+
     // 네비게이션 아이콘을 누르면 호출되는 메서드
     fun navigationIconOnClick(){
         shoppingApplication.navHostController.popBackStack()
@@ -43,17 +85,12 @@ class UserJoinInfoViewModel @Inject constructor(
 
     init {
         updateCheckIdButtonState()
-        updateCheckNicknameButtonState()
     }
 
     // 아이디와 닉네임 중복확인 여부, 비밀번호, 체크박스 필수가 체크되어있으면 활성화
 
     fun updateCheckIdButtonState() {
         isButtonIdEnabled.value = textFieldUserJoinIdValue.value.isNotBlank()
-    }
-
-    fun updateCheckNicknameButtonState() {
-        isButtonNicknameEnabled.value = textFieldUserJoinNicknameValue.value.isNotBlank()
     }
 
     // 약관 체크박스를 눌렀을 때 호출되는 메서드

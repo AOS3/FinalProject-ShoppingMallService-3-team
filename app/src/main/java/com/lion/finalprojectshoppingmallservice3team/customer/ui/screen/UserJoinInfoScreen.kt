@@ -113,14 +113,14 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
                     label = "닉네임",
                     placeHolder = "닉네임을 입력해 주세요.",
                     modifier = Modifier.weight(1f),
-                    inputCondition = "[^a-zA-Z0-9_]",
+                    inputCondition = "[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]",
                     trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.TEXT,
                     onTrailingIconClick = {
-                        userJoinInfoViewModel.updateCheckNicknameButtonState()
+                        userJoinInfoViewModel.joinNicknameConditions()
                     },
                     singleLine = true,
                     onValueChange = {
-                        userJoinInfoViewModel.updateCheckNicknameButtonState()
+                        userJoinInfoViewModel.joinNicknameConditions()
                     }
                 )
 
@@ -136,20 +136,28 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
             }
 
             Row(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)
+                modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp)
             ) {
                 Row(
                     modifier = Modifier.padding(end = 4.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Check,
-                        tint = Color.LightGray,
+                        tint = when {
+                            userJoinInfoViewModel.textFieldUserJoinNicknameValue.value.isBlank() -> Color.LightGray
+                            userJoinInfoViewModel.isJoinLengthValid.value -> Color(0xFF0DB00C) // 조건 충족
+                            else -> Color(0xFFB00E0E)
+                        },
                         contentDescription = "Check",
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
                         text = "2~10자",
-                        color = Color.LightGray,
+                        color = when {
+                            userJoinInfoViewModel.textFieldUserJoinNicknameValue.value.isBlank() -> Color.LightGray
+                            userJoinInfoViewModel.isJoinLengthValid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         fontSize = 14.sp
                     )
                 }
@@ -159,13 +167,21 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
                 ) {
                     Icon(
                         imageVector = Icons.Default.Check,
-                        tint = Color.LightGray,
+                        tint = when {
+                            userJoinInfoViewModel.textFieldUserJoinNicknameValue.value.isBlank() -> Color.LightGray
+                            userJoinInfoViewModel.isJoinSpecialCharInvalid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         contentDescription = "Check",
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
                         text = "특수문자 불가",
-                        color = Color.LightGray,
+                        color = when {
+                            userJoinInfoViewModel.textFieldUserJoinNicknameValue.value.isBlank() -> Color.LightGray
+                            userJoinInfoViewModel.isJoinSpecialCharInvalid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         fontSize = 14.sp
                     )
                 }
@@ -175,13 +191,21 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
                 ) {
                     Icon(
                         imageVector = Icons.Default.Check,
-                        tint = Color.LightGray,
+                        tint = when {
+                            userJoinInfoViewModel.textFieldUserJoinNicknameValue.value.isBlank() -> Color.LightGray
+                            userJoinInfoViewModel.isJoinConsonantVowelValid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         contentDescription = "Check",
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
                         text = "자음 모음 단독 사용 불가",
-                        color = Color.LightGray,
+                        color = when {
+                            userJoinInfoViewModel.textFieldUserJoinNicknameValue.value.isBlank() -> Color.LightGray
+                            userJoinInfoViewModel.isJoinConsonantVowelValid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         fontSize = 14.sp
                     )
                 }
@@ -198,8 +222,7 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
                 singleLine = true,
                 inputType = LikeLionOutlinedTextFieldInputType.PASSWORD,
                 onValueChange = {
-                    userJoinInfoViewModel.textFieldUserJoinPwValue.value = it
-
+                    userJoinInfoViewModel.joinPwConditions()
                 }
             )
 
@@ -208,13 +231,21 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
             ) {
                 Icon(
                     imageVector = Icons.Default.Check,
-                    tint = Color.LightGray,
+                    tint = when {
+                        userJoinInfoViewModel.textFieldUserJoinNicknameValue.value.isBlank() -> Color.LightGray
+                        userJoinInfoViewModel.isJoinPwLengthValid.value -> Color(0xFF0DB00C)
+                        else -> Color(0xFFB00E0E)
+                    },
                     contentDescription = "Check",
                     modifier = Modifier.size(20.dp).padding(end = 4.dp) // 아이콘 크기 및 간격 설정
                 )
                 Text(
                     text = "영문 숫자 포함 10자 이상",
-                    color = Color.LightGray,
+                    color = when {
+                        userJoinInfoViewModel.textFieldUserJoinNicknameValue.value.isBlank() -> Color.LightGray
+                        userJoinInfoViewModel.isJoinPwLengthValid.value -> Color(0xFF0DB00C)
+                        else -> Color(0xFFB00E0E)
+                    },
                     fontSize = 14.sp
                 )
             }
@@ -224,13 +255,21 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
             ) {
                 Icon(
                     imageVector = Icons.Default.Check,
-                    tint = Color.LightGray,
+                    tint = when {
+                        userJoinInfoViewModel.textFieldUserJoinNicknameValue.value.isBlank() -> Color.LightGray
+                        userJoinInfoViewModel.isJoinContainsIdValid.value -> Color(0xFF0DB00C)
+                        else -> Color(0xFFB00E0E)
+                    },
                     contentDescription = "Check",
                     modifier = Modifier.size(20.dp).padding(end = 4.dp) // 아이콘 크기 및 간격 설정
                 )
                 Text(
                     text = "아이디 불가",
-                    color = Color.LightGray,
+                    color = when {
+                        userJoinInfoViewModel.textFieldUserJoinNicknameValue.value.isBlank() -> Color.LightGray
+                        userJoinInfoViewModel.isJoinContainsIdValid.value -> Color(0xFF0DB00C)
+                        else -> Color(0xFFB00E0E)
+                    },
                     fontSize = 14.sp
                 )
             }

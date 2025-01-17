@@ -202,14 +202,14 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                     label = "닉네임",
                     placeHolder = "닉네임을 입력해 주세요.",
                     modifier = Modifier.weight(1f),
-                    inputCondition = "[^a-zA-Z0-9_]",
+                    inputCondition = "[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]",
                     trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.TEXT,
                     onTrailingIconClick = {
-                        userSettingViewModel.modifyCheckNicknameButtonState()
+                        userSettingViewModel.updateNicknameConditions()
                     },
                     singleLine = true,
                     onValueChange = {
-                        userSettingViewModel.modifyCheckNicknameButtonState()
+                        userSettingViewModel.updateNicknameConditions()
                     }
                 )
 
@@ -232,13 +232,21 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                 ) {
                     Icon(
                         imageVector = Icons.Default.Check,
-                        tint = Color.LightGray,
+                        tint = when {
+                            userSettingViewModel.textFieldModifyNicknameValue.value.isBlank() -> Color.LightGray
+                            userSettingViewModel.isLengthValid.value -> Color(0xFF0DB00C) // 조건 충족
+                            else -> Color(0xFFB00E0E)
+                        },
                         contentDescription = "Check",
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
                         text = "2~10자",
-                        color = Color.LightGray,
+                        color = when {
+                            userSettingViewModel.textFieldModifyNicknameValue.value.isBlank() -> Color.LightGray
+                            userSettingViewModel.isLengthValid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         fontSize = 14.sp
                     )
                 }
@@ -248,13 +256,21 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                 ) {
                     Icon(
                         imageVector = Icons.Default.Check,
-                        tint = Color.LightGray,
+                        tint = when {
+                            userSettingViewModel.textFieldModifyNicknameValue.value.isBlank() -> Color.LightGray
+                            userSettingViewModel.isSpecialCharInvalid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         contentDescription = "Check",
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
                         text = "특수문자 불가",
-                        color = Color.LightGray,
+                        color = when {
+                            userSettingViewModel.textFieldModifyNicknameValue.value.isBlank() -> Color.LightGray
+                            userSettingViewModel.isSpecialCharInvalid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         fontSize = 14.sp
                     )
                 }
@@ -264,13 +280,21 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                 ) {
                     Icon(
                         imageVector = Icons.Default.Check,
-                        tint = Color.LightGray,
+                        tint = when {
+                            userSettingViewModel.textFieldModifyNicknameValue.value.isBlank() -> Color.LightGray
+                            userSettingViewModel.isConsonantVowelValid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         contentDescription = "Check",
                         modifier = Modifier.size(20.dp)
                     )
                     Text(
                         text = "자음 모음 단독 사용 불가",
-                        color = Color.LightGray,
+                        color = when {
+                            userSettingViewModel.textFieldModifyNicknameValue.value.isBlank() -> Color.LightGray
+                            userSettingViewModel.isConsonantVowelValid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         fontSize = 14.sp
                     )
                 }
@@ -281,7 +305,7 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                 label = "이름",
                 placeHolder = "이름을 입력해 주세요.",
                 modifier = Modifier.fillMaxWidth(),
-                inputCondition = "[^ㄱ-ㅎ가-힣a-zA-Z]",
+                inputCondition = "[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]",
                 trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.TEXT,
                 inputType = LikeLionOutlinedTextFieldInputType.TEXT,
                 singleLine = true,

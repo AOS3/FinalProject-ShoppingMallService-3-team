@@ -84,6 +84,9 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
                     inputCondition = "[^a-zA-Z0-9_]",
                     singleLine = true,
                     inputType = LikeLionOutlinedTextFieldInputType.PASSWORD,
+                    onValueChange = {
+                        modifyUserPwViewModel.modifyNewPwConditions()
+                    }
                 )
 
                 Row(
@@ -91,37 +94,61 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
                 ) {
                     Icon(
                         imageVector = Icons.Default.Check,
-                        tint = Color.LightGray,
+                        tint = when {
+                            modifyUserPwViewModel.textFieldModifyNewPwValue.value.isBlank() -> Color.LightGray
+                            modifyUserPwViewModel.isModifyPwLengthValid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         contentDescription = "Check",
                         modifier = Modifier.size(20.dp).padding(end = 4.dp) // 아이콘 크기 및 간격 설정
                     )
                     Text(
                         text = "2~10자",
-                        color = Color.LightGray,
+                        color = when {
+                            modifyUserPwViewModel.textFieldModifyNewPwValue.value.isBlank() -> Color.LightGray
+                            modifyUserPwViewModel.isModifyPwLengthValid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         fontSize = 14.sp
                     )
 
                     Icon(
                         imageVector = Icons.Default.Check,
-                        tint = Color.LightGray,
+                        tint = when {
+                            modifyUserPwViewModel.textFieldModifyNewPwValue.value.isBlank() -> Color.LightGray
+                            modifyUserPwViewModel.isModifyPwSpecialCharInvalid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         contentDescription = "Check",
                         modifier = Modifier.size(20.dp).padding(end = 4.dp) // 아이콘 크기 및 간격 설정
                     )
                     Text(
                         text = "특수문자 불가",
-                        color = Color.LightGray,
+                        color = when {
+                            modifyUserPwViewModel.textFieldModifyNewPwValue.value.isBlank() -> Color.LightGray
+                            modifyUserPwViewModel.isModifyPwSpecialCharInvalid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         fontSize = 14.sp
                     )
 
                     Icon(
                         imageVector = Icons.Default.Check,
-                        tint = Color.LightGray,
+                        tint = when {
+                            modifyUserPwViewModel.textFieldModifyNewPwValue.value.isBlank() -> Color.LightGray
+                            modifyUserPwViewModel.isModifyPwConsonantVowelValid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         contentDescription = "Check",
                         modifier = Modifier.size(20.dp).padding(end = 4.dp) // 아이콘 크기 및 간격 설정
                     )
                     Text(
                         text = "자음 * 모음 단독사용 불가",
-                        color = Color.LightGray,
+                        color = when {
+                            modifyUserPwViewModel.textFieldModifyNewPwValue.value.isBlank() -> Color.LightGray
+                            modifyUserPwViewModel.isModifyPwConsonantVowelValid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         fontSize = 14.sp
                     )
                 }
@@ -131,13 +158,21 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
                 ) {
                     Icon(
                         imageVector = Icons.Default.Check,
-                        tint = Color.LightGray,
+                        tint = when {
+                            modifyUserPwViewModel.textFieldModifyNewPwValue.value.isBlank() -> Color.LightGray
+                            modifyUserPwViewModel.isModifyPwConsonantVowelValid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         contentDescription = "Check",
                         modifier = Modifier.size(20.dp).padding(end = 4.dp) // 아이콘 크기 및 간격 설정
                     )
                     Text(
                         text = "아이디 불가",
-                        color = Color.LightGray,
+                        color = when {
+                            modifyUserPwViewModel.textFieldModifyNewPwValue.value.isBlank() -> Color.LightGray
+                            modifyUserPwViewModel.isModifyPwConsonantVowelValid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         fontSize = 14.sp
                     )
                 }
@@ -152,6 +187,9 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
                     inputCondition = "[^a-zA-Z0-9_]",
                     singleLine = true,
                     inputType = LikeLionOutlinedTextFieldInputType.PASSWORD,
+                    onValueChange = {
+                        modifyUserPwViewModel.modifyCheckPwConditions()
+                    }
                 )
 
                 Row(
@@ -159,13 +197,21 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
                 ) {
                     Icon(
                         imageVector = Icons.Default.Check,
-                        tint = Color.LightGray,
+                        tint = when {
+                            modifyUserPwViewModel.textFieldModifyCheckPwValue.value.isBlank() -> Color.LightGray
+                            modifyUserPwViewModel.isModifyPwContainsNewPwValid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         contentDescription = "Check",
                         modifier = Modifier.size(20.dp).padding(end = 4.dp) // 아이콘 크기 및 간격 설정
                     )
                     Text(
                         text = "비밀번호 일치",
-                        color = Color.LightGray,
+                        color = when {
+                            modifyUserPwViewModel.textFieldModifyCheckPwValue.value.isBlank() -> Color.LightGray
+                            modifyUserPwViewModel.isModifyPwContainsNewPwValid.value -> Color(0xFF0DB00C)
+                            else -> Color(0xFFB00E0E)
+                        },
                         fontSize = 14.sp
                     )
                 }

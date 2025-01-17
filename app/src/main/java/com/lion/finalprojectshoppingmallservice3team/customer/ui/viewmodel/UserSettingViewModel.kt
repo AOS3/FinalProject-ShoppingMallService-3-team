@@ -22,6 +22,14 @@ class UserSettingViewModel @Inject constructor(
     val textFieldModifyDetailAddressValue = mutableStateOf(" ")
     val textFieldModifyBirthValue = mutableStateOf(" ")
 
+    // 조건 충족 여부 상태
+    // 2~10자
+    val isLengthValid = mutableStateOf(false)
+    // 특수문자 불가
+    val isSpecialCharInvalid = mutableStateOf(true)
+    // 자음 모음 단독 사용 불가
+    val isConsonantVowelValid = mutableStateOf(false)
+
     // 라디오 버튼 클릭 여부
     val selectedGender = mutableStateOf("상관없음")
     val selectedSmsAgree = mutableStateOf("동의")
@@ -35,9 +43,20 @@ class UserSettingViewModel @Inject constructor(
     // 중복확인 버튼 클릭 가능 여부
     val isButtonNicknameEnabled = mutableStateOf(false)
 
-    // 버튼 온오프
-    fun modifyCheckNicknameButtonState() {
-        isButtonNicknameEnabled.value = textFieldModifyNicknameValue.value.isNotBlank()
+    fun updateNicknameConditions() {
+        val nickname = textFieldModifyNicknameValue.value
+
+        // 2~10자 조건
+        isLengthValid.value = nickname.length in 2..10
+
+        // 특수문자 불가 조건 (빈 문자열 처리 추가)
+        isSpecialCharInvalid.value = !nickname.contains(Regex("[^ㄱ-ㅎㅏ-ㅣ가-힣0-9a-zA-Z]"))
+
+        // 자음 모음 단독 사용 불가 조건
+        isConsonantVowelValid.value = !nickname.contains(Regex("[ㄱ-ㅎㅏ-ㅣ]"))
+
+        // 버튼 활성화 상태
+        isButtonNicknameEnabled.value = isLengthValid.value && isSpecialCharInvalid.value && isConsonantVowelValid.value
     }
 
     // 뒤로가기 버튼을 눌렀을때
