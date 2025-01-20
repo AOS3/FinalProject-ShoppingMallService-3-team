@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,12 +46,16 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                 },
                 menuItems = {
                     LikeLionIconButton(
+                        color = Color.Transparent,
+                        iconBackColor = Color.Transparent,
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
                         padding = 10.dp,
                         borderNull = true
                     )
 
                     LikeLionIconButton(
+                        color = Color.Transparent,
+                        iconBackColor = Color.Transparent,
                         icon = ImageVector.vectorResource(id = R.drawable.shopping_cart_24px),
                         padding = 10.dp,
                         borderNull = true
@@ -64,6 +70,7 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                 .fillMaxSize()
                 .padding(it)
                 .padding(horizontal = 10.dp)
+                .verticalScroll(state = rememberScrollState())
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -195,10 +202,7 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                 text = "쇼핑정보",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 20.dp)
-                    .clickable {
-
-                    },
+                    .padding(bottom = 20.dp),
                 fontSize = 14.sp,
                 color = Color.LightGray,
             )
@@ -255,10 +259,7 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                 text = "고객센터",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 20.dp)
-                    .clickable {
-
-                    },
+                    .padding(bottom = 20.dp),
                 fontSize = 14.sp,
                 color = Color.LightGray,
             )
@@ -270,6 +271,18 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                     .padding(bottom = 20.dp)
                     .clickable {
 
+                    },
+                fontSize = 16.sp,
+                color = Color.Black,
+            )
+
+            Text(
+                text = "문의",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp)
+                    .clickable {
+                        loginMyPageViewModel.inquiryOnClick()
                     },
                 fontSize = 16.sp,
                 color = Color.Black,

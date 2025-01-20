@@ -37,17 +37,21 @@ fun MyPostsScreen(myPostsViewModel: MyPostsViewModel = hiltViewModel()) {
                 title = "내가 쓴 글",
                 navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationIconOnClick = {
-
+                    myPostsViewModel.navigationOnClick()
                 },
                 menuItems = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
+                        color = Color.Transparent,
+                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                         borderNull = true
                     )
 
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.shopping_cart_24px),
+                        color = Color.Transparent,
+                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                         borderNull = true
                     )
