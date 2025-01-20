@@ -155,30 +155,6 @@ fun LogoutMyPageScreen(logoutMyPageViewModel: LogoutMyPageViewModel = hiltViewMo
             )
 
             Text(
-                text = "크리에이터 문의 내역 확인",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 20.dp)
-                    .clickable {
-
-                    },
-                fontSize = 16.sp,
-                color = Color.Black
-            )
-
-            Text(
-                text = "문의",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 20.dp)
-                    .clickable {
-
-                    },
-                fontSize = 16.sp,
-                color = Color.Black
-            )
-
-            Text(
                 text = "사이트 이용 시 유의사항",
                 modifier = Modifier
                     .fillMaxWidth()
