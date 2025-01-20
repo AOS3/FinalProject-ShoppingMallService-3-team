@@ -45,7 +45,7 @@ fun MyPurchaseHistoryScreen(myPurchaseHistoryViewModel: MyPurchaseHistoryViewMod
                 "status" to "구매확정",
                 "date" to "2/5 수요일",
                 "deliveryStatus" to "배송 완료",
-                "productImage" to R.drawable.kakao_login_logo, // 임시 이미지 리소스
+                "productImage" to R.drawable.goods1, // 임시 이미지 리소스
                 "productName" to "상품 1",
                 "productCategory" to "상품 카테고리 1",
                 "price" to "18,000원"
@@ -55,7 +55,7 @@ fun MyPurchaseHistoryScreen(myPurchaseHistoryViewModel: MyPurchaseHistoryViewMod
                 "status" to "구매대기",
                 "date" to "2/4 화요일",
                 "deliveryStatus" to "배송 중",
-                "productImage" to R.drawable.kakao_login_logo,
+                "productImage" to R.drawable.goods2,
                 "productName" to "상품 2",
                 "productCategory" to "상품 카테고리 2",
                 "price" to "20,000원"
@@ -65,7 +65,7 @@ fun MyPurchaseHistoryScreen(myPurchaseHistoryViewModel: MyPurchaseHistoryViewMod
                 "status" to "구매확정",
                 "date" to "2/3 월요일",
                 "deliveryStatus" to "배송 완료",
-                "productImage" to R.drawable.kakao_login_logo,
+                "productImage" to R.drawable.goods3,
                 "productName" to "상품 3",
                 "productCategory" to "상품 카테고리 3",
                 "price" to "15,000원"
