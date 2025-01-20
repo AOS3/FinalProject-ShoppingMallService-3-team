@@ -232,7 +232,7 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
                 Icon(
                     imageVector = Icons.Default.Check,
                     tint = when {
-                        userJoinInfoViewModel.textFieldUserJoinNicknameValue.value.isBlank() -> Color.LightGray
+                        userJoinInfoViewModel.textFieldUserJoinPwValue.value.isBlank() -> Color.LightGray
                         userJoinInfoViewModel.isJoinPwLengthValid.value -> Color(0xFF0DB00C)
                         else -> Color(0xFFB00E0E)
                     },
@@ -242,7 +242,7 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
                 Text(
                     text = "영문 숫자 포함 10자 이상",
                     color = when {
-                        userJoinInfoViewModel.textFieldUserJoinNicknameValue.value.isBlank() -> Color.LightGray
+                        userJoinInfoViewModel.textFieldUserJoinPwValue.value.isBlank() -> Color.LightGray
                         userJoinInfoViewModel.isJoinPwLengthValid.value -> Color(0xFF0DB00C)
                         else -> Color(0xFFB00E0E)
                     },
@@ -256,7 +256,7 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
                 Icon(
                     imageVector = Icons.Default.Check,
                     tint = when {
-                        userJoinInfoViewModel.textFieldUserJoinNicknameValue.value.isBlank() -> Color.LightGray
+                        userJoinInfoViewModel.textFieldUserJoinPwValue.value.isBlank() -> Color.LightGray
                         userJoinInfoViewModel.isJoinContainsIdValid.value -> Color(0xFF0DB00C)
                         else -> Color(0xFFB00E0E)
                     },
@@ -266,7 +266,7 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
                 Text(
                     text = "아이디 불가",
                     color = when {
-                        userJoinInfoViewModel.textFieldUserJoinNicknameValue.value.isBlank() -> Color.LightGray
+                        userJoinInfoViewModel.textFieldUserJoinPwValue.value.isBlank() -> Color.LightGray
                         userJoinInfoViewModel.isJoinContainsIdValid.value -> Color(0xFF0DB00C)
                         else -> Color(0xFFB00E0E)
                     },
