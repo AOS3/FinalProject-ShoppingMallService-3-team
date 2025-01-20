@@ -75,7 +75,8 @@ class UserJoinInfoViewModel @Inject constructor(
                 password.contains(Regex("[a-zA-Z]")) &&
                 password.contains(Regex("[0-9]"))
 
-        isJoinContainsIdValid.value = password != id
+        // 비밀번호가 아이디와 동일하지 않을 때만 유효
+        isJoinContainsIdValid.value = password.isNotEmpty() && password != id
     }
 
     // 네비게이션 아이콘을 누르면 호출되는 메서드
