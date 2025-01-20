@@ -37,4 +37,9 @@ class LoginMyPageViewModel @Inject constructor(
         shoppingApplication.navHostController.navigate("myPurchaseHistory") {
         }
     }
+
+    fun inquiryOnClick(){
+        shoppingApplication.navHostController.navigate("inquiryList") {
+        }
+    }
 }

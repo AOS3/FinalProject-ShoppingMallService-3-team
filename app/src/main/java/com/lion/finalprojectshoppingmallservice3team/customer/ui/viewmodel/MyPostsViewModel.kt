@@ -17,4 +17,10 @@ class MyPostsViewModel @Inject constructor(
 
     // 현재 선택된 탭 인덱스
     val selectedTabIndex = mutableStateOf(0)
+
+    fun navigationOnClick(){
+        shoppingApplication.navHostController.navigate("loginMyPage"){
+            popUpTo("MyPosts") { inclusive = true }
+        }
+    }
 }
