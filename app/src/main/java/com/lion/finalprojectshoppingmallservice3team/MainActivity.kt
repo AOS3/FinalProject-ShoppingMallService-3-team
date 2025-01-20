@@ -29,10 +29,18 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryListScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryReadScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryWriteScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LoginMyPageScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LoginScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LogoutMyPageScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.ModifyUserPwScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyCheerScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyPostsScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyPurchaseHistoryScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyRecentScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyReviewScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserJoinInfoScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserJoinScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserSettingScreen
@@ -65,22 +73,43 @@ fun ShoppingMain() {
         navController = navController,
         startDestination = "splash",
         enterTransition = {
-            fadeIn(
-                tween(300)
-            ) +
-                    slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start,
-                        tween(300)
-                    )
+            if (targetState.destination.route == "inquiryWrite") {
+                fadeIn(
+                    tween(300)
+                ) +
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Up,
+                            tween(300)
+                        )
+            } else {
+                fadeIn(
+                    tween(300)
+                ) +
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Start,
+                            tween(300)
+                        )
+            }
+
         },
         popExitTransition = {
-            fadeOut(
-                tween(300)
-            ) +
-                    slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End,
-                        tween(300)
-                    )
+            if (initialState.destination.route == "inquiryWrite") {
+                fadeOut(
+                    tween(300)
+                ) +
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Down,
+                            tween(300)
+                        )
+            } else {
+                fadeOut(
+                    tween(300)
+                ) +
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.End,
+                            tween(300)
+                        )
+            }
         },
         exitTransition = {
             fadeOut(
@@ -101,6 +130,12 @@ fun ShoppingMain() {
         composable("loginMyPage") { LoginMyPageScreen() }
         composable("userSetting") { UserSettingScreen() }
         composable("modifyUserPw") { ModifyUserPwScreen() }
+        composable("myPosts") { MyPostsScreen() }
+        composable("myRecent") { MyRecentScreen() }
+        composable("myPurchaseHistory") { MyPurchaseHistoryScreen() }
+        composable("inquiryList") { InquiryListScreen() }
+        composable("inquiryRead") { InquiryReadScreen() }
+        composable("inquiryWrite") { InquiryWriteScreen() }
     }
 }
 
