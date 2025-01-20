@@ -209,7 +209,7 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                     .fillMaxWidth()
                     .padding(bottom = 20.dp)
                     .clickable {
-
+                        loginMyPageViewModel.myPerchaseHistoryOnClick()
                     },
                 fontSize = 16.sp,
                 color = Color.Black,
@@ -233,7 +233,7 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                     .fillMaxWidth()
                     .padding(bottom = 20.dp)
                     .clickable {
-
+                        loginMyPageViewModel.myPostsOnClick()
                     },
                 fontSize = 16.sp,
                 color = Color.Black,

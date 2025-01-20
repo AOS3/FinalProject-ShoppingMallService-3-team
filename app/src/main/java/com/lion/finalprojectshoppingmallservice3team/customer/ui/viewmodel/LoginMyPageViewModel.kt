@@ -27,4 +27,14 @@ class LoginMyPageViewModel @Inject constructor(
         shoppingApplication.navHostController.navigate("userSetting") {
         }
     }
+
+    fun myPostsOnClick(){
+        shoppingApplication.navHostController.navigate("myPosts") {
+        }
+    }
+
+    fun myPerchaseHistoryOnClick(){
+        shoppingApplication.navHostController.navigate("myPurchaseHistory") {
+        }
+    }
 }
