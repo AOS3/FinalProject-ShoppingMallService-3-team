@@ -47,13 +47,13 @@ fun InquiryListScreen(inquiryListViewModel: InquiryListViewModel = hiltViewModel
             mapOf(
                 "status" to "답변 대기",
                 "title" to "문의 제목 1",
-                "author" to "작성자 닉네임",
+                "name" to "작성자 닉네임",
                 "date" to "2025.01.09"
             ),
             mapOf(
                 "status" to "답변 완료",
                 "title" to "문의 제목 2",
-                "author" to "작성자 닉네임",
+                "name" to "작성자 닉네임",
                 "date" to "2025.01.09"
             )
         )
