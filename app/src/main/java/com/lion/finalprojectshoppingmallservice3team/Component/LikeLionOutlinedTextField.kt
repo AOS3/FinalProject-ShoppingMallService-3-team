@@ -1,6 +1,7 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Visibility
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
@@ -58,7 +60,7 @@ fun LikeLionOutlinedTextField(
     isCheckValue:MutableState<Boolean>? = null,
     // 입력값이 변경될 때 호출되는 콜백 함수
     onTrailingIconClick: (() -> Unit)? = null,
-    onValueChange: (String) -> Unit = {}
+    onValueChange: (String) -> Unit = {},
 ) {
 
     // 비밀번호가 보이는지...
@@ -164,6 +166,11 @@ fun LikeLionOutlinedTextField(
             null
         },
         isError = isError.value,
+        keyboardOptions = if (inputType == LikeLionOutlinedTextFieldInputType.NUMBER) {
+            KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
+        } else {
+            KeyboardOptions.Default
+        }
     )
 }
 
