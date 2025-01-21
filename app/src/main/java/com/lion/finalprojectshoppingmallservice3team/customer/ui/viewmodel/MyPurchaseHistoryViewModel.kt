@@ -15,8 +15,7 @@ class MyPurchaseHistoryViewModel @Inject constructor(
     val shoppingApplication = context as ShoppingApplication
 
     fun navigationOnClick(){
-        shoppingApplication.navHostController.navigate("loginMyPage"){
-            popUpTo("myPurchaseHistory") { inclusive = true }
-        }
+        shoppingApplication.navHostController.popBackStack("myPurchaseHistory", inclusive = true)
+        shoppingApplication.navHostController.navigate("loginMyPage")
     }
 }
