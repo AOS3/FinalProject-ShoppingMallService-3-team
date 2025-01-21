@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionAlertDialog
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionImage
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextField
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextFieldEndIconMode
@@ -216,6 +217,47 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                     },
                 )
             }
+
+            // 존재하지 않는 아이디
+            LikeLionAlertDialog(
+                showDialogState = loginViewModel.alertDialogLoginFail1State,
+                confirmButtonTitle = "확인",
+                confirmButtonOnClick = {
+                    loginViewModel.textFieldLoginIdValue.value = ""
+                    loginViewModel.textFieldLoginPwValue.value = ""
+                    loginViewModel.alertDialogLoginFail1State.value = false
+                    loginViewModel.updateButtonState()
+                },
+                title = "로그인 오류",
+                text = "존재하지 않는 아이디 입니다"
+            )
+
+            // 잘못된 비밀번호
+            LikeLionAlertDialog(
+                showDialogState = loginViewModel.alertDialogLoginFail2State,
+                confirmButtonTitle = "확인",
+                confirmButtonOnClick = {
+                    loginViewModel.textFieldLoginPwValue.value = ""
+                    loginViewModel.alertDialogLoginFail2State.value = false
+                    loginViewModel.updateButtonState()
+                },
+                title = "로그인 오류",
+                text = "잘못된 비밀번호 입니다"
+            )
+
+            // 잘못된 비밀번호
+            LikeLionAlertDialog(
+                showDialogState = loginViewModel.alertDialogLoginFail3State,
+                confirmButtonTitle = "확인",
+                confirmButtonOnClick = {
+                    loginViewModel.textFieldLoginIdValue.value = ""
+                    loginViewModel.textFieldLoginPwValue.value = ""
+                    loginViewModel.alertDialogLoginFail3State.value = false
+                    loginViewModel.updateButtonState()
+                },
+                title = "로그인 오류",
+                text = "탈퇴한 회원입니다"
+            )
         }
     }
 }
