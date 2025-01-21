@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -18,7 +17,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFixedTabs
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
-import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionScrollableTabs
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.MyPostsViewModel
@@ -26,8 +24,8 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.MyPos
 @Composable
 fun MyPostsScreen(myPostsViewModel: MyPostsViewModel = hiltViewModel()) {
     val tabTitlesWithCounts = listOf(
-        "리뷰" to 10,
-        "응원하기" to 5
+        "리뷰",
+        "응원하기"
     )
     val selectedTabIndex = myPostsViewModel.selectedTabIndex
     Scaffold(
