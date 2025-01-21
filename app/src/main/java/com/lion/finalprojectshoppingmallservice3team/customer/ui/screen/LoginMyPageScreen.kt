@@ -93,7 +93,7 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                 horizontalArrangement = Arrangement.Center,
             ) {
                 Text(
-                    text = "닉네임 님, 반가워요!",
+                    text = "${loginMyPageViewModel.textNickname.value}님, 반가워요!",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black,
