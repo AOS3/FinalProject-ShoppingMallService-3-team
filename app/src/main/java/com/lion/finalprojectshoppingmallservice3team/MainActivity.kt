@@ -73,7 +73,7 @@ fun ShoppingMain() {
         navController = navController,
         startDestination = "splash",
         enterTransition = {
-            if (targetState.destination.route == "inquiryWrite") {
+            if (targetState.destination.route == "inquiryWrite" || targetState.destination.route == "modifyUserPw") {
                 fadeIn(
                     tween(300)
                 ) +
@@ -93,7 +93,7 @@ fun ShoppingMain() {
 
         },
         popExitTransition = {
-            if (initialState.destination.route == "inquiryWrite") {
+            if (initialState.destination.route == "inquiryWrite" || initialState.destination.route == "modifyUserPw") {
                 fadeOut(
                     tween(300)
                 ) +
