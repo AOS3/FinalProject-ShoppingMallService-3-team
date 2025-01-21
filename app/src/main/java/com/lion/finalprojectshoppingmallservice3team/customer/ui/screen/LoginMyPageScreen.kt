@@ -249,7 +249,7 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                     .fillMaxWidth()
                     .padding(bottom = 30.dp)
                     .clickable {
-
+                        loginMyPageViewModel.myRecentOnClick()
                     },
                 fontSize = 16.sp,
                 color = Color.Black,

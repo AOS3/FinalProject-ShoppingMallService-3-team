@@ -33,6 +33,11 @@ class LoginMyPageViewModel @Inject constructor(
         }
     }
 
+    fun myRecentOnClick(){
+        shoppingApplication.navHostController.navigate("myRecent") {
+        }
+    }
+
     fun myPerchaseHistoryOnClick(){
         shoppingApplication.navHostController.navigate("myPurchaseHistory") {
         }
