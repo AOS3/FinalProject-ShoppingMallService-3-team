@@ -37,6 +37,7 @@ fun LikeLionFilledButton(
     contentColor: Color = Color.White,
     // 클릭 이벤트
     onClick:() -> Unit = {}
+
 ) {
     Button(
         modifier = modifier.padding(top = paddingTop),
@@ -50,7 +51,8 @@ fun LikeLionFilledButton(
             contentColor = if (isEnabled) contentColor else Color.Gray,
         ),
         border = border,
-        shape = RoundedCornerShape(5.dp)
+        shape = RoundedCornerShape(5.dp),
+        enabled = isEnabled
     ) {
         Row {
             // ImageVector 아이콘 표시
