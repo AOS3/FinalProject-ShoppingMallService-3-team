@@ -25,8 +25,6 @@ class InquiryListViewModel @Inject constructor(
     }
 
     fun navigationOnClick(){
-        shoppingApplication.navHostController.navigate("loginMyPage"){
-            popUpTo("inquiryList") {inclusive = true}
-        }
+        shoppingApplication.navHostController.popBackStack("inquiryList", inclusive = true)
     }
 }

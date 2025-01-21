@@ -15,8 +15,6 @@ class InquiryReadViewModel @Inject constructor(
     val shoppingApplication = context as ShoppingApplication
 
     fun navigationOnClick(){
-        shoppingApplication.navHostController.navigate("inquiryList"){
-            popUpTo("inquiryRead") {inclusive = true}
-        }
+        shoppingApplication.navHostController.popBackStack("inquiryRead", inclusive = true)
     }
 }
