@@ -21,10 +21,12 @@ class InquiryListViewModel @Inject constructor(
     }
 
     fun inquiryListOnClick(){
+        shoppingApplication.navHostController.popBackStack("inquiryList", inclusive = true)
         shoppingApplication.navHostController.navigate("inquiryRead")
     }
 
     fun navigationOnClick(){
         shoppingApplication.navHostController.popBackStack("inquiryList", inclusive = true)
+        shoppingApplication.navHostController.navigate("loginMyPage")
     }
 }

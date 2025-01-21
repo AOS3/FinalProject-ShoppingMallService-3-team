@@ -16,14 +16,16 @@ class UserJoinViewModel @Inject constructor(
 
     // 네비게이션 아이콘을 누르면 호출되는 메서드
     fun navigationIconOnClick(){
-        shoppingApplication.navHostController.navigate("logoutMyPage"){
-            popUpTo("userJoin") { inclusive = true }
-            popUpTo("login") { inclusive = true }
+        shoppingApplication.navHostController.popBackStack("userJoin", inclusive = true) // 회원가입 스택 제거
+        shoppingApplication.navHostController.navigate("logoutMyPage") {
+            launchSingleTop = true // 중복 생성 방지
         }
     }
 
     fun buttonLoginClick(){
-        shoppingApplication.navHostController.navigate("login")
+        shoppingApplication.navHostController.popBackStack("userJoin", inclusive = true)
+        shoppingApplication.navHostController.navigate("login") {
+        }
     }
 
     fun buttonNextOnClick(){

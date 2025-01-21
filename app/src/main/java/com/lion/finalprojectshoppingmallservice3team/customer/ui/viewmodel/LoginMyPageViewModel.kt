@@ -15,36 +15,37 @@ class LoginMyPageViewModel @Inject constructor(
 
     val shoppingApplication = context as ShoppingApplication
 
-    val isCreator = mutableStateOf(true)
+    val textNickname = mutableStateOf(shoppingApplication.loginCustomerModel.customerUserNickName)
+
+    val isCreator = mutableStateOf(shoppingApplication.loginCustomerModel.isCreator)
 
     fun logoutOnClick(){
-        shoppingApplication.navHostController.navigate("logoutMyPage") {
-            popUpTo("loginMyPage") { inclusive = true }
-        }
+        shoppingApplication.navHostController.popBackStack("loginMyPage", inclusive = true)
+        shoppingApplication.navHostController.navigate("logoutMyPage")
     }
 
     fun userSettingOnClick(){
-        shoppingApplication.navHostController.navigate("userSetting") {
-        }
+        shoppingApplication.navHostController.popBackStack("loginMyPage", inclusive = true)
+        shoppingApplication.navHostController.navigate("userSetting")
     }
 
     fun myPostsOnClick(){
-        shoppingApplication.navHostController.navigate("myPosts") {
-        }
+        shoppingApplication.navHostController.popBackStack("loginMyPage", inclusive = true)
+        shoppingApplication.navHostController.navigate("myPosts")
     }
 
     fun myRecentOnClick(){
-        shoppingApplication.navHostController.navigate("myRecent") {
-        }
+        shoppingApplication.navHostController.popBackStack("loginMyPage", inclusive = true)
+        shoppingApplication.navHostController.navigate("myRecent")
     }
 
     fun myPerchaseHistoryOnClick(){
-        shoppingApplication.navHostController.navigate("myPurchaseHistory") {
-        }
+        shoppingApplication.navHostController.popBackStack("loginMyPage", inclusive = true)
+        shoppingApplication.navHostController.navigate("myPurchaseHistory")
     }
 
     fun inquiryOnClick(){
-        shoppingApplication.navHostController.navigate("inquiryList") {
-        }
+        shoppingApplication.navHostController.popBackStack("loginMyPage", inclusive = true)
+        shoppingApplication.navHostController.navigate("inquiryList")
     }
 }

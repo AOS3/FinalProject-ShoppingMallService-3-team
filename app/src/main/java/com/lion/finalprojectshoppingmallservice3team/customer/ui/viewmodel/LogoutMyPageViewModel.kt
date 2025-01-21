@@ -24,10 +24,13 @@ class LogoutMyPageViewModel @Inject constructor(
     }
 
     fun loginOnClick(){
+        shoppingApplication.navHostController.popBackStack("logoutMyPage", inclusive = true)
         shoppingApplication.navHostController.navigate("login")
     }
 
     fun userJoinOnClick(){
-        shoppingApplication.navHostController.navigate("userJoin")
+        shoppingApplication.navHostController.popBackStack("logoutMyPage", inclusive = true)
+        shoppingApplication.navHostController.navigate("userJoin") {
+        }
     }
 }

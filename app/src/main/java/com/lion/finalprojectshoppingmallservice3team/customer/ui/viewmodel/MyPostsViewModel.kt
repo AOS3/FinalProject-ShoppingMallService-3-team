@@ -19,8 +19,8 @@ class MyPostsViewModel @Inject constructor(
     val selectedTabIndex = mutableStateOf(0)
 
     fun navigationOnClick(){
-        shoppingApplication.navHostController.navigate("loginMyPage"){
-            popUpTo("MyPosts") { inclusive = true }
-        }
+        shoppingApplication.navHostController.popBackStack("myPosts", inclusive = true)
+        shoppingApplication.navHostController.navigate("loginMyPage")
+
     }
 }
