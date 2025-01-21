@@ -22,8 +22,10 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,6 +55,7 @@ import com.lion.finalprojectshoppingmallservice3team.ui.theme.SubColor
 
 @Composable
 fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel()) {
+
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
@@ -219,7 +222,7 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                     isEnabled = userSettingViewModel.isButtonNicknameEnabled.value,
                     modifier = Modifier.weight(0.4f).padding(top = 6.dp, start = 5.dp).height(56.dp),
                     onClick = {
-                        // 중복확인 로직
+                        userSettingViewModel.buttonCheckNickNameOnClick()
                     }
                 )
             }
@@ -321,7 +324,7 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                 trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.TEXT,
                 inputCondition = "[^0-9]",
                 singleLine = true,
-                inputType = LikeLionOutlinedTextFieldInputType.TEXT,
+                inputType = LikeLionOutlinedTextFieldInputType.NUMBER,
             )
 
             Row(
@@ -408,8 +411,8 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                 textModifier = Modifier.padding(5.dp),
                 modifier = Modifier.padding(bottom = 10.dp),
                 selectedOption = userSettingViewModel.selectedSmsAgree.value,
-                onOptionSelected = { gender ->
-                    userSettingViewModel.selectedSmsAgree.value = gender
+                onOptionSelected = { selectedOption  ->
+                    userSettingViewModel.selectedSmsAgree.value = selectedOption
                 },
                 orientation = Orientation.Horizontal, // 가로 방향
                 itemSpacing = 10,
@@ -501,6 +504,17 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                 },
                 dismissbuttonModifier = Modifier.weight(1f).padding(end = 5.dp),
                 dismissBorder = BorderStroke(1.dp, Color.LightGray),
+            )
+
+            // 닉네임 중복 확인을 하지 않은 경우
+            LikeLionAlertDialog(
+                showDialogState = userSettingViewModel.showDialogNickNameIsNotCheckState,
+                confirmButtonTitle = "확인",
+                confirmButtonOnClick = {
+                    userSettingViewModel.showDialogNickNameIsNotCheckState.value = false
+                },
+                title = "닉네임 중복 확인 오류",
+                text = "닉네임 중복 확인을 해주세요"
             )
         }
     }

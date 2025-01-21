@@ -74,12 +74,15 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
                     inputCondition = "[^a-zA-Z0-9_]",
                     singleLine = true,
                     inputType = LikeLionOutlinedTextFieldInputType.PASSWORD,
+                    onValueChange = {
+                        modifyUserPwViewModel.updateButtonState()
+                    }
                 )
 
                 // 새 비밀번호
                 LikeLionOutlinedTextField(
                     textFieldValue = modifyUserPwViewModel.textFieldModifyNewPwValue,
-                    label = "새 비밀번호*",
+                    label = "새 비밀번호",
                     modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp),
                     placeHolder = "새 비밀번호를 입력해 주세요.",
                     trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.PASSWORD,
@@ -88,6 +91,7 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
                     inputType = LikeLionOutlinedTextFieldInputType.PASSWORD,
                     onValueChange = {
                         modifyUserPwViewModel.modifyNewPwConditions()
+                        modifyUserPwViewModel.updateButtonState()
                     }
                 )
 
@@ -105,50 +109,10 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
                         modifier = Modifier.size(20.dp).padding(end = 4.dp) // 아이콘 크기 및 간격 설정
                     )
                     Text(
-                        text = "2~10자",
+                        text = "영문 숫자 포함 10자 이상",
                         color = when {
                             modifyUserPwViewModel.textFieldModifyNewPwValue.value.isBlank() -> Color.LightGray
                             modifyUserPwViewModel.isModifyPwLengthValid.value -> Color(0xFF0DB00C)
-                            else -> Color(0xFFB00E0E)
-                        },
-                        fontSize = 14.sp
-                    )
-
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        tint = when {
-                            modifyUserPwViewModel.textFieldModifyNewPwValue.value.isBlank() -> Color.LightGray
-                            modifyUserPwViewModel.isModifyPwSpecialCharInvalid.value -> Color(0xFF0DB00C)
-                            else -> Color(0xFFB00E0E)
-                        },
-                        contentDescription = "Check",
-                        modifier = Modifier.size(20.dp).padding(end = 4.dp) // 아이콘 크기 및 간격 설정
-                    )
-                    Text(
-                        text = "특수문자 불가",
-                        color = when {
-                            modifyUserPwViewModel.textFieldModifyNewPwValue.value.isBlank() -> Color.LightGray
-                            modifyUserPwViewModel.isModifyPwSpecialCharInvalid.value -> Color(0xFF0DB00C)
-                            else -> Color(0xFFB00E0E)
-                        },
-                        fontSize = 14.sp
-                    )
-
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        tint = when {
-                            modifyUserPwViewModel.textFieldModifyNewPwValue.value.isBlank() -> Color.LightGray
-                            modifyUserPwViewModel.isModifyPwConsonantVowelValid.value -> Color(0xFF0DB00C)
-                            else -> Color(0xFFB00E0E)
-                        },
-                        contentDescription = "Check",
-                        modifier = Modifier.size(20.dp).padding(end = 4.dp) // 아이콘 크기 및 간격 설정
-                    )
-                    Text(
-                        text = "자음 * 모음 단독사용 불가",
-                        color = when {
-                            modifyUserPwViewModel.textFieldModifyNewPwValue.value.isBlank() -> Color.LightGray
-                            modifyUserPwViewModel.isModifyPwConsonantVowelValid.value -> Color(0xFF0DB00C)
                             else -> Color(0xFFB00E0E)
                         },
                         fontSize = 14.sp
@@ -162,7 +126,7 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
                         imageVector = Icons.Default.Check,
                         tint = when {
                             modifyUserPwViewModel.textFieldModifyNewPwValue.value.isBlank() -> Color.LightGray
-                            modifyUserPwViewModel.isModifyPwConsonantVowelValid.value -> Color(0xFF0DB00C)
+                            modifyUserPwViewModel.isModifyPwContainsIdValid.value -> Color(0xFF0DB00C)
                             else -> Color(0xFFB00E0E)
                         },
                         contentDescription = "Check",
@@ -172,7 +136,7 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
                         text = "아이디 불가",
                         color = when {
                             modifyUserPwViewModel.textFieldModifyNewPwValue.value.isBlank() -> Color.LightGray
-                            modifyUserPwViewModel.isModifyPwConsonantVowelValid.value -> Color(0xFF0DB00C)
+                            modifyUserPwViewModel.isModifyPwContainsIdValid.value -> Color(0xFF0DB00C)
                             else -> Color(0xFFB00E0E)
                         },
                         fontSize = 14.sp
@@ -191,6 +155,7 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
                     inputType = LikeLionOutlinedTextFieldInputType.PASSWORD,
                     onValueChange = {
                         modifyUserPwViewModel.modifyCheckPwConditions()
+                        modifyUserPwViewModel.updateButtonState()
                     }
                 )
 
@@ -243,6 +208,7 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
                     LikeLionFilledButton(
                         text = "등록",
                         modifier = Modifier.fillMaxWidth(),
+                        isEnabled = modifyUserPwViewModel.isButtonEnabled.value,
                         onClick = {
                             modifyUserPwViewModel.modifySuccessOnClick()
                         }
