@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionAlertDialog
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionCheckBox
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionDivider
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextField
@@ -96,7 +97,7 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
                     isEnabled = userJoinInfoViewModel.isButtonIdEnabled.value,
                     modifier = Modifier.weight(0.4f).padding(top = 6.dp, start = 5.dp).height(56.dp),
                     onClick = {
-                        // 중복확인 로직
+                        userJoinInfoViewModel.checkUserId()
                     }
                 )
             }
@@ -130,7 +131,7 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
                     isEnabled = userJoinInfoViewModel.isButtonNicknameEnabled.value,
                     modifier = Modifier.weight(0.4f).padding(top = 6.dp, start = 5.dp).height(56.dp),
                     onClick = {
-                        // 중복확인 로직
+                        userJoinInfoViewModel.checkNickName()
                     }
                 )
             }
@@ -292,89 +293,89 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
                 color = Color.LightGray
             )
 
-            Row(
-                modifier = Modifier.padding(top = 10.dp, bottom = 5.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                LikeLionCheckBox(
-                    text = "만 14세 이상입니다.",
-                    modifier = Modifier.padding(start = 5.dp).size(14.dp),
-                    fontSize = 14.sp,
-                    checkedValue = userJoinInfoViewModel.checkBoxUserJoinInfo1Value,
-                    textModifier = Modifier.padding(start = 15.dp),
-                    onCheckedChange = {
-                        userJoinInfoViewModel.checkBoxUserJoinInfoOnChanged()
-                    },
-                )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(), // 가로 전체 크기 설정
-                    horizontalArrangement = Arrangement.End // 오른쪽 정렬
-                ) {
-                    Text(
-                        text = "보기",
-                        color = Color.LightGray,
-                        fontSize = 14.sp,
-                        textDecoration = TextDecoration.Underline, // 밑줄 추가
-                    )
-                }
-            }
-
-            Row(
-                modifier = Modifier.padding(bottom = 5.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                LikeLionCheckBox(
-                    text = "이용약관 동의",
-                    modifier = Modifier.padding(start = 5.dp).size(14.dp),
-                    fontSize = 14.sp,
-                    checkedValue = userJoinInfoViewModel.checkBoxUserJoinInfo2Value,
-                    textModifier = Modifier.padding(start = 15.dp),
-                    onCheckedChange = {
-                        userJoinInfoViewModel.checkBoxUserJoinInfoOnChanged()
-                    },
-                )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(), // 가로 전체 크기 설정
-                    horizontalArrangement = Arrangement.End // 오른쪽 정렬
-                ) {
-                    Text(
-                        text = "보기",
-                        color = Color.LightGray,
-                        fontSize = 14.sp,
-                        textDecoration = TextDecoration.Underline, // 밑줄 추가
-                    )
-                }
-            }
-
-            Row(
-                modifier = Modifier.padding(bottom = 5.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                LikeLionCheckBox(
-                    text = "개인정보 수집 ＊ 이용 동의",
-                    modifier = Modifier.padding(start = 5.dp).size(14.dp),
-                    fontSize = 14.sp,
-                    checkedValue = userJoinInfoViewModel.checkBoxUserJoinInfo3Value,
-                    textModifier = Modifier.padding(start = 15.dp),
-                    onCheckedChange = {
-                        userJoinInfoViewModel.checkBoxUserJoinInfoOnChanged()
-                    },
-                )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(), // 가로 전체 크기 설정
-                    horizontalArrangement = Arrangement.End // 오른쪽 정렬
-                ) {
-                    Text(
-                        text = "보기",
-                        color = Color.LightGray,
-                        fontSize = 14.sp,
-                        textDecoration = TextDecoration.Underline, // 밑줄 추가
-                    )
-                }
-            }
+//            Row(
+//                modifier = Modifier.padding(top = 10.dp, bottom = 5.dp),
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                LikeLionCheckBox(
+//                    text = "만 14세 이상입니다.",
+//                    modifier = Modifier.padding(start = 5.dp).size(14.dp),
+//                    fontSize = 14.sp,
+//                    checkedValue = userJoinInfoViewModel.checkBoxUserJoinInfo1Value,
+//                    textModifier = Modifier.padding(start = 15.dp),
+//                    onCheckedChange = {
+//                        userJoinInfoViewModel.checkBoxUserJoinInfoOnChanged()
+//                    },
+//                )
+//
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(), // 가로 전체 크기 설정
+//                    horizontalArrangement = Arrangement.End // 오른쪽 정렬
+//                ) {
+//                    Text(
+//                        text = "보기",
+//                        color = Color.LightGray,
+//                        fontSize = 14.sp,
+//                        textDecoration = TextDecoration.Underline, // 밑줄 추가
+//                    )
+//                }
+//            }
+//
+//            Row(
+//                modifier = Modifier.padding(bottom = 5.dp),
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                LikeLionCheckBox(
+//                    text = "이용약관 동의",
+//                    modifier = Modifier.padding(start = 5.dp).size(14.dp),
+//                    fontSize = 14.sp,
+//                    checkedValue = userJoinInfoViewModel.checkBoxUserJoinInfo2Value,
+//                    textModifier = Modifier.padding(start = 15.dp),
+//                    onCheckedChange = {
+//                        userJoinInfoViewModel.checkBoxUserJoinInfoOnChanged()
+//                    },
+//                )
+//
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(), // 가로 전체 크기 설정
+//                    horizontalArrangement = Arrangement.End // 오른쪽 정렬
+//                ) {
+//                    Text(
+//                        text = "보기",
+//                        color = Color.LightGray,
+//                        fontSize = 14.sp,
+//                        textDecoration = TextDecoration.Underline, // 밑줄 추가
+//                    )
+//                }
+//            }
+//
+//            Row(
+//                modifier = Modifier.padding(bottom = 5.dp),
+//                verticalAlignment = Alignment.CenterVertically
+//            ) {
+//                LikeLionCheckBox(
+//                    text = "개인정보 수집 ＊ 이용 동의",
+//                    modifier = Modifier.padding(start = 5.dp).size(14.dp),
+//                    fontSize = 14.sp,
+//                    checkedValue = userJoinInfoViewModel.checkBoxUserJoinInfo3Value,
+//                    textModifier = Modifier.padding(start = 15.dp),
+//                    onCheckedChange = {
+//                        userJoinInfoViewModel.checkBoxUserJoinInfoOnChanged()
+//                    },
+//                )
+//
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(), // 가로 전체 크기 설정
+//                    horizontalArrangement = Arrangement.End // 오른쪽 정렬
+//                ) {
+//                    Text(
+//                        text = "보기",
+//                        color = Color.LightGray,
+//                        fontSize = 14.sp,
+//                        textDecoration = TextDecoration.Underline, // 밑줄 추가
+//                    )
+//                }
+//            }
 
             Row(
                 modifier = Modifier.padding(bottom = 20.dp),
@@ -409,8 +410,74 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
                 isEnabled = userJoinInfoViewModel.isButtonJoinEnabled.value,
                 modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
                 onClick = {
-
+                    userJoinInfoViewModel.buttonUserJoinSubmitOnClick()
                 }
+            )
+
+            // 닉네임 중복 확인을 하지 않은 경우
+            LikeLionAlertDialog(
+                showDialogState = userJoinInfoViewModel.showDialogNickNameIsNotCheckState,
+                confirmButtonTitle = "확인",
+                confirmButtonOnClick = {
+                    userJoinInfoViewModel.showDialogNickNameIsNotCheckState.value = false
+                },
+                title = "닉네임 중복 확인 오류",
+                text = "닉네임 중복 확인을 해주세요"
+            )
+
+            // 사용할 수 있는 닉네임인 경우
+            LikeLionAlertDialog(
+                showDialogState = userJoinInfoViewModel.showDialogNickNameOk,
+                confirmButtonTitle = "확인",
+                confirmButtonOnClick = {
+                    userJoinInfoViewModel.showDialogNickNameOk.value = false
+                },
+                title = "닉네임 중복 확인",
+                text = "사용할 수 있는 닉네임 입니다",
+            )
+
+            // 이미 존재하는 닉네임인 경우
+            LikeLionAlertDialog(
+                showDialogState = userJoinInfoViewModel.showDialogNickNameNo,
+                confirmButtonTitle = "확인",
+                confirmButtonOnClick = {
+                    userJoinInfoViewModel.showDialogNickNameNo.value = false
+                },
+                title = "닉네임 중복 확인",
+                text = "이미 존재하는 닉네임 입니다"
+            )
+
+            // 아이디 중복 확인을 하지 않은 경우
+            LikeLionAlertDialog(
+                showDialogState = userJoinInfoViewModel.showDialogIdIsNotCheckState,
+                confirmButtonTitle = "확인",
+                confirmButtonOnClick = {
+                    userJoinInfoViewModel.showDialogIdIsNotCheckState.value = false
+                },
+                title = "닉네임 중복 확인 오류",
+                text = "닉네임 중복 확인을 해주세요"
+            )
+
+            // 사용할 수 있는 아이디인 경우
+            LikeLionAlertDialog(
+                showDialogState = userJoinInfoViewModel.showDialogIdOk,
+                confirmButtonTitle = "확인",
+                confirmButtonOnClick = {
+                    userJoinInfoViewModel.showDialogIdOk.value = false
+                },
+                title = "닉네임 중복 확인",
+                text = "사용할 수 있는 닉네임 입니다",
+            )
+
+            // 이미 존재하는 아이디인 경우
+            LikeLionAlertDialog(
+                showDialogState = userJoinInfoViewModel.showDialogIdNo,
+                confirmButtonTitle = "확인",
+                confirmButtonOnClick = {
+                    userJoinInfoViewModel.showDialogIdNo.value = false
+                },
+                title = "닉네임 중복 확인",
+                text = "이미 존재하는 닉네임 입니다"
             )
         }
     }
