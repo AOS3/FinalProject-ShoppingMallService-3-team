@@ -13,7 +13,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionProductList
 import com.lion.finalprojectshoppingmallservice3team.Component.Product
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.MyRecentProductViewModel
-import com.lion.finalprojectshoppingmallservice3team.data.Storage
 
 @Composable
 fun MyRecentProductScreen(myRecentProductViewModel: MyRecentProductViewModel = hiltViewModel()) {

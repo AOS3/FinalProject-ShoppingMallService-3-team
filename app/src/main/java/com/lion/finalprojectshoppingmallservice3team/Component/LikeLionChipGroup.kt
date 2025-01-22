@@ -1,6 +1,5 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
-import android.R.attr.text
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -20,7 +19,7 @@ fun LikeLionChipGroup(
     elements: List<ChipState>,
     chipStyle: ChipStyle,
     onChipClicked: (String, Boolean, Int) -> Unit,
-    onDeleteButtonClicked: (String, Int) -> Unit// 삭제 버튼 콜백 추가
+    onDeleteButtonClicked: (String, Int) -> Unit = { _, _ -> }, // 삭제 버튼 콜백 추가
 ) {
     LazyRow(
         modifier = modifier,

@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -24,14 +23,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.lion.a02_boardcloneproject.component.LikeLionIconButton
-import com.lion.a02_boardcloneproject.component.LikeLionImage
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionImage
 import com.lion.finalprojectshoppingmallservice3team.R
-import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,8 +43,8 @@ fun SearchFailScreen(
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.arrow_back_24px),
                         text = "",
-                        iconSize = 30.dp,
-                        size = 35.dp,
+                        color = Color.Transparent,
+                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                         iconButtonOnClick = {
                             navController.popBackStack()
@@ -59,8 +56,8 @@ fun SearchFailScreen(
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
                         text = "",
-                        iconSize = 30.dp,
-                        size = 35.dp,
+                        color = Color.Transparent,
+                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                         iconButtonOnClick = {
 //                            navController.navigate("search")
@@ -70,8 +67,8 @@ fun SearchFailScreen(
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.baseline_shopping_cart_24),
                         text = "",
-                        iconSize = 30.dp,
-                        size = 35.dp,
+                        color = Color.Transparent,
+                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                         borderNull = true,
                     )

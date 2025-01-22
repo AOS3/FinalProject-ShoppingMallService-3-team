@@ -16,10 +16,10 @@ class SearchViewModel @Inject constructor(
     val shoppingApplication = context as ShoppingApplication
 
     // 탭 목록 정의
-    val tabs: List<Pair<String, Int>> = listOf(
-        "전체" to 0,
-        "크리에이터" to 0,
-        "상품" to 0,
+    val tabs: List<String> = listOf(
+        "전체",
+        "크리에이터",
+        "상품",
     )
 
     // 현재 선택된 탭 인덱스 상태
