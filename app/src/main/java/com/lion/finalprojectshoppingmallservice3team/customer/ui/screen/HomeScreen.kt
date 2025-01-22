@@ -47,9 +47,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.lion.a02_boardcloneproject.component.LikeLionIconButton
-import com.lion.a02_boardcloneproject.component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.Component.AutoScrollingBanner
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionCircularBox
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionProfileImg
@@ -57,6 +54,7 @@ import com.lion.finalprojectshoppingmallservice3team.Component.WeeklyCreator
 import com.lion.finalprojectshoppingmallservice3team.Component.YouTubePlayer
 import com.lion.finalprojectshoppingmallservice3team.R
 import androidx.compose.foundation.lazy.items
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.HomeViewModel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
@@ -82,7 +80,6 @@ fun HomeScreen(
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
                         text = "",
-                        iconSize = 30.dp,
                         size = 35.dp,
                         padding = 10.dp,
                         iconButtonOnClick = {
@@ -93,7 +90,6 @@ fun HomeScreen(
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.baseline_shopping_cart_24),
                         text = "",
-                        iconSize = 30.dp,
                         size = 35.dp,
                         padding = 10.dp,
                         iconButtonOnClick = {

@@ -38,10 +38,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.lion.a02_boardcloneproject.component.LikeLionIconButton
-import com.lion.a02_boardcloneproject.component.LikeLionOutlinedButton
 import com.lion.finalprojectshoppingmallservice3team.Component.DottedOutlineIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
@@ -64,7 +63,6 @@ fun CheerUpWriteScreen() {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.baseline_close_24),
                         text = "",
-                        iconSize = 30.dp,
                         size = 35.dp,
                         padding = 10.dp,
                         iconButtonOnClick = {

@@ -18,10 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import com.lion.a02_boardcloneproject.component.LikeLionDivider
-import com.lion.a02_boardcloneproject.component.LikeLionIconButton
-import com.lion.a02_boardcloneproject.component.LikeLionImage
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionDivider
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFixedTabs
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionProductImage
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.SearchViewModel
@@ -41,7 +40,6 @@ fun SearchSuccessScreen(
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.arrow_back_24px),
                         text = "",
-                        iconSize = 30.dp,
                         size = 35.dp,
                         padding = 10.dp,
                         iconButtonOnClick = {
@@ -54,7 +52,6 @@ fun SearchSuccessScreen(
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
                         text = "",
-                        iconSize = 30.dp,
                         size = 35.dp,
                         padding = 10.dp,
                         iconButtonOnClick = {
@@ -65,7 +62,6 @@ fun SearchSuccessScreen(
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.baseline_shopping_cart_24),
                         text = "",
-                        iconSize = 30.dp,
                         size = 35.dp,
                         padding = 10.dp,
                         borderNull = true,

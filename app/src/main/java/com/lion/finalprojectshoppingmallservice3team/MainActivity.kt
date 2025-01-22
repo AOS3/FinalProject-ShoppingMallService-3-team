@@ -72,11 +72,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ShoppingMain() {
-    val navController = rememberNavController(
+    val navController = rememberNavController()
       
     // Application 객체에 담는다.
     val shoppingApplication = LocalContext.current.applicationContext as ShoppingApplication
     shoppingApplication.navHostController = navController
+
 
     NavHost(
         navController = navController,

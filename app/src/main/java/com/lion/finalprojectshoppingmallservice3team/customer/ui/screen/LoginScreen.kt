@@ -42,11 +42,9 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
             LikeLionTopAppBar(
                 backColor = Color.Transparent,
                 navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
-                backColor = Color.White,
                 navigationIconOnClick = {
                     loginViewModel.navigationIconOnClick()
                 },
-                backColor = Color.Transparent
             )
         }
     ) {

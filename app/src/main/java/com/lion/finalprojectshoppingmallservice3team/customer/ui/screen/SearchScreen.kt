@@ -39,13 +39,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.lion.a02_boardcloneproject.component.LikeLionIconButton
-import com.lion.a02_boardcloneproject.component.LikeLionOutlinedTextField
-import com.lion.a02_boardcloneproject.component.LikeLionOutlinedTextFieldEndIconMode
-import com.lion.a02_boardcloneproject.component.LikeLionSearchBar
 import com.lion.finalprojectshoppingmallservice3team.Component.ChipState
 import com.lion.finalprojectshoppingmallservice3team.Component.ChipStyle
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionChipGroup
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextField
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextFieldEndIconMode
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.SearchViewModel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
@@ -106,7 +105,6 @@ fun SearchScreen(
                 LikeLionIconButton(
                     icon = ImageVector.vectorResource(id = R.drawable.baseline_close_24),
                     text = "",
-                    iconSize = 30.dp,
                     size = 35.dp,
                     padding = 10.dp,
                     iconButtonOnClick = {

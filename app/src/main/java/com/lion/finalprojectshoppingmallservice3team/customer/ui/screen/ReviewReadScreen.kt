@@ -38,9 +38,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.lion.a02_boardcloneproject.component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionCircularBox
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionProductImage
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionProfileImg
 import com.lion.finalprojectshoppingmallservice3team.R
@@ -64,7 +64,6 @@ fun ReviewReadScreen() {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.baseline_close_24),
                         text = "",
-                        iconSize = 30.dp,
                         size = 35.dp,
                         padding = 10.dp,
                         iconButtonOnClick = {

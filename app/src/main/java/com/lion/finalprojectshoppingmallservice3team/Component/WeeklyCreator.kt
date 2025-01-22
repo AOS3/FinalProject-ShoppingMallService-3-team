@@ -1,6 +1,7 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
 import android.net.Uri
+import android.widget.ImageView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,16 +37,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
-import okhttp3.internal.wait
-import java.time.LocalDate
-import java.time.temporal.WeekFields
+import androidx.compose.ui.viewinterop.AndroidView
+//import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+//import com.bumptech.glide.integration.compose.GlideImage
+import com.bumptech.glide.Glide
 import java.util.Calendar
-import java.util.Locale
 
-@OptIn(ExperimentalGlideComposeApi::class)
+//@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun WeeklyCreator(
     rank: String,
@@ -120,14 +118,25 @@ fun WeeklyCreator(
             Box {
                 // 블러 처리된 배경 이미지 추가
                 if (imageUrl.isNotEmpty()) {
-                    GlideImage(
-                        model = imageUrl,
-                        contentDescription = "Background Image",
-                        contentScale = ContentScale.Crop,
+                    Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .blur(16.dp) // 블러 효과 적용
-                    )
+                            .blur(16.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+//                        AndroidView(
+//                            factory = { context ->
+//                                ImageView(context).apply {
+//                                    scaleType = ImageView.ScaleType.CENTER_CROP
+//                                }
+//                            },
+//                            update = { imageView ->
+//                                Glide.with(imageView.context)
+//                                    .load(imageUrl)
+//                                    .into(imageView)
+//                            },
+//                        )
+                    }
                 }
 
                 Box(
@@ -180,12 +189,12 @@ fun WeeklyCreator(
                                 .background(Color.LightGray)
 
                         ) {
-                            GlideImage(
-                                model = imageUrl,
-                                contentDescription = "Profile Image",
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier.fillMaxSize()
-                            )
+//                            GlideImage(
+//                                model = imageUrl,
+//                                contentDescription = "Profile Image",
+//                                contentScale = ContentScale.Crop,
+//                                modifier = Modifier.fillMaxSize()
+//                            )
                         }
                     }
 
@@ -222,17 +231,17 @@ fun WeeklyCreator(
 
                         ) {
                         items.forEach { item ->
-                            GlideImage(
-                                model = item,
-                                contentDescription = "Item Image",
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .size(80.dp)
-                                    .clip(RoundedCornerShape(8.dp))
-                                    .clickable {
-                                        navigationIconOnClick()
-                                    }
-                            )
+//                            GlideImage(
+//                                model = item,
+//                                contentDescription = "Item Image",
+//                                contentScale = ContentScale.Crop,
+//                                modifier = Modifier
+//                                    .size(80.dp)
+//                                    .clip(RoundedCornerShape(8.dp))
+//                                    .clickable {
+//                                        navigationIconOnClick()
+//                                    }
+//                            )
                         }
                     }
                 }
