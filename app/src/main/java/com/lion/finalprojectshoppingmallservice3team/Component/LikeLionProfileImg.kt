@@ -37,6 +37,7 @@ import com.lion.finalprojectshoppingmallservice3team.R
 fun LikeLionProfileImg(
     imgUrl: String,
     modifier: Modifier = Modifier,
+    modifierBack: Modifier = Modifier,
     iconTint: Color,
     profileBack: Color
 ){
@@ -62,7 +63,7 @@ fun LikeLionProfileImg(
             }
         })
         Column(
-            modifier = Modifier
+            modifier = modifierBack
                 .size(60.dp).clip(CircleShape).background(profileBack),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally) {
