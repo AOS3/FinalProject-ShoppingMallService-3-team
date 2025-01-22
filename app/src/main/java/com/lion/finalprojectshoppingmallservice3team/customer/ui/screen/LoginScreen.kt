@@ -44,6 +44,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                 navigationIconOnClick = {
                     loginViewModel.navigationIconOnClick()
                 },
+                backColor = Color.Transparent
             )
         }
     ) {

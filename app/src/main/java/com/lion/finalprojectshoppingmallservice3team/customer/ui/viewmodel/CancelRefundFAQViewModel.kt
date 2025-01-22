@@ -8,14 +8,15 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @HiltViewModel
-class InquiryReadViewModel @Inject constructor(
+class CancelRefundFAQViewModel @Inject constructor(
     @ApplicationContext context: Context
-) : ViewModel() {
-
+) : ViewModel()
+{
     val shoppingApplication = context as ShoppingApplication
 
-    fun navigationOnClick(){
-        shoppingApplication.navHostController.popBackStack("inquiryRead", inclusive = true)
-        shoppingApplication.navHostController.navigate("inquiryList")
+    // 뒤로가기 버튼
+    fun navigationButtonClick(){
+        shoppingApplication.navHostController.popBackStack()
     }
 }
+

@@ -14,17 +14,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -44,6 +40,14 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyReview
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserJoinInfoScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserJoinScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserSettingScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.CancelRefundFAQScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryProductListScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryProductReadScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryProductWriteScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryReadScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LoginScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.ProductInfoScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.ShopScreen
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -63,8 +67,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ShoppingMain() {
-    val navController = rememberNavController()
-
+    val navController = rememberNavController(
+      
     // Application 객체에 담는다.
     val shoppingApplication = LocalContext.current.applicationContext as ShoppingApplication
     shoppingApplication.navHostController = navController
@@ -124,6 +128,7 @@ fun ShoppingMain() {
     ) {
         composable("splash") { SplashScreen(navController) }
         composable("login") { LoginScreen() }
+
         composable("userJoin") { UserJoinScreen() }
         composable("userJoinInfo") { UserJoinInfoScreen() }
         composable("logoutMyPage") { LogoutMyPageScreen() }
@@ -136,12 +141,45 @@ fun ShoppingMain() {
         composable("inquiryList") { InquiryListScreen() }
         composable("inquiryRead") { InquiryReadScreen() }
         composable("inquiryWrite") { InquiryWriteScreen() }
+
+        // shop 화면
+        composable( "shop") { ShopScreen() }
+        // 상품상세 화면
+        composable("productInfo/{productDocumentId}") {
+            val productDocumentId = it.arguments?.getString("productDocumentId")!!
+            ProductInfoScreen(productDocumentId = productDocumentId)
+        }
+        // 상품 문의화면
+        composable("inquiryProductWrite",
+            enterTransition = {
+                // inquiryProductWrite 화면에만 아래에서 위로 슬라이드 인
+                fadeIn(tween(300)) +
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Up,
+                            tween(300)
+                        )
+            },
+            exitTransition = {
+                // inquiryProductWrite 화면이 떠날 때 위에서 아래로 슬라이드 아웃
+                fadeOut(tween(300)) +
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Down,
+                            tween(300)
+                        )
+            }) { InquiryProductWriteScreen() }
+        // 크리에이터 문의 내역확인 화면
+        composable("inquiryProductList") { InquiryProductListScreen() }
+        // 문의 내역 상세
+        composable("inquiryProductRead") { InquiryProductReadScreen() }
+        // 취소/환불 FAQ
+        composable("cancelRefundFAQ") { CancelRefundFAQScreen() }
+
     }
 }
 
 @Composable
 fun SplashScreen(navController: NavHostController) {
-    // 스플래시 화면에서 2초 대기 후 로그인 화면으로 이동
+    // 스플래시 화면에서 1초 대기 후 로그인 화면으로 이동
     LaunchedEffect(Unit) {
         delay(1000) // 1초 대기
         navController.navigate("logoutMyPage") {

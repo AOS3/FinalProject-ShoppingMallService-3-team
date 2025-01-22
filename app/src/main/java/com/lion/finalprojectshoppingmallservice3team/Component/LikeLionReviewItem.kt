@@ -57,7 +57,9 @@ fun LikeLionReviewItem(
             Row{
                 LikeLionProfileImg(
                     imgUrl = "",
-                    modifierBack = Modifier.size(40.dp),
+
+                    modifier = Modifier.size(40.dp),
+                  
                     iconTint = MainColor,
                     profileBack = Color.LightGray
                 )
