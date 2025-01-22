@@ -1,38 +1,25 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
-import android.R.attr.text
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.data.model.Customer
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.MyFavoriteViewModel
+import com.lion.finalprojectshoppingmallservice3team.customer.data.model.CustomerModel
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.myfavorite.MyFavoriteViewModel
 
 @Composable
-fun LikeLionSmallUserView(randomUser: Customer, viewModel: MyFavoriteViewModel = hiltViewModel()){
+fun LikeLionSmallUserView(randomUser: CustomerModel, viewModel: MyFavoriteViewModel = hiltViewModel()){
 
     Card(  // Card View
         modifier = Modifier
@@ -74,7 +61,7 @@ fun LikeLionSmallUserView(randomUser: Customer, viewModel: MyFavoriteViewModel =
 }
 
 @Composable
-fun LikeLionSmallUserListView(randomUsers: List<Customer> ,  viewModel: MyFavoriteViewModel = hiltViewModel()){
+fun LikeLionSmallUserListView(randomUsers: List<CustomerModel> ,  viewModel: MyFavoriteViewModel = hiltViewModel()){
     // LazyColumn은 RecyclerView와 유사하다.
     LazyRow(){
         items(randomUsers.size) { idx ->

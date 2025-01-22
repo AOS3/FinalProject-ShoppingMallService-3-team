@@ -2,7 +2,7 @@ package com.lion.finalprojectshoppingmallservice3team.Component
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.ShopViewModel
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.shop.ShopViewModel
 
 @Composable
 fun LikeLionScrollableTabContent(selectedTabIndex: Int, shopViewModel: ShopViewModel) {
