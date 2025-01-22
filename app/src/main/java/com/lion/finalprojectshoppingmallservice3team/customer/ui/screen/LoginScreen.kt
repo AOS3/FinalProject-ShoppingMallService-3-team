@@ -11,32 +11,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.lion.a02_boardcloneproject.component.LikeLionImage
-import com.lion.a02_boardcloneproject.component.LikeLionOutlinedTextField
-import com.lion.a02_boardcloneproject.component.LikeLionOutlinedTextFieldEndIconMode
-import com.lion.a02_boardcloneproject.component.LikeLionOutlinedTextFieldInputType
-import com.lion.a02_boardcloneproject.component.LikeLionTopAppBar
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionImage
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextField
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextFieldEndIconMode
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextFieldInputType
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.LoginViewModel
@@ -50,6 +41,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                 navigationIconOnClick = {
 
                 },
+                backColor = Color.Transparent
             )
         }
     ) {
@@ -108,7 +100,8 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                 paddingTop = 20.dp,
                 onClick = {
 
-                }
+                },
+                modifier = Modifier
             )
 
             Row(

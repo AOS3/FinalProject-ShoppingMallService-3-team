@@ -1,4 +1,4 @@
-package com.lion.a02_boardcloneproject.component
+package com.lion.finalprojectshoppingmallservice3team.Component
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
