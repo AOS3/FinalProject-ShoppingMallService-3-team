@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -51,6 +52,7 @@ fun LikeLionProfileImg(
     // 이미지 비트맵
     val bitmap : MutableState<Bitmap?> = mutableStateOf(null)
 
+
     var imageModifier = modifier
         .size(profileSize)
 //        .clip(RoundedCornerShape(10.dp))  // 사각형에 라운드 주는거
@@ -60,6 +62,7 @@ fun LikeLionProfileImg(
     if (offsetX != null || offsetY != null){
         circleModifier = circleModifier.offset(offsetX?: 0.dp,offsetY?: 0.dp)
     }
+
 
     Glide.with(LocalContext.current)
         .asBitmap() // 뭘로 변활 할 것?
@@ -74,26 +77,26 @@ fun LikeLionProfileImg(
 
             }
         })
-        Column(
-            modifier = circleModifier
-                .size(profileSize + 10.dp).clip(CircleShape).background(profileBack),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally) {
-            // bitmap에 데이터가 있다면? -> 이미지를 다운 받았다면
-            bitmap.value?.asImageBitmap()?.let {
-                Image(bitmap = it
-                    , contentScale = ContentScale.Fit
-                    , contentDescription = null
-                    , modifier = imageModifier
-                )
-            } ?: Image(
-                painter = painterResource(id = R.drawable.ic_empty_person_24), // 다운 받은 이미지가 없는 경우
-                contentScale = ContentScale.Fit,
-                contentDescription = null,
-                modifier = imageModifier,
-                colorFilter = ColorFilter.tint(iconTint)
+
+
+    Column(
+        modifier = circleModifier
+            .size(profileSize + 10.dp).clip(CircleShape).background(profileBack),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally) {
+        // bitmap에 데이터가 있다면? -> 이미지를 다운 받았다면
+        bitmap.value?.asImageBitmap()?.let {
+            Image(bitmap = it
+                , contentScale = ContentScale.Fit
+                , contentDescription = null
+                , modifier = imageModifier
             )
-        }
-
-
+        } ?: Image(
+            painter = painterResource(id = R.drawable.ic_empty_person_24), // 다운 받은 이미지가 없는 경우
+            contentScale = ContentScale.Fit,
+            contentDescription = null,
+            modifier = imageModifier,
+            colorFilter = ColorFilter.tint(iconTint)
+        )
+    }
 }

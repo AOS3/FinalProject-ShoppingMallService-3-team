@@ -46,17 +46,17 @@ fun LikeLionProductList(
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(columns),
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .padding(),
-        contentPadding = PaddingValues(horizontal = 10.dp),
+        contentPadding = PaddingValues(horizontal = 10.dp)
     ) {
         items(productList) { product ->
             LikeLionProductItem(
                 product = product,
                 onCreatorNameClick = onCreatorNameClick,
                 onLikeClick = onLikeClick,
-                onItemClick = onItemClick,
+                onItemClick = onItemClick
             )
         }
     }
@@ -140,6 +140,7 @@ fun LikeLionProductItem(
             }
         }
 
+        Spacer(modifier = Modifier.height(8.dp))
         // 크리에이터 이름과 좋아요 버튼
         Row(
             modifier = Modifier
@@ -152,13 +153,14 @@ fun LikeLionProductItem(
                 //style = Typography.bodySmall,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .padding(start = 10.dp)
+                    .padding(start = 5.dp)
                     .weight(1f)
                     .clickable { onCreatorNameClick(product) }
             )
             IconButton(
                 onClick = { onLikeClick(product) },
                 modifier = Modifier.padding(0.dp)
+                    .size(24.dp)
             ) { // 클릭 시 상태 변경
                 Icon(
                     painter = painterResource(
@@ -178,7 +180,7 @@ fun LikeLionProductItem(
             text = product.name,
             //style = Typography.bodyMedium,
             modifier = Modifier
-                .padding(start = 10.dp, end = 10.dp),
+                .padding(start = 5.dp, end = 5.dp),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -190,7 +192,7 @@ fun LikeLionProductItem(
             fontWeight = FontWeight.Bold,
             //style = Typography.bodySmall,
             modifier = Modifier.padding(
-                start = 10.dp,
+                start = 5.dp,
                 top = 2.dp,
                 bottom = if(product.reviewCount > 0) 0.dp else 10.dp)
         )
@@ -199,13 +201,13 @@ fun LikeLionProductItem(
         if (product.reviewCount > 0) {
             Row(
                 modifier = Modifier
-                    .padding(start = 10.dp, top = 2.dp, bottom = 10.dp)
+                    .padding(start = 5.dp, top = 2.dp, bottom = 10.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 // 별 아이콘
                 Icon(
-                    painter = painterResource(R.drawable.star_24px),
+                    painter = painterResource(R.drawable.star_fill_24px),
                     contentDescription = "Star Icon",
                     modifier = Modifier.size(12.dp),
                     tint = MainColor

@@ -24,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionAlertDialog
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionImage
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextField
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextFieldEndIconMode
@@ -33,6 +34,7 @@ import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledBut
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.LoginViewModel
 
+
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
     Scaffold(
@@ -41,7 +43,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                 backColor = Color.Transparent,
                 navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationIconOnClick = {
-
+                    loginViewModel.navigationIconOnClick()
                 },
             )
         }
@@ -96,6 +98,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                     loginViewModel.updateButtonState()
                 }
             )
+
 
             LikeLionFilledButton(
                 text = "로그인하기",
@@ -153,6 +156,16 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                 modifier = Modifier.padding(bottom = 10.dp)
             ) {
 
+                // 카카오 아이콘으로 바꾸기
+                LikeLionImage(
+                    painter = painterResource(id = R.drawable.kakao_login_logo),
+                    modifier = Modifier
+                        .size(50.dp),
+                    isCircular = true,
+                    onClick = {
+
+                    }
+                )
 
                 Row(
                     modifier = Modifier.padding(start = 10.dp)
@@ -202,10 +215,51 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                     modifier = Modifier
                         .padding(start = 10.dp)
                         .clickable {
-
-                        },
+                            loginViewModel.buttonUserJoinClick()
+                    },
                 )
             }
+
+            // 존재하지 않는 아이디
+            LikeLionAlertDialog(
+                showDialogState = loginViewModel.alertDialogLoginFail1State,
+                confirmButtonTitle = "확인",
+                confirmButtonOnClick = {
+                    loginViewModel.textFieldLoginIdValue.value = ""
+                    loginViewModel.textFieldLoginPwValue.value = ""
+                    loginViewModel.alertDialogLoginFail1State.value = false
+                    loginViewModel.updateButtonState()
+                },
+                title = "로그인 오류",
+                text = "존재하지 않는 아이디 입니다"
+            )
+
+            // 잘못된 비밀번호
+            LikeLionAlertDialog(
+                showDialogState = loginViewModel.alertDialogLoginFail2State,
+                confirmButtonTitle = "확인",
+                confirmButtonOnClick = {
+                    loginViewModel.textFieldLoginPwValue.value = ""
+                    loginViewModel.alertDialogLoginFail2State.value = false
+                    loginViewModel.updateButtonState()
+                },
+                title = "로그인 오류",
+                text = "잘못된 비밀번호 입니다"
+            )
+
+            // 잘못된 비밀번호
+            LikeLionAlertDialog(
+                showDialogState = loginViewModel.alertDialogLoginFail3State,
+                confirmButtonTitle = "확인",
+                confirmButtonOnClick = {
+                    loginViewModel.textFieldLoginIdValue.value = ""
+                    loginViewModel.textFieldLoginPwValue.value = ""
+                    loginViewModel.alertDialogLoginFail3State.value = false
+                    loginViewModel.updateButtonState()
+                },
+                title = "로그인 오류",
+                text = "탈퇴한 회원입니다"
+            )
         }
     }
 }

@@ -25,7 +25,6 @@ fun LikeLionChipGroup(
     LazyRow(
         modifier = modifier,
         contentPadding = PaddingValues(start = 10.dp, end = 10.dp),
-        //horizontalArrangement = Arrangement.spacedBy(1.dp)
     ) {
         items(elements.size) { idx ->
             LikeLionFilterChip(
@@ -40,6 +39,9 @@ fun LikeLionChipGroup(
                 modifier = Modifier.shadow(4.dp, shape = RoundedCornerShape(50)),
                 onChipClicked = { content, isSelected ->
                     onChipClicked(content, isSelected, idx)
+                },
+                onDeleteButtonClicked = { content ->
+                    onDeleteButtonClicked(content, idx)
                 }
             )
             Spacer(modifier = Modifier.padding(8.dp))

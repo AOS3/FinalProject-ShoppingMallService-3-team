@@ -29,10 +29,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.lion.finalprojectshoppingmallservice3team.R
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.data.model.Customer
+import com.lion.finalprojectshoppingmallservice3team.customer.data.model.CustomerModel
 
 @Composable
-fun LikeLionBigUserView(randomUser: Customer){
+fun LikeLionBigUserView(randomUser: CustomerModel){
 
     Card(  // Card View
         modifier = Modifier
@@ -88,7 +88,7 @@ fun LikeLionBigUserView(randomUser: Customer){
 }
 
 @Composable
-fun LikeLionBigUserListView(randomUsers: List<Customer>){
+fun LikeLionBigUserListView(randomUsers: List<CustomerModel>){
     // LazyColumn은 RecyclerView와 유사하다.
     LazyColumn(){
         items(randomUsers.size) { idx ->
