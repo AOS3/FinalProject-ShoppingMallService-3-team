@@ -22,10 +22,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.lion.finalprojectshoppingmallservice3team.R
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.data.model.Customer
+import com.lion.finalprojectshoppingmallservice3team.customer.data.model.CustomerModel
 
 @Composable
-fun LikeLonPostView(randomUser: Customer){
+fun LikeLonPostView(randomUser: CustomerModel){
 
     Card(  // Card View
         modifier = Modifier
@@ -90,7 +90,7 @@ fun LikeLonPostView(randomUser: Customer){
 }
 
 @Composable
-fun LikeLonPostListView(randomUsers: List<Customer>){
+fun LikeLonPostListView(randomUsers: List<CustomerModel>){
     // LazyColumn은 RecyclerView와 유사하다.
     LazyRow (){
         items(randomUsers.size) { idx ->
