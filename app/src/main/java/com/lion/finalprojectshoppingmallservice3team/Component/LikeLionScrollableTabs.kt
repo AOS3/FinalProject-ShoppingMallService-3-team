@@ -35,6 +35,7 @@ fun LikeLionScrollableTabs (
                 text = {
                     Text(
                         text = title,
+                        fontSize = 14.sp,
                         color = if (selectedTabIndex == index) MainColor else Color(0xFF49454F),
                     )
                 },

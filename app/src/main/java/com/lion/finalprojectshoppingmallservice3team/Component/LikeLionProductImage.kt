@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
@@ -29,12 +30,14 @@ import com.lion.finalprojectshoppingmallservice3team.R
 fun LikeLionProductImage(
     imgUrl: String,
     size:Dp,
-    fixedImage : Int = R.drawable.marcshop_logo,
+    fixedImage : Int = R.drawable.product,
     contentScale: ContentScale = ContentScale.Inside,
     modifier: Modifier = Modifier
 ) {
     // 이미지 비트맵
-    val bitmap : MutableState<Bitmap?> = remember {mutableStateOf(null)}
+
+    //val bitmap : MutableState<Bitmap?> = remember {mutableStateOf(null)}
+    val bitmap : MutableState<Bitmap?> = mutableStateOf(null)
     Glide.with(LocalContext.current)
         .asBitmap() // 뭘로 변활 할 것?
         .load(imgUrl) // 어디서 가지고 올 것?

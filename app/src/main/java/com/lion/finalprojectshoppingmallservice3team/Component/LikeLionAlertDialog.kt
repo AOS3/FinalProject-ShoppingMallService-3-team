@@ -1,4 +1,4 @@
-package com.lion.a02_boardcloneproject.component
+package com.lion.finalprojectshoppingmallservice3team.Component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -8,16 +8,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
+
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
+
+import androidx.compose.ui.unit.dp
+import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 
 
 @Composable
@@ -32,7 +35,7 @@ fun LikeLionAlertDialog(
     dismissButtonOnClick : () -> Unit = {
         showDialogState.value = false
     },
-   // confirmcontainerColor: Color = MainColor,
+    confirmcontainerColor: Color = MainColor,
     confirmcontentColor: Color = Color.White,
     confirmbuttonModifier: Modifier = Modifier,
     dismisscontainerColor: Color = Color.Transparent,
@@ -74,7 +77,9 @@ fun LikeLionAlertDialog(
                     // 확인 버튼
                     LikeLionFilledButton(
                         modifier = confirmbuttonModifier,
-                       // containerColor = confirmcontainerColor,
+
+                        containerColor = confirmcontainerColor,
+
                         contentColor = confirmcontentColor,
                         text = confirmButtonTitle,
                         onClick = confirmButtonOnClick

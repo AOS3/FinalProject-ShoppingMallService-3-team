@@ -1,4 +1,4 @@
-package com.lion.a02_boardcloneproject.component
+package com.lion.finalprojectshoppingmallservice3team.Component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,10 +12,12 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun LikeLionDivider(
     paddingTop:Dp = 0.dp,
-    color:Color = Color.LightGray)
-{
+    color:Color = Color.LightGray,
+    thickness:Dp = 1.dp
+) {
     HorizontalDivider(
         modifier = Modifier.fillMaxWidth().padding(top = paddingTop),
+        thickness = thickness,
         color = color
     )
 }
