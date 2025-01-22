@@ -1,6 +1,7 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -8,6 +9,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -49,15 +53,18 @@ fun LikeLionOutlinedTextField(
     // 입력 모드
     inputType: LikeLionOutlinedTextFieldInputType = LikeLionOutlinedTextFieldInputType.TEXT,
     // 입력 가능 여부
-    readOnly:Boolean = false,
+    readOnly: Boolean = false,
     // 포커싱 관리
-    focusRequest:MutableState<FocusRequester>? = null,
+    focusRequest: MutableState<FocusRequester>? = null,
     // 입력 요소 하단에 나오는 메세지
     supportText:MutableState<String>? = null,
     // 에러 표시
     isError:MutableState<Boolean> = mutableStateOf(false),
     // 만약 입력에 대한 검사를 체크하는 기능이 필요하다면
     isCheckValue:MutableState<Boolean>? = null,
+    // 키보드 옵션 및 동작 추가 (기본값 제공)
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Default),
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     // 입력값이 변경될 때 호출되는 콜백 함수
     onTrailingIconClick: (() -> Unit)? = null,
     onValueChange: (String) -> Unit = {},
@@ -79,11 +86,16 @@ fun LikeLionOutlinedTextField(
         modifier = defaultModifier,
         value = textFieldValue.value,
         label = {
-            Text(text = label)
+            if (textFieldValue.value.isEmpty()) {
+                Text(
+                    text = placeHolder,
+                    color = MaterialTheme
+                        .colorScheme
+                        .onSurface
+                        .copy(alpha = 0.5f)) // 플레이스홀더 텍스트
+            }
         },
-        placeholder = {
-            Text(text = placeHolder)
-        },
+        placeholder = null,
         onValueChange = {
             val filteredValue = if (inputCondition == null) {
                 // 조건이 없으면 원래 값 그대로 사용
@@ -166,6 +178,9 @@ fun LikeLionOutlinedTextField(
             null
         },
         isError = isError.value,
+      
+        // keyboardOptions = keyboardOptions, // 키보드 옵션 추가
+        keyboardActions = keyboardActions  // 키보드 동작 추가
         keyboardOptions = if (inputType == LikeLionOutlinedTextFieldInputType.NUMBER) {
             KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
         } else {

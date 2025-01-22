@@ -9,6 +9,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
@@ -33,6 +35,8 @@ fun LikeLionProductImage(
     modifier: Modifier = Modifier
 ) {
     // 이미지 비트맵
+
+    //val bitmap : MutableState<Bitmap?> = remember {mutableStateOf(null)}
     val bitmap : MutableState<Bitmap?> = mutableStateOf(null)
     Glide.with(LocalContext.current)
         .asBitmap() // 뭘로 변활 할 것?

@@ -20,6 +20,7 @@ fun LikeLionChipGroup(
     elements: List<ChipState>,
     chipStyle: ChipStyle,
     onChipClicked: (String, Boolean, Int) -> Unit,
+    onDeleteButtonClicked: (String, Int) -> Unit// 삭제 버튼 콜백 추가
 ) {
     LazyRow(
         modifier = modifier,
@@ -38,6 +39,9 @@ fun LikeLionChipGroup(
                 modifier = Modifier.shadow(4.dp, shape = RoundedCornerShape(50)),
                 onChipClicked = { content, isSelected ->
                     onChipClicked(content, isSelected, idx)
+                },
+                onDeleteButtonClicked = { content ->
+                    onDeleteButtonClicked(content, idx)
                 }
             )
             Spacer(modifier = Modifier.padding(8.dp))

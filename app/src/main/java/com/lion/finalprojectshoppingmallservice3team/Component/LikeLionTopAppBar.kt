@@ -21,6 +21,7 @@ fun LikeLionTopAppBar(
     navigationIconOnClick:() -> Unit = {},
     menuItems : @Composable RowScope.() -> Unit = {},
 ){
+
     TopAppBar(
         // 타이틀
         title = {

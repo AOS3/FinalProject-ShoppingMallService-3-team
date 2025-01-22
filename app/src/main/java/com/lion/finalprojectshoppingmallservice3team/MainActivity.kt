@@ -25,6 +25,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.HomeScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LoginScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchFailScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchSuccessScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryListScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryReadScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryWriteScreen
@@ -128,7 +133,10 @@ fun ShoppingMain() {
     ) {
         composable("splash") { SplashScreen(navController) }
         composable("login") { LoginScreen() }
-
+        composable("home") { HomeScreen(navController) }
+        composable("search") { SearchScreen(navController) }
+        composable("searchFail") { SearchFailScreen(navController) }
+        composable("searchSuccess") { SearchSuccessScreen(navController) }
         composable("userJoin") { UserJoinScreen() }
         composable("userJoinInfo") { UserJoinInfoScreen() }
         composable("logoutMyPage") { LogoutMyPageScreen() }

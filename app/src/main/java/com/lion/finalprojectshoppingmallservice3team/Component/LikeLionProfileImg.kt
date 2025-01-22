@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -51,6 +52,7 @@ fun LikeLionProfileImg(
     // 이미지 비트맵
     val bitmap : MutableState<Bitmap?> = mutableStateOf(null)
 
+
     var imageModifier = modifier
         .size(profileSize)
 //        .clip(RoundedCornerShape(10.dp))  // 사각형에 라운드 주는거
@@ -60,6 +62,7 @@ fun LikeLionProfileImg(
     if (offsetX != null || offsetY != null){
         circleModifier = circleModifier.offset(offsetX?: 0.dp,offsetY?: 0.dp)
     }
+
 
     Glide.with(LocalContext.current)
         .asBitmap() // 뭘로 변활 할 것?
@@ -74,6 +77,7 @@ fun LikeLionProfileImg(
 
             }
         })
+
 
     Column(
         modifier = circleModifier
@@ -95,5 +99,4 @@ fun LikeLionProfileImg(
             colorFilter = ColorFilter.tint(iconTint)
         )
     }
-
 }

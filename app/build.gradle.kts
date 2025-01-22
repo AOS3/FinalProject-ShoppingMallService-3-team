@@ -69,12 +69,20 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.compose.material3:material3:1.3.1")
     implementation("androidx.core:core-splashscreen:1.0.1")
+
+    // 배너 가로 스크롤 라이브러리 (Accompanist Pager)
+    implementation ("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.28.0")
+
+    // 유튜브 화면
+    implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
+
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore:25.1.1")
     implementation("com.google.firebase:firebase-storage:21.0.1")
-   
+
 }
 
 kapt {
