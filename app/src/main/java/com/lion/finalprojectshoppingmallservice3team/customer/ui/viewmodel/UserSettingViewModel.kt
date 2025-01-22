@@ -1,18 +1,28 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.widget.Toast
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.ShoppingApplication
 import com.lion.finalprojectshoppingmallservice3team.customer.data.service.CustomerService
+import com.lion.finalprojectshoppingmallservice3team.customer.data.util.Tools
+import com.lion.finalprojectshoppingmallservice3team.customer.data.util.UserState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,6 +45,40 @@ class UserSettingViewModel @Inject constructor(
         mutableStateOf(shoppingApplication.loginCustomerModel.customerUserDetailAddress)
     val textFieldModifyBirthValue =
         mutableStateOf(shoppingApplication.loginCustomerModel.customerUserBirthDate)
+    val imageUri = mutableStateOf<Bitmap?>(null)
+    var imageFileName = "none"
+
+    fun loadProfileImage() {
+        val profileImageUrl = shoppingApplication.loginCustomerModel.customerUserProfileImage
+
+        viewModelScope.launch(Dispatchers.IO) {
+            val context = shoppingApplication.applicationContext
+            val bitmap = try {
+                if (profileImageUrl.isBlank()) {
+                    // 기본 이미지 로드
+                    Glide.with(context)
+                        .asBitmap()
+                        .load(R.drawable.account_circle_24px) // 기본 이미지
+                        .submit()
+                        .get()
+                } else {
+                    // URL 이미지 로드
+                    Glide.with(context)
+                        .asBitmap()
+                        .load(profileImageUrl) // URL 이미지
+                        .submit()
+                        .get()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null // 실패 시 null
+            }
+
+            withContext(Dispatchers.Main) {
+                imageUri.value = bitmap // Bitmap 상태 업데이트
+            }
+        }
+    }
 
     // 조건 충족 여부 상태
     // 2~10자
@@ -80,6 +124,7 @@ class UserSettingViewModel @Inject constructor(
     init {
         // 초기화 시 닉네임 조건 업데이트
         updateNicknameConditions()
+        loadProfileImage()
     }
 
     fun updateNicknameConditions() {
@@ -96,12 +141,46 @@ class UserSettingViewModel @Inject constructor(
 
         // 버튼 활성화 상태
         isButtonNicknameEnabled.value =
-            isLengthValid.value && isSpecialCharInvalid.value && isConsonantVowelValid.value
+            isLengthValid.value && isSpecialCharInvalid.value && isConsonantVowelValid.value &&
+                    shoppingApplication.loginCustomerModel.customerUserNickName != nickname
     }
 
-    // 뒤로가기 버튼을 눌렀을때
     fun navigationIconOnClick() {
-        showDialogBackArrowState.value = true
+        // 서버에서 가져온 값과 현재 상태를 리스트로 매핑
+        val serverValues = listOf(
+            shoppingApplication.loginCustomerModel.customerUserNickName,
+//            shoppingApplication.loginCustomerModel.customerUserProfileImage,
+            shoppingApplication.loginCustomerModel.customerUserName,
+            shoppingApplication.loginCustomerModel.customerUserPhoneNumber,
+            shoppingApplication.loginCustomerModel.customerUserAddress,
+            shoppingApplication.loginCustomerModel.customerUserDetailAddress,
+            shoppingApplication.loginCustomerModel.customerUserBirthDate,
+            shoppingApplication.loginCustomerModel.customerUserGender,
+            shoppingApplication.loginCustomerModel.customerUserSmsAgree,
+            shoppingApplication.loginCustomerModel.customerUserAppPushAgree
+        )
+
+        val currentValues = listOf(
+            textFieldModifyNicknameValue.value,
+//            imageUri.value,
+            textFieldModifyNameValue.value,
+            textFieldModifyPhoneValue.value,
+            textFieldModifyAddressValue.value,
+            textFieldModifyDetailAddressValue.value,
+            textFieldModifyBirthValue.value,
+            selectedGender.value,
+            selectedSmsAgree.value,
+            selectedPushAgree.value
+        )
+
+        // 값이 하나라도 다르면 다이얼로그를 표시
+        if (serverValues != currentValues) {
+            showDialogBackArrowState.value = true
+        } else {
+            // 값이 모두 같을 때만 네비게이션 실행
+            shoppingApplication.navHostController.popBackStack("userSetting", inclusive = true)
+            shoppingApplication.navHostController.navigate("loginMyPage")
+        }
     }
 
     // 다이얼로그 바로가기 버튼을 눌렀을때
@@ -122,9 +201,15 @@ class UserSettingViewModel @Inject constructor(
 
     // 회원 탈퇴를 눌렀을때
     fun withdrawalOnClick() {
-        showDialogWithdrawalState.value = true
-        shoppingApplication.navHostController.popBackStack("userSetting", inclusive = true)
-        shoppingApplication.navHostController.navigate("logoutMyPage")
+        CoroutineScope(Dispatchers.Main).launch {
+            val work1 = async(Dispatchers.IO){
+                customerService.updateUserState(shoppingApplication.loginCustomerModel.customerDocumentId, UserState.USER_STATE_SIGNOUT)
+            }
+            work1.join()
+
+            shoppingApplication.navHostController.popBackStack("userSetting", inclusive = true)
+            shoppingApplication.navHostController.navigate("logoutMyPage")
+        }
     }
 
     // 저장하기를 눌렀을때
@@ -140,22 +225,36 @@ class UserSettingViewModel @Inject constructor(
             }
         }
 
-        shoppingApplication.loginCustomerModel.customerUserNickName = nickName
-        shoppingApplication.loginCustomerModel.customerUserName = textFieldModifyNameValue.value
-        shoppingApplication.loginCustomerModel.customerUserPhoneNumber = textFieldModifyPhoneValue.value
-        shoppingApplication.loginCustomerModel.customerUserAddress = textFieldModifyAddressValue.value
-        shoppingApplication.loginCustomerModel.customerUserDetailAddress = textFieldModifyDetailAddressValue.value
-        shoppingApplication.loginCustomerModel.customerUserBirthDate = textFieldModifyBirthValue.value
-        shoppingApplication.loginCustomerModel.customerUserGender = selectedGender.value
-        shoppingApplication.loginCustomerModel.customerUserSmsAgree = selectedSmsAgree.value
-        shoppingApplication.loginCustomerModel.customerUserAppPushAgree = selectedPushAgree.value
-
-        // 수정한다.
         CoroutineScope(Dispatchers.Main).launch {
-            val work1 = async(Dispatchers.IO) {
+            // 이미지가 첨부되어 있다면
+            if(imageUri.value != null){
+                // 서버상에서의 파일 이름
+                imageFileName = "image_${System.currentTimeMillis()}.jpg"
+                // 로컬에 ImageView에 있는 이미지 데이터를 저장한다.
+                Tools.saveBitmap(shoppingApplication, imageUri.value!!)
+
+                val work1 = async(Dispatchers.IO){
+                    // 외부 저장소의 경로를 가져온다.
+                    val filePath = shoppingApplication.getExternalFilesDir(null).toString()
+//                    customerService.uploadImage("${filePath}/uploadTemp.jpg", imageFileName)
+                }
+                work1.join()
+            }
+
+            shoppingApplication.loginCustomerModel.customerUserNickName = nickName
+            shoppingApplication.loginCustomerModel.customerUserName = textFieldModifyNameValue.value
+            shoppingApplication.loginCustomerModel.customerUserPhoneNumber = textFieldModifyPhoneValue.value
+            shoppingApplication.loginCustomerModel.customerUserAddress = textFieldModifyAddressValue.value
+            shoppingApplication.loginCustomerModel.customerUserDetailAddress = textFieldModifyDetailAddressValue.value
+            shoppingApplication.loginCustomerModel.customerUserBirthDate = textFieldModifyBirthValue.value
+            shoppingApplication.loginCustomerModel.customerUserGender = selectedGender.value
+            shoppingApplication.loginCustomerModel.customerUserSmsAgree = selectedSmsAgree.value
+            shoppingApplication.loginCustomerModel.customerUserAppPushAgree = selectedPushAgree.value
+
+            val work2 = async(Dispatchers.IO) {
                 customerService.updateUserData(shoppingApplication.loginCustomerModel)
             }
-            work1.join()
+            work2.join()
 
             Toast.makeText(shoppingApplication, "수정이 완료되었습니다", Toast.LENGTH_SHORT).show()
             shoppingApplication.navHostController.popBackStack("userSetting", inclusive = true)

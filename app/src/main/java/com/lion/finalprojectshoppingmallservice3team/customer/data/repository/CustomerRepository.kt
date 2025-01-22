@@ -1,6 +1,7 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.data.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
+import com.lion.finalprojectshoppingmallservice3team.customer.data.util.UserState
 import com.lion.finalprojectshoppingmallservice3team.customer.data.vo.CustomerVO
 import kotlinx.coroutines.tasks.await
 
@@ -76,5 +77,18 @@ class CustomerRepository {
         val collectionReference = firestore.collection("CustomerData")
         val documentReference = collectionReference.document(customerDocumentId)
         documentReference.update(customerMap).await()
+    }
+
+    // 사용자의 상태를 변경하는 메서드
+    suspend fun updateUserState(customerDocumentId:String, newState: UserState){
+        val firestore = FirebaseFirestore.getInstance()
+        val collectionReference = firestore.collection("CustomerData")
+        val documentReference = collectionReference.document(customerDocumentId)
+
+        val updateMap = mapOf(
+            "customerUserState" to newState.number
+        )
+
+        documentReference.update(updateMap).await()
     }
 }

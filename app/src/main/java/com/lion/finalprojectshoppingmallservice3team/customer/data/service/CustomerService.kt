@@ -91,4 +91,9 @@ class CustomerService(val customerRepository: CustomerRepository) {
         val customerVO = customerModel.toCustomerVO()
         customerRepository.updateUserPwData(customerVO, customerModel.customerDocumentId)
     }
+
+    // 사용자의 상태를 변경하는 메서드
+    suspend fun updateUserState(customerDocumentId:String, newState:UserState){
+        customerRepository.updateUserState(customerDocumentId, newState)
+    }
 }
