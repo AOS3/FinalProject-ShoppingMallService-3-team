@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
@@ -39,7 +42,7 @@ fun LikeLionFilterChip(
     chipModifier: Modifier,
     modifier: Modifier = Modifier,
     onChipClicked: (String, Boolean) -> Unit,
-    onDeleteButtonClicked: (String) -> Unit // 삭제 버튼 콜백 추가
+    onDeleteButtonClicked: (String) -> Unit  = {}// 삭제 버튼 콜백 추가
 ) {
 
     Surface(
