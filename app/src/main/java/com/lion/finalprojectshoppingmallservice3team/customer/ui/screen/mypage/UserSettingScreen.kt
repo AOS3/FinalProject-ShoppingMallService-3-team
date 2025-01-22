@@ -1,19 +1,24 @@
-package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage
+package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen
 
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -23,43 +28,54 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetValue
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bumptech.glide.Glide
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionAlertDialog
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionImage
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextField
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextFieldEndIconMode
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextFieldInputType
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionProfileImg
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionRadioGroup
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.data.util.Tools
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.mypage.UserSettingViewModel
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.UserSettingViewModel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.SubColor
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,10 +87,10 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
 
     val coroutineScope = rememberCoroutineScope()
 
-    // Bottom Sheet 상태 관리
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
-            initialValue = SheetValue.Hidden // Bottom Sheet 초기 상태를 숨김으로 설정
+            initialValue = SheetValue.Hidden, // 초기 상태는 Hidden
+            skipHiddenState = false // Hidden 상태를 허용
         )
     )
 
@@ -103,11 +119,12 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
+                    .padding(WindowInsets.navigationBars.asPaddingValues())
             ) {
                 Text(
                     text = "사진 선택",
-
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
                 )
 
                 // 사진 보관함
@@ -119,7 +136,7 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                         .clickable {
                             coroutineScope.launch { scaffoldState.bottomSheetState.hide() }
                             albumLauncher.launch(
-                                PickVisualMediaRequest(
+                                androidx.activity.result.PickVisualMediaRequest(
                                     ActivityResultContracts.PickVisualMedia.ImageOnly
                                 )
                             )
@@ -143,7 +160,8 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                 )
             }
         },
-        sheetPeekHeight = 0.dp // 기본 상태에서 Bottom Sheet는 숨김 상태
+        sheetPeekHeight = 56.dp, // 기본 peek 높이 조정
+        modifier = Modifier.padding(WindowInsets.navigationBars.asPaddingValues()) // 전체 스캐폴드에도 패딩 추가
     ) {
         Scaffold(
             topBar = {
@@ -196,7 +214,9 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                                     .width(80.dp)
                                     .height(35.dp),
                                 onClick = {
-
+                                    coroutineScope.launch {
+                                        scaffoldState.bottomSheetState.expand() // 바텀시트를 표시
+                                    }
                                 }
                             )
                         }
