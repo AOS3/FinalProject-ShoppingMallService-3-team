@@ -111,7 +111,7 @@ fun MyFavoriteScreen(
 
             LikeLonPostListView(list)
 
-            LikeLionBigUserListView(list)
+            //LikeLionBigUserListView(list)
         }
 
     }

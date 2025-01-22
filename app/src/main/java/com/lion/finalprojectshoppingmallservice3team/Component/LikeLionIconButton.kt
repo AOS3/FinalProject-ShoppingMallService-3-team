@@ -1,4 +1,4 @@
-package com.lion.a02_boardcloneproject.component
+package com.lion.finalprojectshoppingmallservice3team.Component
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
