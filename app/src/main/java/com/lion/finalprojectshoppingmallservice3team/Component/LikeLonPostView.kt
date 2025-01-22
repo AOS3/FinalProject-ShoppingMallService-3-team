@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme.typography
@@ -27,7 +29,12 @@ fun LikeLonPostView(randomUser: Customer){
 
     Card(  // Card View
         modifier = Modifier
-            .size(width = 300.dp, height = 180.dp).padding(10.dp), // fillMaxWidth로 가로를 꽉 차게
+            .size(width = 300.dp, height = 180.dp).padding(10.dp)
+            .clickable(
+                onClick = {
+
+                }
+            ), // fillMaxWidth로 가로를 꽉 차게
         colors = CardDefaults.cardColors(
             Color.White
         ),
@@ -65,14 +72,14 @@ fun LikeLonPostView(randomUser: Customer){
                 LikeLionIconButton(
                     icon = ImageVector.vectorResource(id = R.drawable.visibility_24px),
                     text = "999+",
-                    size = 60.dp,
+                    size = 55.dp,
                     borderNull = true
                 )
                 Text(text = "·")
                 LikeLionIconButton(
                     icon = ImageVector.vectorResource(id = R.drawable.favorite_24px),
                     text = "999+",
-                    size = 60.dp,
+                    size = 55.dp,
                     borderNull = true
                 )
             }

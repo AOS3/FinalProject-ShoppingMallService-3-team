@@ -70,6 +70,8 @@ dependencies {
     // Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
+    implementation("me.onebone:toolbar-compose:2.3.5")
+
 }
 
 kapt {

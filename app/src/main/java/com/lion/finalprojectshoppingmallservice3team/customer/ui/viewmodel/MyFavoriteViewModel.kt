@@ -62,6 +62,14 @@ class MyFavoriteViewModel @Inject constructor(
         }
     }
 
+    fun myGroupScreen(){
+        shoppingApplication.navHostController.navigate("MyFavoriteGroup")
+    }
+
+    fun creatorShopScreen(){
+        shoppingApplication.navHostController.navigate("CreatorShop")
+    }
+
 //    fun handleEvents(event: SaveEvent) {
 //        when (event) {
 //            is SaveEvent.OnChipClicked -> {

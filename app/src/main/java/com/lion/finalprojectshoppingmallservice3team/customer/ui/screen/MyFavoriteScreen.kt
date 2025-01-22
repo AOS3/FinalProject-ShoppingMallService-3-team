@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBigUserListView
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionChipGroup
@@ -37,8 +38,7 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.MyFav
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun MyFavoriteScreen(
-    navController: NavHostController,
-    myFavoriteViewModel: MyFavoriteViewModel = hiltViewModel()
+    viewModel: MyFavoriteViewModel = hiltViewModel()
 ){
 
     Scaffold(
@@ -50,17 +50,11 @@ fun MyFavoriteScreen(
                 menuItems = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
-                        text = "",
-                        iconSize = 30.dp,
-                        size = 35.dp,
                         padding = 10.dp,
                         borderNull = true
                     )
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.shopping_cart_24px),
-                        text = "",
-                        iconSize = 30.dp,
-                        size = 35.dp,
                         padding = 10.dp,
                         borderNull = true
                     )
@@ -81,20 +75,17 @@ fun MyFavoriteScreen(
                 LikeLionChipGroup(
                     modifier = Modifier.padding(start = 10.dp, end = 10.dp)
                         .fillMaxWidth(0.9f),
-                    elements = myFavoriteViewModel.chipElements,
-                    chipStyle =  myFavoriteViewModel.chipState,
+                    elements = viewModel.chipElements,
+                    chipStyle =  viewModel.chipState,
                     onChipClicked = {content,isSelected,idx ->
-                        myFavoriteViewModel.setEvent(idx)
+                        viewModel.setEvent(idx)
                     }
                 )
                 LikeLionIconButton(
                     icon = ImageVector.vectorResource(id = R.drawable.menu_24px),
-                    text = "",
-                    iconSize = 30.dp,
-                    size = 35.dp,
                     borderNull = true,
                     iconButtonOnClick = {
-                        navController.navigate("MyFavoriteGroup")
+                        viewModel.myGroupScreen()
                     }
                 )
             }

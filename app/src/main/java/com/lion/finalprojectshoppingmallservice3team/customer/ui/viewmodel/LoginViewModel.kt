@@ -24,7 +24,23 @@ class LoginViewModel @Inject constructor(
     }
 
     fun updateButtonState() {
-        isButtonEnabled.value = textFieldLoginIdValue.value.isNotBlank() &&
-                                textFieldLoginPwValue.value.isNotBlank()
+        isButtonEnabled.value = textFieldLoginIdValue.value.isNotEmpty() &&
+                textFieldLoginPwValue.value.isNotEmpty()
+    }
+
+    fun buttonLoginClick(){
+        shoppingApplication.navHostController.navigate("myFavorite")
+    }
+
+    // 네비게이션 아이콘을 누르면 호출되는 메서드
+    fun navigationIconOnClick(){
+        shoppingApplication.navHostController.navigate("logoutMyPage") {
+            popUpTo("login") { inclusive = true }
+            popUpTo("userJoin") { inclusive = true }
+        }
+    }
+
+    fun buttonUserJoinClick(){
+        shoppingApplication.navHostController.navigate("userJoin")
     }
 }

@@ -1,6 +1,5 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -17,17 +16,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
@@ -42,6 +37,7 @@ fun LikeLionOutlinedTextField(
     inputCondition:String? = null,
     // 입력 요소 앞의 아이콘
     leadingIcon: ImageVector? = null,
+    modifier: Modifier = Modifier,
     // 우측 끝의 아이콘
     trailingIconMode: LikeLionOutlinedTextFieldEndIconMode = LikeLionOutlinedTextFieldEndIconMode.NONE,
     // 한줄 입력 여부
@@ -49,7 +45,7 @@ fun LikeLionOutlinedTextField(
     // 상단 여백
     paddingTop:Dp = 0.dp,
     // 입력 모드
-    inputType:LikeLionOutlinedTextFieldInputType = LikeLionOutlinedTextFieldInputType.TEXT,
+    inputType: LikeLionOutlinedTextFieldInputType = LikeLionOutlinedTextFieldInputType.TEXT,
     // 입력 가능 여부
     readOnly:Boolean = false,
     // 포커싱 관리
@@ -61,6 +57,7 @@ fun LikeLionOutlinedTextField(
     // 만약 입력에 대한 검사를 체크하는 기능이 필요하다면
     isCheckValue:MutableState<Boolean>? = null,
     // 입력값이 변경될 때 호출되는 콜백 함수
+    onTrailingIconClick: (() -> Unit)? = null,
     onValueChange: (String) -> Unit = {}
 ) {
 
@@ -70,14 +67,14 @@ fun LikeLionOutlinedTextField(
     }
 
     // Modify 생성
-    var modifier = Modifier.fillMaxWidth().padding(top = paddingTop)
+    var defaultModifier = modifier.padding(top = paddingTop)
     if(focusRequest != null){
-        modifier = modifier.focusRequester(focusRequest.value)
+        Modifier.focusRequester(focusRequest.value)
     }
 
 
     OutlinedTextField(
-        modifier = modifier,
+        modifier = defaultModifier,
         value = textFieldValue.value,
         label = {
             Text(text = label)
@@ -86,17 +83,24 @@ fun LikeLionOutlinedTextField(
             Text(text = placeHolder)
         },
         onValueChange = {
-            if(inputCondition == null) {
-                textFieldValue.value = it
+            val filteredValue = if (inputCondition == null) {
+                // 조건이 없으면 원래 값 그대로 사용
+                it
             } else {
-                textFieldValue.value = it.replace(inputCondition.toRegex(), "")
+                // 정규식으로 필터링
+                it.replace(inputCondition.toRegex(), "")
             }
 
-            if(isCheckValue != null){
+            // 필터링된 값을 상태에 반영
+            textFieldValue.value = filteredValue
+
+            // isCheckValue가 null이 아니면 false로 설정
+            if (isCheckValue != null) {
                 isCheckValue.value = false
             }
 
-            onValueChange(it)
+            // 필터링된 값을 콜백으로 전달
+            onValueChange(filteredValue)
         },
         leadingIcon = if(leadingIcon != null) {
             {
@@ -116,6 +120,7 @@ fun LikeLionOutlinedTextField(
                         IconButton(
                             onClick = {
                                 textFieldValue.value = ""
+                                onTrailingIconClick?.invoke()
                             }
                         ) {
                             Icon(

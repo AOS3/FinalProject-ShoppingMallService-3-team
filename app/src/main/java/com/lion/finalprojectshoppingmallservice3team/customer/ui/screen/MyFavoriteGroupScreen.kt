@@ -22,26 +22,38 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.key.Key.Companion.I
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionGroupEditListView
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLonPostView
 import com.lion.finalprojectshoppingmallservice3team.R
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.MyFavoriteGroupViewModel
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.MyFavoriteViewModel
 
 @Composable
-fun MyFavoriteGroupScreen(navController: NavHostController) {
+fun MyFavoriteGroupScreen(viewModel: MyFavoriteGroupViewModel = hiltViewModel()) {
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
                 title = "MY 그룹 편집",
                 backColor = Color.White,
-                navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
-                navigationIconOnClick = {
-                    navController.popBackStack()
-                },
+                navigationIconImage = null,
+                menuItems = {
+                    LikeLionIconButton(
+                        icon = ImageVector.vectorResource(id = R.drawable.close_24px),
+                        borderNull = true,
+                        iconButtonOnClick = {
+                            viewModel.popBack()
+                        }
+                    )
+                }
 
             )
         },
@@ -58,6 +70,13 @@ fun MyFavoriteGroupScreen(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             LikeLionGroupEditListView(myGroups)
+            LikeLionFilledButton(
+                text = "+ 새그룹 만들기",
+                onClick = {
+                    viewModel.createGroup()
+                },
+                modifier = Modifier.fillMaxWidth(),
+            )
         }
 
     }

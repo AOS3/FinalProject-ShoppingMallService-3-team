@@ -1,8 +1,8 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -17,26 +17,39 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 
 @Composable
 fun LikeLionFilledButton(
     // 버튼 텍스트
     text:String = "FilledButton",
+    border: BorderStroke = BorderStroke(0.dp, Color.Transparent),
     // 위에 패딩
     paddingTop: Dp = 0.dp,
     // 버튼 활성화 여부
     isEnabled: Boolean = true,
+    // 아이콘
     icon: ImageVector? = null,
+    modifier: Modifier = Modifier,
+    // 배경색
+    containerColor: Color = MainColor,
+    // 글자색
+    contentColor: Color = Color.White,
     // 클릭 이벤트
     onClick:() -> Unit = {}
 ) {
     Button(
-        modifier = Modifier.fillMaxWidth().padding(top = paddingTop),
-        onClick = onClick,
+        modifier = modifier.padding(top = paddingTop),
+        onClick = {
+            if (isEnabled) {
+                onClick()
+            }
+        },
         colors = ButtonDefaults.buttonColors(
-            containerColor = if (isEnabled) Color(0xFFA16DEB) else Color.LightGray,
-            contentColor = if (isEnabled) Color.White else Color.Gray,
+            containerColor = if (isEnabled) containerColor else Color.LightGray,
+            contentColor = if (isEnabled) contentColor else Color.Gray,
         ),
+        border = border,
         shape = RoundedCornerShape(5.dp)
     ) {
         Row {

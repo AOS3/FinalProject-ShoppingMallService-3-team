@@ -4,40 +4,32 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionImage
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextField
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextFieldEndIconMode
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextFieldInputType
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.LoginViewModel
 
@@ -46,7 +38,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
-                backColor = Color.White,
+                backColor = Color.Transparent,
                 navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationIconOnClick = {
 
@@ -59,10 +51,9 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                 .fillMaxSize()
                 .padding(it)
                 .padding(horizontal = 10.dp),
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(100.dp))
             // 상단 텍스트 (MarCShop)
             Text(
                 text = "MarCShop",
@@ -78,11 +69,14 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                 textFieldValue = loginViewModel.textFieldLoginIdValue,
                 label = "아이디",
                 placeHolder = "아이디를 입력해주세요.",
+                modifier = Modifier.fillMaxWidth(),
                 inputCondition = "[^a-zA-Z0-9_]",
                 trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.TEXT,
+                onTrailingIconClick = {
+                    loginViewModel.updateButtonState()
+                },
                 singleLine = true,
                 onValueChange = {
-                    loginViewModel.textFieldLoginIdValue.value = it
                     loginViewModel.updateButtonState()
                 }
             )
@@ -92,13 +86,13 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                 textFieldValue = loginViewModel.textFieldLoginPwValue,
                 paddingTop = 20.dp,
                 label = "비밀번호",
+                modifier = Modifier.fillMaxWidth(),
                 placeHolder = "비밀번호를 입력해주세요.",
                 trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.PASSWORD,
                 inputCondition = "[^a-zA-Z0-9_]",
                 singleLine = true,
                 inputType = LikeLionOutlinedTextFieldInputType.PASSWORD,
                 onValueChange = {
-                    loginViewModel.textFieldLoginPwValue.value = it
                     loginViewModel.updateButtonState()
                 }
             )
@@ -106,9 +100,12 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
             LikeLionFilledButton(
                 text = "로그인하기",
                 isEnabled = loginViewModel.isButtonEnabled.value,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
                 paddingTop = 20.dp,
                 onClick = {
-
+                    loginViewModel.buttonLoginClick()
                 }
             )
 
@@ -119,10 +116,11 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                     text = "아이디 찾기",
                     color = Color.Black,
                     fontSize = 14.sp,
-                    modifier = Modifier.padding(end = 10.dp)
+                    modifier = Modifier
+                        .padding(end = 10.dp)
                         .clickable {
 
-                    },
+                        },
                 )
 
                 Text(
@@ -135,10 +133,11 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                     text = "비밀번호 찾기",
                     color = Color.Black,
                     fontSize = 14.sp,
-                    modifier = Modifier.padding(start = 10.dp)
+                    modifier = Modifier
+                        .padding(start = 10.dp)
                         .clickable {
 
-                    },
+                        },
                 )
             }
 
@@ -153,37 +152,38 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
             Row(
                 modifier = Modifier.padding(bottom = 10.dp)
             ) {
-                LikeLionImage(
-                    painter = painterResource(id = R.drawable.kakao_login_original),
-                    modifier = Modifier.width(80.dp).height(40.dp),
-                    cornerRadius = 25.dp,
-                    onClick = {
 
-                    }
-                )
 
-                LikeLionImage(
-                    painter = painterResource(id = R.drawable.naver_logo),
-                    modifier = Modifier.width(50.dp).height(40.dp)
-                        .padding(start = 10.dp),
-                    isCircular = true,
-                    onClick = {
+                Row(
+                    modifier = Modifier.padding(start = 10.dp)
+                ) {
+                    LikeLionImage(
+                        painter = painterResource(id = R.drawable.naver_logo),
+                        modifier = Modifier
+                            .size(50.dp),
+                        isCircular = true,
+                        onClick = {
 
-                    }
-                )
+                        }
+                    )
+                }
 
-                LikeLionImage(
-                    painter = painterResource(id = R.drawable.google_logo),
-                    modifier = Modifier.width(50.dp).height(40.dp)
-                        .padding(start = 10.dp),
-                    contentScale = ContentScale.Inside,
-                    borderWidth = 1.dp, // 테두리 두께
-                    borderColor = Color.LightGray, // 테두리 색상
-                    isCircular = true,
-                    onClick = {
+                Row(
+                    modifier = Modifier.padding(start = 10.dp)
+                ) {
+                    LikeLionImage(
+                        painter = painterResource(id = R.drawable.google_logo),
+                        modifier = Modifier
+                            .size(50.dp),
+                        contentScale = ContentScale.Inside,
+                        borderWidth = 1.dp, // 테두리 두께
+                        borderColor = Color.LightGray, // 테두리 색상
+                        isCircular = true,
+                        onClick = {
 
-                    }
-                )
+                        }
+                    )
+                }
             }
 
             Row(
@@ -191,7 +191,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
             ) {
                 Text(
                     text = "아직 회원이 아니신가요?",
-                    color = Color.Black,
+                    color = Color.Gray,
                     fontSize = 14.sp,
                 )
 
@@ -199,10 +199,11 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                     text = "회원가입 하기",
                     color = Color.Black,
                     fontSize = 14.sp,
-                    modifier = Modifier.padding(start = 10.dp)
+                    modifier = Modifier
+                        .padding(start = 10.dp)
                         .clickable {
 
-                    },
+                        },
                 )
             }
         }

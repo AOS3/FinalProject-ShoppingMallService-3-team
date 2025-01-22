@@ -69,7 +69,7 @@ fun LikeLionBigUserView(randomUser: Customer){
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.favorite_24px),
                         text = "999+",
-                        size = 60.dp,
+                        size = 55.dp,
                         borderNull = false
                     )
 

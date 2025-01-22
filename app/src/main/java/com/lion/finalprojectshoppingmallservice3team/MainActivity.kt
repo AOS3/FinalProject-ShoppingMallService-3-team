@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,8 +29,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.CreatorShopScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LoginScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyFavoriteBottomScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyFavoriteGroupScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyFavoriteNewGroupScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyFavoriteScreen
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,6 +55,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun ShoppingMain() {
     val navController = rememberNavController()
+    // Application 객체에 담는다.
+    val shoppingApplication = LocalContext.current.applicationContext as ShoppingApplication
+    shoppingApplication.navHostController = navController
     NavHost(
         navController = navController,
         startDestination = "splash",
@@ -84,9 +91,32 @@ fun ShoppingMain() {
         },
     ) {
         composable("splash") { SplashScreen(navController) }
-
-        // composable("myFavorite") { MyFavoriteScreen(navController) }
-        composable("myFavoriteGroup") { MyFavoriteGroupScreen(navController) }
+        composable("login") { LoginScreen() }
+        composable("myFavorite") { MyFavoriteScreen() }
+        composable("myFavoriteGroup") { MyFavoriteGroupScreen() }
+        composable("MyFavoriteNewGroup") { MyFavoriteNewGroupScreen() }
+        composable(
+            route = "MyFavoriteBottom",
+            enterTransition = {
+                fadeIn(
+                    tween(300)
+                ) +
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Up,
+                            tween(300)
+                        )
+            },
+            popExitTransition = {
+                fadeOut(
+                    tween(300)
+                ) +
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Down,
+                            tween(300)
+                        )
+            },
+        ) { MyFavoriteBottomScreen() }
+        composable("CreatorShop"){ CreatorShopScreen() }
     }
 }
 
@@ -95,7 +125,7 @@ fun SplashScreen(navController: NavHostController) {
     // 스플래시 화면에서 2초 대기 후 로그인 화면으로 이동
     LaunchedEffect(Unit) {
         delay(1000) // 1초 대기
-        navController.navigate("myFavoriteGroup") {
+        navController.navigate("myFavorite") {
             popUpTo("splash") { inclusive = true } // 스플래시 화면 제거
         }
     }
