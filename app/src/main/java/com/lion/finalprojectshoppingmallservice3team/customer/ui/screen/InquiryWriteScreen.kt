@@ -32,9 +32,6 @@ import com.lion.finalprojectshoppingmallservice3team.ui.theme.SubColor
 
 @Composable
 fun InquiryWriteScreen(inquiryWriteViewModel: InquiryWriteViewModel = hiltViewModel()) {
-
-    // 애니메이션 좌우 말고 상하로 변경
-
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
@@ -59,7 +56,7 @@ fun InquiryWriteScreen(inquiryWriteViewModel: InquiryWriteViewModel = hiltViewMo
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .padding(10.dp)
+                .padding(horizontal = 10.dp)
         ) {
             Column(
                 modifier = Modifier.weight(1f)

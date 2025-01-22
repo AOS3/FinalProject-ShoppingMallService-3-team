@@ -16,5 +16,6 @@ class InquiryReadViewModel @Inject constructor(
 
     fun navigationOnClick(){
         shoppingApplication.navHostController.popBackStack("inquiryRead", inclusive = true)
+        shoppingApplication.navHostController.navigate("inquiryList")
     }
 }

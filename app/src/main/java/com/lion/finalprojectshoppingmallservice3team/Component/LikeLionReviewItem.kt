@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -56,7 +57,9 @@ fun LikeLionReviewItem(
             Row{
                 LikeLionProfileImg(
                     imgUrl = "",
+
                     modifier = Modifier.size(40.dp),
+                  
                     iconTint = MainColor,
                     profileBack = Color.LightGray
                 )

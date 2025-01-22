@@ -74,6 +74,7 @@ fun LikeLionProfileImg(
 
             }
         })
+
     Column(
         modifier = circleModifier
             .size(profileSize + 10.dp).clip(CircleShape).background(profileBack),
@@ -94,6 +95,5 @@ fun LikeLionProfileImg(
             colorFilter = ColorFilter.tint(iconTint)
         )
     }
-
 
 }

@@ -25,6 +25,21 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryListScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryReadScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryWriteScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LoginMyPageScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LoginScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LogoutMyPageScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.ModifyUserPwScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyCheerScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyPostsScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyPurchaseHistoryScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyRecentScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyReviewScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserJoinInfoScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserJoinScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserSettingScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.CancelRefundFAQScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryProductListScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryProductReadScreen
@@ -52,30 +67,53 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ShoppingMain() {
-    val navController = rememberNavController()
+    val navController = rememberNavController(
+      
     // Application 객체에 담는다.
     val shoppingApplication = LocalContext.current.applicationContext as ShoppingApplication
     shoppingApplication.navHostController = navController
+
     NavHost(
         navController = navController,
         startDestination = "splash",
         enterTransition = {
-            fadeIn(
-                tween(300)
-            ) +
-                    slideIntoContainer(
-                        AnimatedContentTransitionScope.SlideDirection.Start,
-                        tween(300)
-                    )
+            if (targetState.destination.route == "inquiryWrite" || targetState.destination.route == "modifyUserPw") {
+                fadeIn(
+                    tween(300)
+                ) +
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Up,
+                            tween(300)
+                        )
+            } else {
+                fadeIn(
+                    tween(300)
+                ) +
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Start,
+                            tween(300)
+                        )
+            }
+
         },
         popExitTransition = {
-            fadeOut(
-                tween(300)
-            ) +
-                    slideOutOfContainer(
-                        AnimatedContentTransitionScope.SlideDirection.End,
-                        tween(300)
-                    )
+            if (initialState.destination.route == "inquiryWrite" || initialState.destination.route == "modifyUserPw") {
+                fadeOut(
+                    tween(300)
+                ) +
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Down,
+                            tween(300)
+                        )
+            } else {
+                fadeOut(
+                    tween(300)
+                ) +
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.End,
+                            tween(300)
+                        )
+            }
         },
         exitTransition = {
             fadeOut(
@@ -90,6 +128,20 @@ fun ShoppingMain() {
     ) {
         composable("splash") { SplashScreen(navController) }
         composable("login") { LoginScreen() }
+
+        composable("userJoin") { UserJoinScreen() }
+        composable("userJoinInfo") { UserJoinInfoScreen() }
+        composable("logoutMyPage") { LogoutMyPageScreen() }
+        composable("loginMyPage") { LoginMyPageScreen() }
+        composable("userSetting") { UserSettingScreen() }
+        composable("modifyUserPw") { ModifyUserPwScreen() }
+        composable("myPosts") { MyPostsScreen() }
+        composable("myRecent") { MyRecentScreen() }
+        composable("myPurchaseHistory") { MyPurchaseHistoryScreen() }
+        composable("inquiryList") { InquiryListScreen() }
+        composable("inquiryRead") { InquiryReadScreen() }
+        composable("inquiryWrite") { InquiryWriteScreen() }
+
         // shop 화면
         composable( "shop") { ShopScreen() }
         // 상품상세 화면
@@ -121,6 +173,7 @@ fun ShoppingMain() {
         composable("inquiryProductRead") { InquiryProductReadScreen() }
         // 취소/환불 FAQ
         composable("cancelRefundFAQ") { CancelRefundFAQScreen() }
+
     }
 }
 
@@ -129,7 +182,7 @@ fun SplashScreen(navController: NavHostController) {
     // 스플래시 화면에서 1초 대기 후 로그인 화면으로 이동
     LaunchedEffect(Unit) {
         delay(1000) // 1초 대기
-        navController.navigate("login") {
+        navController.navigate("logoutMyPage") {
             popUpTo("splash") { inclusive = true } // 스플래시 화면 제거
         }
     }
