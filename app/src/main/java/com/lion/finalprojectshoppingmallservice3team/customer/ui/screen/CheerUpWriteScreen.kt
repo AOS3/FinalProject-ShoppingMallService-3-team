@@ -150,6 +150,7 @@ fun CheerUpWriteScreen() {
     }
 }
 
+
 @Preview
 @Composable
 fun CheerUpScreenPreView(){

@@ -101,6 +101,7 @@ fun SearchSuccessScreen(
     }
 }
 
+
 // 예시 콘텐츠 컴포저블 함수들 (필요에 따라 수정 가능)
 @Composable fun DisplayAllContent() { /* 전체 콘텐츠 */ }
 @Composable fun DisplayCreatorContent() { /* 크리에이터 콘텐츠 */ }

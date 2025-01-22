@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
+
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     @ApplicationContext context: Context,
