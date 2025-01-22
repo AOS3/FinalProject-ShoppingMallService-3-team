@@ -22,7 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.lion.finalprojectshoppingmallservice3team.R
 
 @Composable
@@ -34,7 +36,7 @@ fun LikeLionDropDownMenu (
     // 옵션이 선택되었을 때 호출되는 함수
     onOptionSelected: (String) -> Unit,
     // Modifier
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ){
     var expanded by remember { mutableStateOf(false) } // 드롭다운 상태
     val icon = if (expanded) {
@@ -46,18 +48,18 @@ fun LikeLionDropDownMenu (
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
+            .clickable { expanded = !expanded }
     ) {
         Text(
             text = selectedOption,
+            fontSize = 14.sp,
             modifier = Modifier
-                .clickable { expanded = !expanded }
         )
 
         Icon(
             imageVector = icon,
             contentDescription = null,
             modifier = Modifier
-                .clickable { expanded = !expanded }  // 아이콘 클릭 시 드롭다운 토글
                 .padding(8.dp)
         )
 
@@ -78,6 +80,7 @@ fun LikeLionDropDownMenu (
                     text = {
                         Text(
                             text = option,
+                            fontSize = 14.sp,
                             color = if (isSelected) Color.Black else Color.Gray
                         )
                     }

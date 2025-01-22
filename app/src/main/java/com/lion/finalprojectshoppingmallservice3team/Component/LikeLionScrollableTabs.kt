@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 
 @Composable
@@ -35,6 +36,7 @@ fun LikeLionScrollableTabs (
                 text = {
                     Text(
                         text = title,
+                        fontSize = 14.sp,
                         color = if (selectedTabIndex == index) MainColor else Color(0xFF49454F),
                     )
                 },

@@ -13,6 +13,8 @@ import com.lion.finalprojectshoppingmallservice3team.Component.ChipState
 import com.lion.finalprojectshoppingmallservice3team.Component.ChipStyle
 import com.lion.finalprojectshoppingmallservice3team.Component.Product
 import com.lion.finalprojectshoppingmallservice3team.ShoppingApplication
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.ProductInfoScreen
+import com.lion.finalprojectshoppingmallservice3team.data.Storage
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.Typography
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -28,8 +30,15 @@ class ShopViewModel @Inject constructor(
 ) : ViewModel() {
     val shoppingApplication = context as ShoppingApplication
 
+    fun listItemImageOnClick(documentId:String) {
+        shoppingApplication.navHostController.navigate("productInfo/${documentId}")
+    }
+
     // TopAppBar Title
     val topAppBarTitle = mutableStateOf("Shop")
+
+    // 좋아요 상태를 관리하는 Map
+    private val favoriteState = mutableStateOf(mutableMapOf<String, Boolean>())
 
     //**************** 칩 *********************
     val chipElements: SnapshotStateList<ChipState> = mutableStateListOf(
@@ -77,15 +86,15 @@ class ShopViewModel @Inject constructor(
     var selectedTabIndex = mutableStateOf(0)
     val selectedTabs = mutableStateOf<List<String>>(categoryTabs["전체 상품"]!!)
 
-    // 카테고리 클릭 시 선택된 카테고리와 탭 갱신
+    // 카테고리 선택
     fun onCategoryClick(category: String) {
         selectedCategory.value = category
         selectedTabs.value = categoryTabs[category] ?: listOf("전체 상품")
-        selectedTabIndex.value = 0 // 초기 선택된 탭을 첫 번째로 설정
+        selectedTabIndex.value = 0
         filterProducts()
     }
 
-    // 탭 클릭 시 선택된 탭 인덱스 갱신
+    // 탭 선택
     fun onTabSelected(index: Int) {
         selectedTabIndex.value = index
         filterProducts()
@@ -96,11 +105,11 @@ class ShopViewModel @Inject constructor(
     val limitedEditionOnly = mutableStateOf(false)
 
     fun onExcludeSoldOutChange() {
-        // 품절 제외 처리
+        filterProducts()
     }
 
     fun onLimitedEditionChange() {
-        // 한정판만 처리
+        filterProducts()
     }
 
     //**************** 드롭다운 *********************
@@ -114,100 +123,9 @@ class ShopViewModel @Inject constructor(
     private val _filteredProductList = MutableStateFlow(listOf<Product>())
     val filteredProductList: StateFlow<List<Product>> = _filteredProductList.asStateFlow()
 
+    // 상품 목록 로드
     fun loadProductList() {
-        // 예시 데이터 추가
-        _productList.value = listOf(
-            Product(
-                id = UUID.randomUUID().toString(),
-                name = "티셔츠 Example Product",
-                price = 15000.0,
-                imageUrl = "",
-                creator = "Creator A",
-                category = "의류",
-                subCategory = "티셔츠",
-                isFavorite = false
-            ),
-            Product(
-                id = UUID.randomUUID().toString(),
-                name = "키링 Example Product",
-                price = 10000.0,
-                imageUrl = "",
-                creator = "Creator B",
-                category = "굿즈",
-                subCategory = "키링",
-                isFavorite = false
-            ),
-            Product(
-                id = UUID.randomUUID().toString(),
-                name = "맨투맨 Example Product",
-                price = 20000.0,
-                imageUrl = "",
-                creator = "Creator C",
-                category = "의류",
-                subCategory = "맨투맨",
-                isFavorite = false
-            ),
-            Product(
-                id = UUID.randomUUID().toString(),
-                name = "아크릴굿즈 Example Product",
-                price = 12000.0,
-                imageUrl = "",
-                creator = "Creator D",
-                category = "굿즈",
-                subCategory = "아크릴굿즈",
-                isFavorite = false
-            ),
-            Product(
-                id = UUID.randomUUID().toString(),
-                name = "가방 Example Product",
-                price = 30000.0,
-                imageUrl = "",
-                creator = "Creator E",
-                category = "패션잡화",
-                subCategory = "가방",
-                isFavorite = false
-            ),
-            Product(
-                id = UUID.randomUUID().toString(),
-                name = "쿠션 Example Product",
-                price = 25000.0,
-                imageUrl = "",
-                creator = "Creator F",
-                category = "쿠션/패브릭",
-                subCategory = "쿠션/방석",
-                isFavorite = false
-            ),
-            Product(
-                id = UUID.randomUUID().toString(),
-                name = "마우스패드 Example Product",
-                price = 18000.0,
-                imageUrl = "",
-                creator = "Creator G",
-                category = "문구/오피스",
-                subCategory = "마우스패드",
-                isFavorite = false
-            ),
-            Product(
-                id = UUID.randomUUID().toString(),
-                name = "스마트톡 Example Product",
-                price = 8000.0,
-                imageUrl = "",
-                creator = "Creator H",
-                category = "폰액세서리",
-                subCategory = "스마트톡",
-                isFavorite = false
-            ),
-            Product(
-                id = UUID.randomUUID().toString(),
-                name = "카드 Example Product",
-                price = 5000.0,
-                imageUrl = "",
-                creator = "Creator I",
-                category = "스티커/지류",
-                subCategory = "카드",
-                isFavorite = false
-            ),
-        )
+        _productList.value = Storage.products
         filterProducts()
     }
 
@@ -215,10 +133,7 @@ class ShopViewModel @Inject constructor(
         val category = selectedCategory.value
         val subCategory = selectedTabs.value[selectedTabIndex.value]
 
-        // 전체 상품 목록의 좋아요 상태를 id를 키로 하여 저장
-        val currentFavorites = _productList.value.associate { it.id to it.isFavorite }
-
-        val filteredList = if (category == "전체 상품") {
+        var filteredList = if (category == "전체 상품") {
             _productList.value
         } else {
             _productList.value.filter {
@@ -227,25 +142,30 @@ class ShopViewModel @Inject constructor(
             }
         }
 
+        // 품절 제외
+        if (excludeSoldOut.value) {
+            filteredList = filteredList.filter { it.stockQuantity > 0 }
+        }
+
+        // 한정판만
+        if (limitedEditionOnly.value) {
+            filteredList = filteredList.filter { it.isLimited }
+        }
+
+        // 좋아요 상태를 동적으로 반영
         _filteredProductList.value = filteredList.map { product ->
-            // 저장된 좋아요 상태를 복사하거나, 없다면 기본값(false)으로 설정
-            product.copy(isFavorite = currentFavorites[product.id] ?: false)
+            product.copy(isFavorite = favoriteState.value[product.productDocumentId] ?: false)
         }
     }
 
 
+    // 좋아요 버튼 클릭 시 호출
     fun onLikeClick(product: Product) {
-        // 상품의 isFavorite 값을 반전
-        val updatedProduct = product.copy(isFavorite = !product.isFavorite)
+        // 좋아요 상태 토글
+        val currentFavorite = favoriteState.value[product.productDocumentId] ?: false
+        favoriteState.value[product.productDocumentId] = !currentFavorite
 
-        // filteredProductList 업데이트
-        _filteredProductList.value = _filteredProductList.value.map {
-            if (it.id == product.id) updatedProduct else it
-        }
-
-        // productList 업데이트
-        _productList.value = _productList.value.map {
-            if (it.id == product.id) updatedProduct else it
-        }
+        // 필터링된 목록 갱신
+        filterProducts()
     }
 }

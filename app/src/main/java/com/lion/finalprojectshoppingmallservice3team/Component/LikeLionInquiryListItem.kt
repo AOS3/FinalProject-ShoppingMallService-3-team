@@ -79,42 +79,51 @@ fun LikeLionInquiryListItem(item: Map<String, *>, isShop: Boolean = false) {
 
         if (isShop) {
             // 작성자와 날짜
-            Row(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 10.dp),
             ) {
-                Text(
-                    text = "샵이름",
-                    color = Color.Gray,
-                    fontSize = 14.sp
-                )
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ){
+                    Text(
+                        text = "샵이름",
+                        color = Color.Gray,
+                        fontSize = 14.sp
+                    )
 
-                Text(
-                    text = item["shopName"] as String,
-                    modifier = Modifier.padding(start = 10.dp).clickable {
+                    Text(
+                        text = item["shopName"] as String,
+                        modifier = Modifier.padding(start = 10.dp).clickable {
 
-                    },
-                    color = Color.Black,
-                    textDecoration = TextDecoration.Underline,
-                    fontSize = 14.sp
-                )
+                        },
+                        color = Color.Black,
+                        textDecoration = TextDecoration.Underline,
+                        fontSize = 14.sp
+                    )
+                }
+                Row (
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ){
+                    Text(
+                        text = "상품명",
+                        color = Color.Gray,
+                        fontSize = 14.sp
+                    )
 
-                Text(
-                    text = "상품명",
-                    color = Color.Gray,
-                    fontSize = 14.sp
-                )
+                    Text(
+                        text = item["productName"] as String,
+                        modifier = Modifier.padding(start = 10.dp).clickable {
 
-                Text(
-                    text = item["productName"] as String,
-                    modifier = Modifier.padding(start = 10.dp).clickable {
-
-                    },
-                    color = Color.Black,
-                    textDecoration = TextDecoration.Underline,
-                    fontSize = 14.sp
-                )
+                        },
+                        color = Color.Black,
+                        textDecoration = TextDecoration.Underline,
+                        fontSize = 14.sp
+                    )
+                }
             }
 
             // 구분선

@@ -29,4 +29,5 @@ class InquiryWriteViewModel @Inject constructor(
     fun inquiryWriteSuccessOnClick() {
         shoppingApplication.navHostController.popBackStack()
     }
+
 }

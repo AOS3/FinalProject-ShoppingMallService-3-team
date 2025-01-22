@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,22 +8,26 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionCheckBox
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionChipGroup
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionDivider
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionDropDownMenu
-import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionProductList
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionScrollableTabs
@@ -48,9 +53,8 @@ fun ShopScreen(shopViewModel: ShopViewModel = hiltViewModel()) {
                         iconButtonOnClick = {
                             // 검색화면 이동
                         },
-                        text = "",
-                        iconSize = 30.dp,
-                        size = 35.dp,
+                        color = Color.Transparent,
+                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                         borderNull = true
                     )
@@ -59,21 +63,21 @@ fun ShopScreen(shopViewModel: ShopViewModel = hiltViewModel()) {
                         iconButtonOnClick = {
                             // 장바구니 이동
                         },
-                        text = "",
-                        iconSize = 30.dp,
-                        size = 35.dp,
+                        color = Color.Transparent,
+                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                         borderNull = true
                     )
                 },
                 backColor = Color.Transparent,
-
             )
-        }
+        },
     ) {
         Column(modifier = Modifier
+            .background(Color.White)
             .fillMaxSize()
-            .padding(it)) {
+            .padding(it))
+            {
 
             // 칩 그룹
             LikeLionChipGroup(
@@ -103,7 +107,9 @@ fun ShopScreen(shopViewModel: ShopViewModel = hiltViewModel()) {
             // 상품 리스트를 2열 그리드로 표시
             LikeLionProductList(
                 productList = filteredProducts,
-                onProductClick = { /* 상품 클릭 시 처리 */ },
+
+                onCreatorNameClick = { /*크리에이터 화면으로 이동*/ },
+                onItemClick = {shopViewModel.listItemImageOnClick(it.productDocumentId)},
                 onLikeClick = { shopViewModel.onLikeClick(it) },
                 columns = 2
             )
@@ -113,23 +119,29 @@ fun ShopScreen(shopViewModel: ShopViewModel = hiltViewModel()) {
 
 @Composable
 fun FilterSection(shopViewModel: ShopViewModel) {
-    Row(modifier = Modifier.padding(vertical = 8.dp).padding(start = 10.dp,end = 10.dp), verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = Modifier.padding(0.dp).padding(start = 10.dp,end = 10.dp), verticalAlignment = Alignment.CenterVertically) {
         LikeLionCheckBox(
             text = "품절 제외",
-            checkedValue = shopViewModel.excludeSoldOut,
+            fontSize = 14.sp,
+            checkedValue =  shopViewModel.excludeSoldOut,
             onCheckedChange = {
-
+                // 품절 제외 상품 표시
+                shopViewModel.onExcludeSoldOutChange()
             },
-            modifier = Modifier,
+            modifier = Modifier
+                .scale(0.8f),
             textModifier = Modifier.padding(start = 0.dp)
         )
         LikeLionCheckBox(
             text = "한정판만",
+            fontSize = 14.sp,
             checkedValue = shopViewModel.limitedEditionOnly,
             onCheckedChange = {
-
+                // 한정판만표시
+                shopViewModel.onLimitedEditionChange()
             },
-            modifier = Modifier,
+            modifier = Modifier
+                .scale(0.8f),
             textModifier = Modifier.padding(start = 0.dp)
         )
 

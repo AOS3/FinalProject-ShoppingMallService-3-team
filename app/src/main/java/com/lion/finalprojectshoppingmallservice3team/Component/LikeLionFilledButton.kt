@@ -1,8 +1,8 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -23,28 +23,36 @@ import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 fun LikeLionFilledButton(
     // 버튼 텍스트
     text:String = "FilledButton",
+    border: BorderStroke = BorderStroke(0.dp, Color.Transparent),
     // 위에 패딩
     paddingTop: Dp = 0.dp,
     // 버튼 활성화 여부
     isEnabled: Boolean = true,
     // 아이콘
     icon: ImageVector? = null,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
     // 배경색
     containerColor: Color = MainColor,
     // 글자색
     contentColor: Color = Color.White,
     // 클릭 이벤트
     onClick:() -> Unit = {}
+
 ) {
     Button(
         modifier = modifier.padding(top = paddingTop),
-        onClick = onClick,
+        onClick = {
+            if (isEnabled) {
+                onClick()
+            }
+        },
         colors = ButtonDefaults.buttonColors(
             containerColor = if (isEnabled) containerColor else Color.LightGray,
             contentColor = if (isEnabled) contentColor else Color.Gray,
         ),
-        shape = RoundedCornerShape(5.dp)
+        border = border,
+        shape = RoundedCornerShape(5.dp),
+        enabled = isEnabled
     ) {
         Row {
             // ImageVector 아이콘 표시

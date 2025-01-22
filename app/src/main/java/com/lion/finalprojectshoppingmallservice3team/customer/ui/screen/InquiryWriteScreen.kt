@@ -59,7 +59,7 @@ fun InquiryWriteScreen(inquiryWriteViewModel: InquiryWriteViewModel = hiltViewMo
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
-                .padding(horizontal = 10.dp)
+                .padding(10.dp)
         ) {
             Column(
                 modifier = Modifier.weight(1f)
@@ -70,7 +70,7 @@ fun InquiryWriteScreen(inquiryWriteViewModel: InquiryWriteViewModel = hiltViewMo
                     inputCondition = "[^a-zA-Z0-9ㄱ-ㅎㅏ-ㅣ가-힣]",
                     trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.TEXT,
                     placeHolder = "제목을 입력해 주세요.",
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp)
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
                 )
 
                 LikeLionOutlinedTextField(

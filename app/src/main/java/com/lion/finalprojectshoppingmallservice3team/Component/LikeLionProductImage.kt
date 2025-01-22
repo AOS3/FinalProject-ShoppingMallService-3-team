@@ -25,7 +25,7 @@ import com.bumptech.glide.request.transition.Transition
 import com.lion.finalprojectshoppingmallservice3team.R
 
 @Composable
-fun LikeLionProduct(
+fun LikeLionProductImage(
     imgUrl: String,
     size:Dp,
     fixedImage : Int = R.drawable.product,
@@ -70,7 +70,7 @@ fun LikeLionProductListView(randomImg: List<String>,size:Dp){
         modifier = Modifier.padding(start = 20.dp)
     ){
         items(randomImg.size) { idx ->
-            LikeLionProduct(randomImg[idx], size)
+            LikeLionProductImage(randomImg[idx], size)
         }
     }
 }
