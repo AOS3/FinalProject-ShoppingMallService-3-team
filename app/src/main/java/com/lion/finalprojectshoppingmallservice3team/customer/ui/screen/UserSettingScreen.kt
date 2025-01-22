@@ -13,9 +13,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -84,10 +87,10 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
 
     val coroutineScope = rememberCoroutineScope()
 
-    // Bottom Sheet 상태 관리
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
-            initialValue = SheetValue.Hidden // Bottom Sheet 초기 상태를 숨김으로 설정
+            initialValue = SheetValue.Hidden, // 초기 상태는 Hidden
+            skipHiddenState = false // Hidden 상태를 허용
         )
     )
 
@@ -116,11 +119,12 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
+                    .padding(WindowInsets.navigationBars.asPaddingValues())
             ) {
                 Text(
                     text = "사진 선택",
-
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
                 )
 
                 // 사진 보관함
@@ -156,7 +160,8 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                 )
             }
         },
-        sheetPeekHeight = 0.dp // 기본 상태에서 Bottom Sheet는 숨김 상태
+        sheetPeekHeight = 56.dp, // 기본 peek 높이 조정
+        modifier = Modifier.padding(WindowInsets.navigationBars.asPaddingValues()) // 전체 스캐폴드에도 패딩 추가
     ) {
         Scaffold(
             topBar = {
@@ -209,7 +214,9 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                                     .width(80.dp)
                                     .height(35.dp),
                                 onClick = {
-
+                                    coroutineScope.launch {
+                                        scaffoldState.bottomSheetState.expand() // 바텀시트를 표시
+                                    }
                                 }
                             )
                         }
