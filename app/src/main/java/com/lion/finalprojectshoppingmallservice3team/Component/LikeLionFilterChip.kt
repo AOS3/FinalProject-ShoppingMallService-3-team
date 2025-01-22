@@ -42,7 +42,7 @@ fun LikeLionFilterChip(
     chipModifier: Modifier,
     modifier: Modifier = Modifier,
     onChipClicked: (String, Boolean) -> Unit,
-    onDeleteButtonClicked: (String) -> Unit // 삭제 버튼 콜백 추가
+    onDeleteButtonClicked: (String) -> Unit  = {}// 삭제 버튼 콜백 추가
 ) {
 
     Surface(
