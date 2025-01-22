@@ -1,5 +1,8 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import android.graphics.Bitmap
+import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,23 +15,46 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bumptech.glide.Glide
+import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+//import okhttp3.internal.wait
+import java.time.LocalDate
+import java.time.temporal.WeekFields
 import java.util.Calendar
+import java.util.Locale
 
-//@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun WeeklyCreator(
     rank: String,
@@ -96,29 +122,22 @@ fun WeeklyCreator(
         Card(
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(8.dp),
             onClick = navigationIconOnClick
         ) {
             Box {
                 // 블러 처리된 배경 이미지 추가
                 if (imageUrl.isNotEmpty()) {
-                    LikeLionProfileImg (
+
+                    LikeLionProductImage(
                         imgUrl = imageUrl,
-                        modifier = Modifier.fillMaxSize()
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier
                             .fillMaxSize()
                             .blur(16.dp),
-                        iconTint = Color.White,
-                        profileBack = Color.Transparent,
+                        size = 500.dp
                     )
-//                    GlideImage(
-//                        model = imageUrl,
-//                        contentDescription = "Background Image",
-//                        contentScale = ContentScale.Crop,
-//                        modifier = Modifier
-//                            .fillMaxSize()
-//                            .blur(16.dp) // 블러 효과 적용
-//                    )
                 }
 
                 Box(
@@ -152,6 +171,7 @@ fun WeeklyCreator(
                         color = Color.White
                     )
 
+//                Spacer(modifier = Modifier.height(8.dp))
 
                     Column(
                         modifier = Modifier
@@ -167,27 +187,22 @@ fun WeeklyCreator(
                             modifier = Modifier
                                 .size(250.dp)
                                 .clip(CircleShape)
-                                .background(Color.LightGray)
 
                         ) {
-                            LikeLionProfileImg (
+                            LikeLionProfileImg(
                                 imgUrl = imageUrl,
-                                modifier = Modifier.fillMaxSize()
-                                    .fillMaxSize(),
-                                iconTint = Color.White,
+                                iconTint = Color.Transparent,
                                 profileBack = Color.Transparent,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .fillMaxSize()
                             )
-//                            GlideImage(
-//                                model = imageUrl,
-//                                contentDescription = "Profile Image",
-//                                contentScale = ContentScale.Crop,
-//                                modifier = Modifier.fillMaxSize()
-//                            )
                         }
                     }
 
 
                     Column(
+//                    modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.Start
                     ) {
@@ -208,7 +223,7 @@ fun WeeklyCreator(
                     Spacer(modifier = Modifier.height(8.dp))
 
 
-                   //  하단 아이템 리스트 (이미지 버튼들)
+//                     하단 아이템 리스트 (이미지 버튼들)
                     Row(
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically,
@@ -218,17 +233,17 @@ fun WeeklyCreator(
 
                         ) {
                         items.forEach { item ->
-//                            GlideImage(
-//                                model = item,
-//                                contentDescription = "Item Image",
-//                                contentScale = ContentScale.Crop,
-//                                modifier = Modifier
-//                                    .size(80.dp)
-//                                    .clip(RoundedCornerShape(8.dp))
-//                                    .clickable {
-//                                        navigationIconOnClick()
-//                                    }
-//                            )
+
+                            LikeLionProductImage(
+                                imgUrl = item,
+                                size = 80.dp,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .clickable {
+                                        navigationIconOnClick()
+                                    }
+                            )
                         }
                     }
                 }

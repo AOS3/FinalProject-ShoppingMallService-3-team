@@ -55,10 +55,6 @@ fun HomeScreen(
                 actions = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
-                        text = "",
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
-                        padding = 10.dp,
                         iconButtonOnClick = {
                             navController.navigate("search")
                         },
@@ -66,16 +62,12 @@ fun HomeScreen(
                     )
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.baseline_shopping_cart_24),
-                        text = "",
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
-                        padding = 10.dp,
                         iconButtonOnClick = {
 
                         },
                         borderNull = true,
                     )
-                }
+                },
             )
         },
 

@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import android.R.attr.text
 import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -32,7 +33,7 @@ fun LikeLionFilterChip(
     chipModifier: Modifier,
     modifier: Modifier = Modifier,
     onChipClicked: (String, Boolean) -> Unit,
-    onDeleteButtonClicked: (String) -> Unit // 삭제 버튼 콜백 추가
+    onDeleteButtonClicked: ((String) -> Unit)? = null // 삭제 버튼 콜백 추가
 ) {
 
     Surface(
@@ -58,16 +59,17 @@ fun LikeLionFilterChip(
                 modifier = chipModifier
                     .clickable { onChipClicked(text, selected) }
             )
-
-            IconButton(
-                onClick = { onDeleteButtonClicked(text) },
-                modifier = Modifier.size(20.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Clear, // 삭제 아이콘 설정
-                    contentDescription = "Delete Chip",
-                    tint = Color.Gray
-                )
+            if (onDeleteButtonClicked!=null) {
+                IconButton(
+                    onClick = { onDeleteButtonClicked(text) },
+                    modifier = Modifier.size(20.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Clear, // 삭제 아이콘 설정
+                        contentDescription = "Delete Chip",
+                        tint = Color.Gray
+                    )
+                }
             }
         }
     }

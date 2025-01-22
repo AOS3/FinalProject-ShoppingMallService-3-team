@@ -21,7 +21,7 @@ fun LikeLionChipGroup(
     elements: List<ChipState>,
     chipStyle: ChipStyle,
     onChipClicked: (String, Boolean, Int) -> Unit,
-    onDeleteButtonClicked: (String, Int) -> Unit = {_,_ -> }, // 삭제 버튼 콜백 추가
+    onDeleteButtonClicked: ((String, Int) -> Unit)? = null, // 삭제 버튼 콜백 추가
 ) {
     LazyRow(
         modifier = modifier,
@@ -41,9 +41,10 @@ fun LikeLionChipGroup(
                 onChipClicked = { content, isSelected ->
                     onChipClicked(content, isSelected, idx)
                 },
-                onDeleteButtonClicked = { content ->
-                    onDeleteButtonClicked(content, idx)
-                }
+
+                onDeleteButtonClicked = if (onDeleteButtonClicked!=null)
+                { content -> onDeleteButtonClicked(content, idx) }
+                else null
             )
             Spacer(modifier = Modifier.padding(8.dp))
         }
