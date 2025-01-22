@@ -39,6 +39,7 @@ import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppi
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
