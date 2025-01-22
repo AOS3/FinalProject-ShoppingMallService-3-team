@@ -19,15 +19,21 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,11 +45,14 @@ fun LikeLionSearchBar(
     trailingIconOnClick: () -> Unit = {},
     searchResultComposable : @Composable () -> Unit,
     contentComposable: @Composable () -> Unit,
-) {
+    composableContent: @Composable (List<String>) -> Unit, // 최근 검색어 전달
+    onSearch: () -> Unit = {} // 엔터키 입력 시 호출할 콜백 추가
 
+) {
     var expandedValue by rememberSaveable {
         mutableStateOf(false)
     }
+    val recentSearches = remember { mutableStateListOf<String>() } // 최근 검색어 상태
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -58,7 +67,7 @@ fun LikeLionSearchBar(
                     },
                     // 키보드의 엔터키를 누르면 동작하는 부분
                     onSearch = {
-                        
+                        onSearch()
                     },
                     expanded = expandedValue,
                     onExpandedChange = {
@@ -130,6 +139,11 @@ fun LikeLionSearchBar(
             searchResultComposable()
         }
 
+        // 최근 검색어 표시 부분
+        Column(modifier = Modifier.padding(top = 120.dp)) {
+            composableContent(recentSearches)
+        }
+
         // 검색바 하단의 본문 부분
         // contentComposable()
         Column(
@@ -139,3 +153,5 @@ fun LikeLionSearchBar(
         }
     }
 }
+
+

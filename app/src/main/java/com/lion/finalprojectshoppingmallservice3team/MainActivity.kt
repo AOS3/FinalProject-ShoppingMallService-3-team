@@ -4,6 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,7 +28,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.HomeScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LoginScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchFailScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchSuccessScreen
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -47,10 +55,45 @@ fun ShoppingMain() {
     val navController = rememberNavController()
     NavHost(
         navController = navController,
-        startDestination = "splash"
+        startDestination = "home",
+        enterTransition = {
+            fadeIn(
+                tween(300)
+            ) +
+                    slideIntoContainer(
+                        AnimatedContentTransitionScope.SlideDirection.Start,
+                        tween(300)
+                    )
+        },
+        popExitTransition = {
+            fadeOut(
+                tween(300)
+            ) +
+                    slideOutOfContainer(
+                        AnimatedContentTransitionScope.SlideDirection.End,
+                        tween(300)
+                    )
+        },
+        exitTransition = {
+            fadeOut(
+                tween(300)
+            )
+        },
+        popEnterTransition = {
+            fadeIn(
+                tween(300)
+            )
+        },
     ) {
         composable("splash") { SplashScreen(navController) }
         composable("login") { LoginScreen() }
+        composable("home") { HomeScreen(navController) }
+        composable("search") { SearchScreen(navController) }
+        composable("searchFail") { SearchFailScreen(navController) }
+        composable("searchSuccess") { SearchSuccessScreen(navController) }
+
+
+
     }
 }
 

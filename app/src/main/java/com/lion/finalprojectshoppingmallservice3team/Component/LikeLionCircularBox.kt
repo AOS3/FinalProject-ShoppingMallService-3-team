@@ -1,0 +1,96 @@
+package com.lion.finalprojectshoppingmallservice3team.Component
+
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
+import com.lion.finalprojectshoppingmallservice3team.R
+
+@Composable
+fun LikeLionCircularBox(
+    imgUrl: String,
+    text: String,
+    modifier: Modifier = Modifier,
+    iconTint: Color,
+    profileBack: Color
+) {
+    // 이미지 비트맵
+    val bitmap: MutableState<Bitmap?> = remember {mutableStateOf(null)}
+
+    val imageModifier = modifier
+        .size(width = 100.dp, height = 100.dp)
+//        .clip(RoundedCornerShape(10.dp))  // 사각형에 라운드 주는거
+        .clip(CircleShape)  // 원형으로 만드는거
+
+    Glide.with(LocalContext.current)
+        .asBitmap() // 뭘로 변활 할 것?
+        .load(imgUrl) // 어디서 가지고 올 것?
+        .into(object : CustomTarget<Bitmap>() {  // 어디에 넣을 것?
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                // resource가 다운 받은 이미지
+                bitmap.value = resource
+            }
+
+            override fun onLoadCleared(placeholder: Drawable?) {
+
+            }
+        })
+    Column(
+        modifier = Modifier
+            .size(80.dp)
+            .clip(CircleShape)
+            .background(profileBack),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // bitmap에 데이터가 있다면? -> 이미지를 다운 받았다면
+        bitmap.value?.asImageBitmap()?.let {
+            Image(
+                bitmap = it,
+                contentScale = ContentScale.Fit,
+                contentDescription = null,
+                modifier = imageModifier
+            )
+        } ?: Image(
+            painter = painterResource(id = R.drawable.ic_empty_person_24), // 다운 받은 이미지가 없는 경우
+            contentScale = ContentScale.Fit,
+            contentDescription = null,
+            modifier = imageModifier,
+            colorFilter = ColorFilter.tint(iconTint)
+        )
+
+        // 하단 텍스트
+        Text(
+            text = text,
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp,
+            color = Color.Black
+
+        )
+    }
+}

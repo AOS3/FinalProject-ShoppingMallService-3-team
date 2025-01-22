@@ -41,12 +41,14 @@ import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledBut
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.LoginViewModel
 
+
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
                 navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
+                backColor = Color.White,
                 navigationIconOnClick = {
 
                 },
@@ -102,14 +104,12 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                 }
             )
 
-            LikeLionFilledButton(
-                text = "로그인하기",
-                isEnabled = loginViewModel.isButtonEnabled.value,
-                paddingTop = 20.dp,
-                onClick = {
-
-                }
-            )
+//            LikeLionFilledButton(
+//                text = "로그인하기",
+//                isEnabled = loginViewModel.isButtonEnabled.value,
+//                paddingTop = 20.dp,
+//               // onClick = {}
+//            )
 
             Row(
                 modifier = Modifier.padding(top = 20.dp, bottom = 60.dp)
