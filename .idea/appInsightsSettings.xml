@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.lion.finalprojectshoppingmallservice3team" />
+                  <option name="mobileSdkAppId" value="1:67862628057:android:6caddb0af7982dd42420c8" />
+                  <option name="projectId" value="likelion-9a591" />
+                  <option name="projectNumber" value="67862628057" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

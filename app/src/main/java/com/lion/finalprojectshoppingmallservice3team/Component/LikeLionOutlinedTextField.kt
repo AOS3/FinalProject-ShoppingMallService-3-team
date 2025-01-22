@@ -178,9 +178,9 @@ fun LikeLionOutlinedTextField(
             null
         },
         isError = isError.value,
-      
+
         // keyboardOptions = keyboardOptions, // 키보드 옵션 추가
-        keyboardActions = keyboardActions  // 키보드 동작 추가
+        keyboardActions = keyboardActions,  // 키보드 동작 추가
         keyboardOptions = if (inputType == LikeLionOutlinedTextFieldInputType.NUMBER) {
             KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number)
         } else {

@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import android.R.attr.divider
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow

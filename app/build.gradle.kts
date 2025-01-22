@@ -83,6 +83,7 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:25.1.1")
     implementation("com.google.firebase:firebase-storage:21.0.1")
 
+    implementation("me.onebone:toolbar-compose:2.3.5")
 }
 
 kapt {

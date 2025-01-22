@@ -1,8 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -13,21 +11,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Scaffold
-import androidx.compose.material.TopAppBar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,20 +25,17 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.lion.a02_boardcloneproject.component.LikeLionIconButton
-import com.lion.a02_boardcloneproject.component.LikeLionOutlinedTextField
-import com.lion.a02_boardcloneproject.component.LikeLionOutlinedTextFieldEndIconMode
-import com.lion.a02_boardcloneproject.component.LikeLionSearchBar
 import com.lion.finalprojectshoppingmallservice3team.Component.ChipState
 import com.lion.finalprojectshoppingmallservice3team.Component.ChipStyle
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionChipGroup
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextField
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextFieldEndIconMode
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.SearchViewModel
-import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 
 @Composable
 fun SearchScreen(
@@ -106,8 +93,8 @@ fun SearchScreen(
                 LikeLionIconButton(
                     icon = ImageVector.vectorResource(id = R.drawable.baseline_close_24),
                     text = "",
-                    iconSize = 30.dp,
-                    size = 35.dp,
+                    color = Color.Transparent,
+                    iconBackColor = Color.Transparent,
                     padding = 10.dp,
                     iconButtonOnClick = {
                         navController.popBackStack()

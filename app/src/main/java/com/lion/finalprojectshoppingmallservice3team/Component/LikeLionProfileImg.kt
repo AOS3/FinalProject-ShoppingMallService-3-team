@@ -46,6 +46,7 @@ fun LikeLionProfileImg(
     iconTint: Color,
     profileBack: Color,
     profileSize:Dp = 50.dp,
+    contentScale: ContentScale = ContentScale.Fit,
     offsetX: Dp? = null,
     offsetY: Dp? = null
 ){
@@ -87,13 +88,13 @@ fun LikeLionProfileImg(
         // bitmap에 데이터가 있다면? -> 이미지를 다운 받았다면
         bitmap.value?.asImageBitmap()?.let {
             Image(bitmap = it
-                , contentScale = ContentScale.Fit
+                , contentScale = contentScale
                 , contentDescription = null
                 , modifier = imageModifier
             )
         } ?: Image(
             painter = painterResource(id = R.drawable.ic_empty_person_24), // 다운 받은 이미지가 없는 경우
-            contentScale = ContentScale.Fit,
+            contentScale = contentScale,
             contentDescription = null,
             modifier = imageModifier,
             colorFilter = ColorFilter.tint(iconTint)

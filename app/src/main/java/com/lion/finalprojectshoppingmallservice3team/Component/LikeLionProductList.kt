@@ -41,7 +41,8 @@ fun LikeLionProductList(
     onCreatorNameClick: (Product) -> Unit,
     onLikeClick: (Product) -> Unit,
     onItemClick: (Product) -> Unit,
-    columns: Int = 2
+    columns: Int = 2,
+    modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(columns),

@@ -34,7 +34,12 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryL
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryReadScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.InquiryWriteScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LoginMyPageScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.CreatorShopScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LoginScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyFavoriteBottomScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyFavoriteGroupScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyFavoriteNewGroupScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyFavoriteScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.LogoutMyPageScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.ModifyUserPwScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.MyCheerScreen
@@ -57,6 +62,7 @@ import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppi
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 
+
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,12 +78,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ShoppingMain() {
-    val navController = rememberNavController(
-      
+    val navController = rememberNavController()
     // Application 객체에 담는다.
     val shoppingApplication = LocalContext.current.applicationContext as ShoppingApplication
     shoppingApplication.navHostController = navController
-
     NavHost(
         navController = navController,
         startDestination = "splash",
@@ -181,7 +185,31 @@ fun ShoppingMain() {
         composable("inquiryProductRead") { InquiryProductReadScreen() }
         // 취소/환불 FAQ
         composable("cancelRefundFAQ") { CancelRefundFAQScreen() }
-
+        composable("myFavorite") { MyFavoriteScreen() }
+        composable("myFavoriteGroup") { MyFavoriteGroupScreen() }
+        composable("MyFavoriteNewGroup") { MyFavoriteNewGroupScreen() }
+        composable(
+            route = "MyFavoriteBottom",
+            enterTransition = {
+                fadeIn(
+                    tween(300)
+                ) +
+                        slideIntoContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Up,
+                            tween(300)
+                        )
+            },
+            popExitTransition = {
+                fadeOut(
+                    tween(300)
+                ) +
+                        slideOutOfContainer(
+                            AnimatedContentTransitionScope.SlideDirection.Down,
+                            tween(300)
+                        )
+            },
+        ) { MyFavoriteBottomScreen() }
+        composable("CreatorShop"){ CreatorShopScreen() }
     }
 }
 
