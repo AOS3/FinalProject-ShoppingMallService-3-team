@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,10 +33,12 @@ import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 
 @Composable
 fun UserJoinScreen(userJoinViewModel: UserJoinViewModel = hiltViewModel()) {
+    val context = LocalContext.current
+
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
-                backColor = Color.Transparent,
+                backColor = Color.White,
                 navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationIconOnClick = {
                     userJoinViewModel.navigationIconOnClick()
@@ -45,6 +49,7 @@ fun UserJoinScreen(userJoinViewModel: UserJoinViewModel = hiltViewModel()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(it)
                 .padding(horizontal = 10.dp),
             verticalArrangement = Arrangement.Center,
@@ -78,7 +83,7 @@ fun UserJoinScreen(userJoinViewModel: UserJoinViewModel = hiltViewModel()) {
                         .size(50.dp),
                     isCircular = true,
                     onClick = {
-
+                        userJoinViewModel.kakaoSignUp(context)
                     }
                 )
 

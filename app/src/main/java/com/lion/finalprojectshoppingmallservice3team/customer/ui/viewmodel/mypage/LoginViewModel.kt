@@ -1,9 +1,14 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.mypage
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.kakao.sdk.auth.model.OAuthToken
+import com.kakao.sdk.user.UserApiClient
+import com.kakao.sdk.user.model.User
 import com.lion.finalprojectshoppingmallservice3team.ShoppingApplication
+import com.lion.finalprojectshoppingmallservice3team.customer.data.model.CustomerModel
 import com.lion.finalprojectshoppingmallservice3team.customer.data.service.CustomerService
 import com.lion.finalprojectshoppingmallservice3team.customer.data.util.LoginResult
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,6 +28,8 @@ class LoginViewModel @Inject constructor(
 
     val textFieldLoginIdValue = mutableStateOf("")
     val textFieldLoginPwValue = mutableStateOf("")
+
+    val loginError = mutableStateOf<String?>(null)
 
     // 아이디 입력 오류 다이얼로그 상태변수
     val alertDialogUserIdState = mutableStateOf(false)
@@ -44,6 +51,51 @@ class LoginViewModel @Inject constructor(
     fun updateButtonState() {
         isButtonEnabled.value = textFieldLoginIdValue.value.isNotEmpty() &&
                                 textFieldLoginPwValue.value.isNotEmpty()
+    }
+
+    fun kakaoLogin(context: Context) {
+        UserApiClient.instance.loginWithKakaoAccount(context) { token, error ->
+            if (error != null) {
+                loginError.value = "카카오 로그인 실패: ${error.localizedMessage}"
+            } else if (token != null) {
+                handleLogin(context, token)
+            }
+        }
+    }
+
+    private fun handleLogin(context: Context, token: OAuthToken) {
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                loginError.value = "사용자 정보 요청 실패: ${error.localizedMessage}"
+            } else if (user != null) {
+                customerService.checkExistingUser(user.id.toString()) { isExisting, documentId ->
+                    if (isExisting && documentId != null) {
+                        // Firestore에서 사용자 데이터를 가져옴
+                        customerService.fetchCustomerData(documentId) { customerModel ->
+                            CoroutineScope(Dispatchers.Main).launch {
+                                shoppingApplication.loginCustomerModel = customerModel
+                                shoppingApplication.navHostController.popBackStack("logoutMyPage", true)
+                                shoppingApplication.navHostController.navigate("loginMyPage") {
+                                    popUpTo("login") { inclusive = true }
+                                }
+                            }
+                        }
+                    } else {
+                        // 회원이 아닌 경우 회원가입 페이지로 이동
+                        CoroutineScope(Dispatchers.Main).launch {
+                            Toast.makeText(
+                                context,
+                                "회원이 아닙니다. 회원가입부터 진행해주세요.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            shoppingApplication.navHostController.navigate("userJoin") {
+                                popUpTo("login") { inclusive = true }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     fun buttonLoginClick(){

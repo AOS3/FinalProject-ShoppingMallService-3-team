@@ -85,6 +85,8 @@ dependencies {
     implementation("com.google.firebase:firebase-storage:21.0.1")
 
     implementation("me.onebone:toolbar-compose:2.3.5")
+
+    implementation("com.kakao.sdk:v2-user:2.20.1") // 카카오 로그인 API 모듈
 }
 
 kapt {

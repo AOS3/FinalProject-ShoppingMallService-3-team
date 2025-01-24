@@ -17,6 +17,7 @@ class CustomerModel {
     var customerUserBirthDate: String = ""
     var customerUserGender: String = ""
     var customerUserAdvAgree : Boolean = false
+    var customerPersonInfoAgree : Boolean = false
     var customerUserSmsAgree: String = ""
     var customerUserAppPushAgree: String = ""
     var fcmToken: String = ""
@@ -39,6 +40,7 @@ class CustomerModel {
         customerVO.customerUserBirthDate = customerUserBirthDate
         customerVO.customerUserGender = customerUserGender
         customerVO.customerUserAdvAgree = customerUserAdvAgree
+        customerVO.customerPersonInfoAgree = customerPersonInfoAgree
         customerVO.customerUserSmsAgree = customerUserSmsAgree
         customerVO.customerUserAppPushAgree = customerUserAppPushAgree
         customerVO.fcmToken = fcmToken

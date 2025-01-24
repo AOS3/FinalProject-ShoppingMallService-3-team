@@ -5,6 +5,8 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.scrollable
@@ -23,6 +25,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -44,6 +47,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
@@ -62,6 +66,7 @@ import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionAlertDial
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionImage
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionImageBitmap
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextField
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextFieldEndIconMode
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextFieldInputType
@@ -70,7 +75,7 @@ import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionRadioGrou
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.data.util.Tools
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.UserSettingViewModel
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.mypage.UserSettingViewModel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.SubColor
 import kotlinx.coroutines.Dispatchers
@@ -97,13 +102,21 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
     // 사진 촬영용 런처
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
         if(it){
-            Tools.takePictureData(context, contentUri, userSettingViewModel.imageUri)
+            Tools.takePictureData(context, contentUri, userSettingViewModel.imageBitmapState)
+            userSettingViewModel.showImage1State.value = false
+            userSettingViewModel.showImage2State.value = false
+            userSettingViewModel.showImage3State.value = true
         }
     }
 
     // 앨범용 런처
     val albumLauncher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
-        Tools.takeAlbumData(context, it, userSettingViewModel.imageUri)
+        Tools.takeAlbumData(context, it, userSettingViewModel.imageBitmapState)
+        if (it != null) {
+            userSettingViewModel.showImage1State.value = false
+            userSettingViewModel.showImage2State.value = false
+            userSettingViewModel.showImage3State.value = true
+        }
     }
 
     // LaunchedEffect로 프로필 이미지를 초기 로드
@@ -152,9 +165,22 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                         .fillMaxWidth()
                         .clickable {
                             coroutineScope.launch { scaffoldState.bottomSheetState.hide() }
-//                            val uri = Tools.createImageUri(context)
-//                            contentUri = uri
-//                            cameraLauncher.launch(uri)
+                            val uri = Tools.gettingPictureUri(context)
+                            contentUri = uri
+                            cameraLauncher.launch(uri)
+                        }
+                        .padding(vertical = 8.dp)
+                )
+
+                // 사진 찍기
+                Text(
+                    text = "사진 삭제",
+
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            coroutineScope.launch { scaffoldState.bottomSheetState.hide() }
+                            userSettingViewModel.deleteImageOnClick()
                         }
                         .padding(vertical = 8.dp)
                 )
@@ -166,7 +192,7 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
         Scaffold(
             topBar = {
                 LikeLionTopAppBar(
-                    backColor = Color.Transparent,
+                    backColor = Color.White,
                     navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
                     navigationIconOnClick = {
                         userSettingViewModel.navigationIconOnClick()
@@ -178,6 +204,7 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
             Column(
                 modifier = Modifier
                     .fillMaxSize()
+                    .background(Color.White)
                     .padding(it)
                     .padding(horizontal = 10.dp)
                     .verticalScroll(state = rememberScrollState())
@@ -194,14 +221,50 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                             .height(140.dp), // 전체 높이 설정
                         contentAlignment = Alignment.Center
                     ) {
-                        LikeLionImage(
-                            painter = userSettingViewModel.imageUri.value?.let {
-                                BitmapPainter(it.asImageBitmap()) // Bitmap을 ImageBitmap으로 변환
-                            } ?: painterResource(id = R.drawable.account_circle_24px), // 기본 이미지
-                            contentScale = ContentScale.Crop,
-                            isCircular = true,
-                            modifier = Modifier.size(140.dp) // 이미지 크기 설정
-                        )
+                        // 이미지 요소
+                        // 첨부 이미지가 없는 경우
+                        if (userSettingViewModel.showImage1State.value) {
+                            LikeLionImage(
+                                painter = painterResource(R.drawable.account_circle_24px),
+                                contentScale = ContentScale.Crop,
+                                isCircular = true,
+                                modifier = Modifier.size(140.dp) // 이미지 크기 설정
+                            )
+                        }
+                        // 서버로부터 받은 이미지 표시
+                        if (userSettingViewModel.showImage2State.value) {
+                            val bitmapState = remember { mutableStateOf<Bitmap?>(null) }
+
+                            // Glide로 이미지를 비동기 로드
+                            LaunchedEffect(userSettingViewModel.imageUriState.value) {
+                                userSettingViewModel.imageUriState.value?.let { uri ->
+                                    val bitmap = withContext(Dispatchers.IO) {
+                                        Glide.with(context)
+                                            .asBitmap()
+                                            .load(uri)
+                                            .submit()
+                                            .get()
+                                    }
+                                    bitmapState.value = bitmap
+                                }
+                            }
+
+                            LikeLionImage(
+                                bitmap = bitmapState.value, // 로드된 Bitmap 전달
+                                painter = painterResource(R.drawable.account_circle_24px), // 기본 이미지
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier.size(140.dp), // 이미지 크기
+                                isCircular = true // 원형 이미지
+                            )
+                        }
+                        // 카메라나 앨범에서 사진 데이터를 가져온 경우
+                        if (userSettingViewModel.showImage3State.value) {
+                            LikeLionImageBitmap(
+                                imageBitmap = userSettingViewModel.imageBitmapState.value!!.asImageBitmap(),
+                                modifier = Modifier.size(140.dp).clip(CircleShape).border(0.dp, Color.Transparent, CircleShape),
+                                contentScale = ContentScale.Crop,
+                            )
+                        }
 
                         // 버튼 (이미지 아래로 위치)
                         Column(
