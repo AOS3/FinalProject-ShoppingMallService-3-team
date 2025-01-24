@@ -39,19 +39,19 @@ fun LikeLionBottomSheet(
                     .padding(10.dp)
                     .background(Color.White)
             ) {
-                // 닫기 버튼
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    IconButton(onClick = onDismissRequest) {
-                        Icon(
-                            imageVector = Icons.Default.Close,
-                            contentDescription = "Close",
-                            tint = Color.Gray
-                        )
-                    }
-                }
+//                // 닫기 버튼
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.End
+//                ) {
+//                    IconButton(onClick = onDismissRequest) {
+//                        Icon(
+//                            imageVector = Icons.Default.Close,
+//                            contentDescription = "Close",
+//                            tint = Color.Gray
+//                        )
+//                    }
+//                }
 
                 // 사이즈 및 컬러가 존재하는 경우에만 표시
                 Spacer(modifier = Modifier.height(8.dp))
