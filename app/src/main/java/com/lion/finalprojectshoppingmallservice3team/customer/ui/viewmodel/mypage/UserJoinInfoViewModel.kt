@@ -31,6 +31,12 @@ class UserJoinInfoViewModel @Inject constructor(
     val textFieldUserJoinPwValue = mutableStateOf("")
     // 닉네임 입력 요소
     val textFieldUserJoinNicknameValue = mutableStateOf("")
+    // 이름 입력 요소
+    val textFieldUserJoinNameValue = mutableStateOf("")
+    // 연락처 입력 요소
+    val textFieldUserJoinPhoneValue = mutableStateOf("")
+    // 생일 입력 요소
+    val textFieldUserJoinBirthValue = mutableStateOf("")
 
     // 조건 충족 여부 상태
     // 2~10자
@@ -51,7 +57,7 @@ class UserJoinInfoViewModel @Inject constructor(
 //    // 약관들 입력 요소
 //    val checkBoxUserJoinInfo1Value = mutableStateOf(false)
 //    val checkBoxUserJoinInfo2Value = mutableStateOf(false)
-//    val checkBoxUserJoinInfo3Value = mutableStateOf(false)
+    val checkBoxUserJoinInfo3Value = mutableStateOf(false)
     val checkBoxUserJoinInfo4Value = mutableStateOf(false)
 
     val isButtonIdEnabled = mutableStateOf(false)
@@ -119,13 +125,18 @@ class UserJoinInfoViewModel @Inject constructor(
 
     fun updateUserJoinButtonState() {
         // 조건: 아이디 중복 확인, 닉네임 중복 확인, 비밀번호 조건 만족, 약관 필수 체크
-        isButtonJoinEnabled.value = isCheckId.value &&
-                isCheckNickName.value &&
-                isJoinPwLengthValid.value &&
-                isJoinContainsIdValid.value
+        isButtonJoinEnabled.value =
+            textFieldUserJoinNameValue.value.isNotBlank() &&
+                    textFieldUserJoinPhoneValue.value.isNotBlank() &&
+                    textFieldUserJoinBirthValue.value.isNotBlank() &&
+                    isCheckId.value &&
+                    isCheckNickName.value &&
+                    isJoinPwLengthValid.value &&
+                    isJoinContainsIdValid.value &&
+                    checkBoxUserJoinInfo3Value.value
 //                checkBoxUserJoinInfo1Value.value && // 필수 약관
 //                checkBoxUserJoinInfo2Value.value && // 필수 약관
-//                checkBoxUserJoinInfo3Value.value
+
     }
 
     fun updateCheckIdButtonState() {
@@ -137,13 +148,13 @@ class UserJoinInfoViewModel @Inject constructor(
         if(triStateCheckBoxUserJoinInfoAllValue.value == ToggleableState.On){
 //            checkBoxUserJoinInfo1Value.value = true
 //            checkBoxUserJoinInfo2Value.value = true
-//            checkBoxUserJoinInfo3Value.value = true
+            checkBoxUserJoinInfo3Value.value = true
             checkBoxUserJoinInfo4Value.value = true
             updateUserJoinButtonState()
         } else if(triStateCheckBoxUserJoinInfoAllValue.value == ToggleableState.Off){
 //            checkBoxUserJoinInfo1Value.value = false
 //            checkBoxUserJoinInfo2Value.value = false
-//            checkBoxUserJoinInfo3Value.value = false
+            checkBoxUserJoinInfo3Value.value = false
             checkBoxUserJoinInfo4Value.value = false
             updateUserJoinButtonState()
         }
@@ -240,10 +251,12 @@ class UserJoinInfoViewModel @Inject constructor(
         customerModel.customerUserId = textFieldUserJoinIdValue.value
         customerModel.customerUserPw = textFieldUserJoinPwValue.value
         customerModel.customerUserNickName = textFieldUserJoinNicknameValue.value
+        customerModel.customerUserName = textFieldUserJoinNameValue.value
+        customerModel.customerUserPhoneNumber = textFieldUserJoinPhoneValue.value
+        customerModel.customerUserBirthDate = textFieldUserJoinBirthValue.value
 //        customerModel.isAdult = checkBoxUserJoinInfo1Value.value
 //        customerModel.useAgree = checkBoxUserJoinInfo2Value.value
-//        customerModel.customerInformationAgree = checkBoxUserJoinInfo3Value.value
-        customerModel.customerUserAdvAgree = checkBoxUserJoinInfo4Value.value
+        customerModel.customerPersonInfoAgree = checkBoxUserJoinInfo3Value.value
         customerModel.customerUserAdvAgree = checkBoxUserJoinInfo4Value.value
         if (checkBoxUserJoinInfo4Value.value == true){
             customerModel.customerUserSmsAgree = "동의"
@@ -253,6 +266,7 @@ class UserJoinInfoViewModel @Inject constructor(
             customerModel.customerUserAppPushAgree = "미동의"
         }
         customerModel.customerUserCreatedAt = System.nanoTime()
+        customerModel.customerUserProfileImage = "none"
         customerModel.customerUserState = UserState.USER_STATE_NORMAL
 
         // 저장한다.
