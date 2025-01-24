@@ -46,7 +46,7 @@ fun LikeLionProductList(
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(columns),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(),
         contentPadding = PaddingValues(horizontal = 10.dp)

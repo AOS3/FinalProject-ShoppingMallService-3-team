@@ -55,11 +55,11 @@ fun LikeLionIconButton(
             iconButtonOnClick()
         },
         modifier = if(fillWidth)
-            Modifier.padding(padding).fillMaxWidth()
-            else if (fillWidth && !borderNull) Modifier.padding(padding).border(1.dp,Color.Gray, shape = RoundedCornerShape(9.dp))
+            modifier.padding(padding).fillMaxWidth()
+            else if (fillWidth && !borderNull) modifier.padding(padding).border(1.dp,Color.Gray, shape = RoundedCornerShape(9.dp))
                 .fillMaxWidth()
-            else if (!fillWidth && borderNull)Modifier.padding(padding).size(widthSize,heightSize)
-        else Modifier.padding(padding).border(1.dp,Color.Gray, shape = RoundedCornerShape(9.dp))
+            else if (!fillWidth && borderNull)modifier.padding(padding).size(widthSize,heightSize)
+        else modifier.padding(padding).border(1.dp,Color.Gray, shape = RoundedCornerShape(9.dp))
             .size(widthSize ,heightSize),
         colors = IconButtonDefaults.iconButtonColors(
             color
