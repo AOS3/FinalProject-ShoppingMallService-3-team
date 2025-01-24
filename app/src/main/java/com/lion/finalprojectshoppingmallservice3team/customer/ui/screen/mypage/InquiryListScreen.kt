@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -62,7 +63,7 @@ fun InquiryListScreen(inquiryListViewModel: InquiryListViewModel = hiltViewModel
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
-                backColor = Color.Transparent,
+                backColor = Color.White,
                 title = "문의",
                 navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationIconOnClick = {
@@ -71,15 +72,11 @@ fun InquiryListScreen(inquiryListViewModel: InquiryListViewModel = hiltViewModel
                 menuItems = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                         borderNull = true
                     )
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.shopping_cart_24px),
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                         borderNull = true
                     )
@@ -98,7 +95,7 @@ fun InquiryListScreen(inquiryListViewModel: InquiryListViewModel = hiltViewModel
         floatingActionButtonPosition = FabPosition.End // 오른쪽 하단 정렬
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(it).padding(horizontal = 10.dp)
+            modifier = Modifier.fillMaxSize().background(Color.White).padding(it).padding(horizontal = 10.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),

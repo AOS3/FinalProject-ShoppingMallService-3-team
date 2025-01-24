@@ -1,6 +1,7 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,11 +36,9 @@ fun InquiryWriteScreen(inquiryWriteViewModel: InquiryWriteViewModel = hiltViewMo
         topBar = {
             LikeLionTopAppBar(
                 title = "문의하기",
-                backColor = Color.Transparent,
+                backColor = Color.White,
                 menuItems = {
                     LikeLionIconButton(
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
                         icon = ImageVector.vectorResource(R.drawable.close_24px),
                         padding = 10.dp,
                         borderNull = true,
@@ -54,6 +53,7 @@ fun InquiryWriteScreen(inquiryWriteViewModel: InquiryWriteViewModel = hiltViewMo
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(it)
                 .padding(horizontal = 10.dp)
         ) {

@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,7 +44,7 @@ fun InquiryReadScreen(inquiryReadViewModel: InquiryReadViewModel = hiltViewModel
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
-                backColor = Color.Transparent,
+                backColor = Color.White,
                 title = "문의 상세",
                 navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationIconOnClick = {
@@ -51,16 +52,12 @@ fun InquiryReadScreen(inquiryReadViewModel: InquiryReadViewModel = hiltViewModel
                 },
                 menuItems = {
                     LikeLionIconButton(
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
                         padding = 10.dp,
                         borderNull = true
                     )
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.shopping_cart_24px),
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                         borderNull = true
                     )
@@ -71,6 +68,7 @@ fun InquiryReadScreen(inquiryReadViewModel: InquiryReadViewModel = hiltViewModel
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(it)
                 .padding(horizontal = 10.dp)
         ) {
