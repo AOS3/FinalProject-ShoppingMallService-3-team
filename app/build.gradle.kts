@@ -87,6 +87,11 @@ dependencies {
     implementation("me.onebone:toolbar-compose:2.3.5")
 
     implementation("com.kakao.sdk:v2-user:2.20.1") // 카카오 로그인 API 모듈
+
+    implementation("com.navercorp.nid:oauth:5.10.0")
+
+    implementation ("com.google.android.gms:play-services-auth:21.3.0")
+    implementation ("com.google.firebase:firebase-auth")
 }
 
 kapt {

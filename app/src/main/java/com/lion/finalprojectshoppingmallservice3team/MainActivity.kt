@@ -12,34 +12,25 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material.Scaffold
-import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -77,7 +68,6 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.Pro
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ShopScreen
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 
 
 @AndroidEntryPoint
@@ -104,7 +94,7 @@ fun ShoppingMain() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    var isLoggedIn by remember { mutableStateOf(false) }
+    val isLoggedIn by shoppingApplication.isLoggedIn.collectAsState()
 
     // 스플래시 상태 관리
     var isSplashCompleted by remember { mutableStateOf(false) }
@@ -114,7 +104,7 @@ fun ShoppingMain() {
             if (isSplashCompleted && currentRoute in listOf("home", "creator", "myFavorite", "shop", "logoutMyPage", "loginMyPage"))
             LikeLionBottomNavigation(
                 navController = navController,
-                items = LikeLionBottomNavItems(isLoggedIn)
+                items = LikeLionBottomNavItems(isLoggedIn),
             )
         },
     ) {
@@ -174,7 +164,7 @@ fun ShoppingMain() {
             },
         ) {
             composable("splash") {
-                SplashScreen(navController)
+                SplashScreen(navController = navController)
             }
 
             //***************** 바텀네비게이션 관련 코드 ****************************//
@@ -182,7 +172,7 @@ fun ShoppingMain() {
                 enterTransition = {EnterTransition.None},
                 exitTransition = { ExitTransition.None },
             ){
-                isSplashCompleted = true
+                isSplashCompleted = true // Splash 완료 처리
                 HomeScreen(navController)
             }
             composable("myFavorite",
@@ -200,17 +190,17 @@ fun ShoppingMain() {
             composable("logoutMyPage",
                 enterTransition = {EnterTransition.None},
                 exitTransition = { ExitTransition.None },
-                ) {
-                isLoggedIn = false
+            ) {
                 LogoutMyPageScreen()
             }
             composable("loginMyPage",
                 enterTransition = {EnterTransition.None},
                 exitTransition = { ExitTransition.None },
-                ) {
-                isLoggedIn = true
+            ) {
                 LoginMyPageScreen()
             }
+
+
             //***************** 바텀네비게이션 관련 코드 ****************************//
 
             composable("login") { LoginScreen() }
@@ -286,12 +276,25 @@ fun ShoppingMain() {
 }
 
 @Composable
-fun SplashScreen(navController: NavHostController) {
-    // 스플래시 화면에서 1초 대기 후 로그인 화면으로 이동
+fun SplashScreen(
+    navController: NavHostController,
+    splashViewModel: SplashViewModel = hiltViewModel()
+) {
+    val context = LocalContext.current
+    // `navigationTarget` 상태 관찰
+    val navigationTarget by splashViewModel.navigationTarget.collectAsState()
+
+    // 스플래시 화면이 처음 표시될 때 자동 로그인 로직 실행
     LaunchedEffect(Unit) {
-        delay(1000) // 1초 대기
-        navController.navigate("home") {
-            popUpTo("splash") { inclusive = true } // 스플래시 화면 제거
+        splashViewModel.checkAutoLogin(context) // 자동 로그인 로직 실행
+    }
+
+    // `navigationTarget` 상태 변화에 따라 네비게이션 처리
+    LaunchedEffect(navigationTarget) {
+        if (navigationTarget.isNotEmpty() && navigationTarget != "splash") {
+            navController.navigate(navigationTarget) {
+                popUpTo("splash") { inclusive = true }
+            }
         }
     }
 
@@ -304,9 +307,9 @@ fun SplashScreen(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.marcshop_logo), // mipmap 폴더에서 로고 사용
+            painter = painterResource(id = R.drawable.marcshop_logo),
             contentDescription = "MarcShop Logo",
-            modifier = Modifier.size(200.dp) // 로고 크기 설정
+            modifier = Modifier.size(200.dp)
         )
     }
 }

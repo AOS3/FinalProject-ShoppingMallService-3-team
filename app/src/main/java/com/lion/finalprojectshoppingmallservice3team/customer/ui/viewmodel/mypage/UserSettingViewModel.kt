@@ -239,6 +239,7 @@ class UserSettingViewModel @Inject constructor(
             }
             work1.join()
 
+            shoppingApplication.isLoggedIn.value = false
             shoppingApplication.navHostController.popBackStack("userSetting", inclusive = true)
             shoppingApplication.navHostController.navigate("logoutMyPage")
         }

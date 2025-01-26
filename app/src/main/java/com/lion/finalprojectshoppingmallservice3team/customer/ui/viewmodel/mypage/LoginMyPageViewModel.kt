@@ -4,8 +4,11 @@ import android.content.Context
 import android.net.Uri
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.lion.finalprojectshoppingmallservice3team.ShoppingApplication
+import com.lion.finalprojectshoppingmallservice3team.SplashViewModel
 import com.lion.finalprojectshoppingmallservice3team.customer.data.service.CustomerService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -76,9 +79,21 @@ class LoginMyPageViewModel @Inject constructor(
         }
     }
 
-    fun logoutOnClick(){
-        shoppingApplication.navHostController.popBackStack("loginMyPage", inclusive = true)
-        shoppingApplication.navHostController.navigate("logoutMyPage")
+    fun logoutOnClick(context: Context) {
+        viewModelScope.launch {
+            try {
+                val customerDocumentId = shoppingApplication.loginCustomerModel.customerDocumentId
+                customerService.logoutUser(customerDocumentId, context)
+
+                shoppingApplication.isLoggedIn.value = false
+
+                // 네비게이션 처리
+                shoppingApplication.navHostController.popBackStack("loginMyPage", inclusive = true)
+                shoppingApplication.navHostController.navigate("logoutMyPage")
+            } catch (e: Exception) {
+                println("로그아웃 처리 실패: ${e.localizedMessage}")
+            }
+        }
     }
 
     fun userSettingOnClick(){

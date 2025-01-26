@@ -1,15 +1,16 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import android.util.Log
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Mood
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Shop
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.runtime.MutableState
 
 fun LikeLionBottomNavItems(isLoggedIn: Boolean): List<BottomNavigationItemData> {
+
     return listOf(
         BottomNavigationItemData(
             icon = Icons.Default.Home,
@@ -34,7 +35,7 @@ fun LikeLionBottomNavItems(isLoggedIn: Boolean): List<BottomNavigationItemData> 
         BottomNavigationItemData(
             icon = Icons.Default.Person,
             label = "My Page",
-            route = if (isLoggedIn) "loginMyPage" else "logoutMyPage"
+            route = if (isLoggedIn) "loginMyPage" else "logoutMyPage",
         )
     )
 }

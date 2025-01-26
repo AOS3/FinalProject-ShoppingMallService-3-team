@@ -5,7 +5,6 @@ import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageException
-import com.kakao.sdk.user.model.User
 import com.lion.finalprojectshoppingmallservice3team.customer.data.model.CustomerModel
 import com.lion.finalprojectshoppingmallservice3team.customer.data.util.UserState
 import com.lion.finalprojectshoppingmallservice3team.customer.data.vo.CustomerVO
@@ -115,16 +114,6 @@ class CustomerRepository {
         childReference.putFile(fileUri).await()
     }
 
-    // 이미지 데이터를 가져온다.
-    suspend fun gettingImage(imageFileName: String): Uri {
-        val storageReference = FirebaseStorage.getInstance().reference
-        // 파일명을 지정하여 이미지 데이터를 가져온다.
-        val childStorageReference = storageReference.child("image/$imageFileName")
-        val imageUri = childStorageReference.downloadUrl.await()
-        Log.d("test100", imageUri.path!!)
-        return imageUri
-    }
-
     // 서버에서 이미지 파일을 삭제한다.
     suspend fun removeImageFile(imageFileName: String) {
         if (imageFileName.isBlank() || imageFileName == "none") {
@@ -152,6 +141,105 @@ class CustomerRepository {
             } else {
                 Log.e("RemoveImageFile", "Error deleting file: $imageFileName", e)
             }
+        }
+    }
+
+    // Firebase에 사용자 데이터를 저장하는 메서드
+    suspend fun saveKakaoUserToFirebase(customerMap: Map<String, *>): Boolean {
+        val firestore = FirebaseFirestore.getInstance()
+        return try {
+            firestore.collection("CustomerData").add(customerMap).await()
+            true
+        } catch (e: Exception) {
+            println("회원가입 실패: ${e.localizedMessage}")
+            false
+        }
+    }
+
+    suspend fun fetchCustomerData(documentId: String): CustomerModel? {
+        val db = FirebaseFirestore.getInstance()
+        val documentSnapshot = db.collection("CustomerData")
+            .document(documentId)
+            .get()
+            .await()
+
+        if (documentSnapshot.exists()) {
+            val customerModel = CustomerModel()
+
+            customerModel.customerUserId = documentSnapshot.getString("customerUserId") ?: ""
+            customerModel.customerUserPw = documentSnapshot.getString("customerUserPw") ?: ""
+            customerModel.customerUserNickName = documentSnapshot.getString("customerUserNickName") ?: ""
+            customerModel.customerUserName = documentSnapshot.getString("customerUserName") ?: ""
+            customerModel.customerUserPhoneNumber = documentSnapshot.getString("customerUserPhoneNumber") ?: ""
+            customerModel.customerUserProfileImage = documentSnapshot.getString("customerUserProfileImage") ?: "none"
+            customerModel.customerUserGender = documentSnapshot.getString("customerUserGender") ?: ""
+            customerModel.customerUserBirthDate = documentSnapshot.getString("customerUserBirthDate") ?: ""
+            customerModel.customerUserAddress = documentSnapshot.getString("customerUserAddress") ?: ""
+            customerModel.customerUserDetailAddress = documentSnapshot.getString("customerUserDetailAddress") ?: ""
+
+            val stateNumber = documentSnapshot.getLong("customerUserState")?.toInt() ?: 0
+            customerModel.customerUserState = UserState.values().find { state -> state.number == stateNumber }
+                ?: UserState.USER_STATE_NORMAL
+
+            customerModel.customerUserAdvAgree = documentSnapshot.getBoolean("customerUserAdvAgree") ?: false
+            customerModel.customerPersonInfoAgree = documentSnapshot.getBoolean("customerPersonInfoAgree") ?: true
+            customerModel.customerUserSmsAgree = documentSnapshot.getString("customerUserSmsAgree") ?: "미동의"
+            customerModel.customerUserAppPushAgree = documentSnapshot.getString("customerUserAppPushAgree") ?: "미동의"
+            customerModel.fcmToken = documentSnapshot.getString("fcmToken") ?: ""
+            customerModel.customerUserCreatedAt = documentSnapshot.getLong("customerUserCreatedAt") ?: 0L
+            customerModel.customerUserUpdatedAt = documentSnapshot.getLong("customerUserUpdatedAt") ?: 0L
+            customerModel.isCreator = documentSnapshot.getBoolean("isCreator") ?: false
+
+            customerModel.customerDocumentId = documentId
+
+            return customerModel
+        }
+        return null
+    }
+
+    // Firebase에서 토큰 삭제
+    suspend fun clearAutoLoginToken(customerDocumentId: String) {
+        val firestore = FirebaseFirestore.getInstance()
+        val collectionReference = firestore.collection("CustomerData")
+        val documentReference = collectionReference.document(customerDocumentId)
+
+        val updateMap = mapOf(
+            "autoLoginToken" to ""
+        )
+
+        try {
+            documentReference.update(updateMap).await()
+        } catch (e: Exception) {
+            throw e // 실패 시 예외를 던집니다.
+        }
+    }
+
+    suspend fun saveNaverUserToFirebase(customerMap: HashMap<String, *>): Boolean {
+        return try {
+            val db = FirebaseFirestore.getInstance()
+            val userId = customerMap["customerUserId"].toString()
+
+            // Firebase의 "users" 컬렉션에 데이터 저장
+            db.collection("CustomerData")
+                .document(userId)
+                .set(customerMap)
+                .await() // 코루틴 처리
+            true // 성공
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false // 실패
+        }
+    }
+
+    // Firebase에 Google 사용자 데이터를 저장하는 메서드
+    suspend fun saveGoogleUserToFirebase(customerMap: Map<String, *>): Boolean {
+        val firestore = FirebaseFirestore.getInstance()
+        return try {
+            firestore.collection("CustomerData").add(customerMap).await()
+            true
+        } catch (e: Exception) {
+            println("Google 회원가입 실패: ${e.localizedMessage}")
+            false
         }
     }
 }

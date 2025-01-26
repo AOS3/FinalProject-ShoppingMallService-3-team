@@ -13,7 +13,8 @@ import androidx.compose.ui.unit.dp
 fun LikeLionDivider(
     paddingTop:Dp = 0.dp,
     color:Color = Color.LightGray,
-    thickness:Dp = 1.dp
+    thickness:Dp = 1.dp,
+
 ) {
     HorizontalDivider(
         modifier = Modifier.fillMaxWidth().padding(top = paddingTop),

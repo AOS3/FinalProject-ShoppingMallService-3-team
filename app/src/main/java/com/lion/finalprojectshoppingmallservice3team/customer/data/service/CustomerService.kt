@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.data.service
 
+import android.content.Context
 import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kakao.sdk.user.model.User
@@ -105,12 +106,6 @@ class CustomerService(val customerRepository: CustomerRepository) {
         customerRepository.uploadImage(sourceFilePath, serverFilePath)
     }
 
-    // 이미지 데이터를 가져온다.
-    suspend fun gettingImage(imageFileName:String) : Uri {
-        val imageUri = customerRepository.gettingImage(imageFileName)
-        return imageUri
-    }
-
     // 서버에서 이미지 파일을 삭제한다.
     suspend fun removeImageFile(imageFileName:String){
         customerRepository.removeImageFile(imageFileName)
@@ -135,32 +130,30 @@ class CustomerService(val customerRepository: CustomerRepository) {
             }
     }
 
-    fun saveKakaoUserToFirebase(user: User) {
-        val db = FirebaseFirestore.getInstance()
+    // 카카오 사용자 정보를 Firebase에 저장
+    suspend fun saveKakaoUser(user: User): Boolean {
+        val gender = when (user.kakaoAccount?.gender?.name) {
+            "MALE" -> "남자"
+            "FEMALE" -> "여자"
+            else -> "상관없음"
+        }
 
-        var gender = ""
-
-        if (user.kakaoAccount?.gender?.name == "MALE") {
-            gender = "남자"
-        } else if (user.kakaoAccount?.gender?.name == "FEMALE") {
-            gender = "여자"
+        val birthDate = if (user.kakaoAccount?.birthyear != null && user.kakaoAccount?.birthday != null) {
+            user.kakaoAccount!!.birthyear + user.kakaoAccount!!.birthday
         } else {
-            gender = "상관없음"
+            ""
         }
 
-        var birthDate = ""
+        val defaultMobile = user.kakaoAccount?.phoneNumber?.replace("+82 ", "0")
+        val replaceMobile = defaultMobile?.replace("-", "")
 
-        if (user.kakaoAccount?.birthyear != null && user.kakaoAccount?.birthday != null) {
-            birthDate = user.kakaoAccount?.birthyear + user.kakaoAccount?.birthday
-        }
-
-        // 사용자 정보 매핑
+        // 사용자 정보를 HashMap으로 매핑
         val customerMap = hashMapOf(
             "customerUserId" to user.id.toString(),
             "customerUserPw" to "",
             "customerUserNickName" to (user.kakaoAccount?.profile?.nickname ?: ""),
             "customerUserName" to (user.kakaoAccount?.name ?: ""),
-            "customerUserPhoneNumber" to (user.kakaoAccount?.phoneNumber ?: ""),
+            "customerUserPhoneNumber" to replaceMobile,
             "customerUserProfileImage" to (user.kakaoAccount?.profile?.profileImageUrl ?: "none"),
             "customerUserGender" to gender,
             "customerUserBirthDate" to birthDate,
@@ -177,61 +170,116 @@ class CustomerService(val customerRepository: CustomerRepository) {
             "isCreator" to false
         )
 
-        // Firestore에 데이터 저장
-        db.collection("CustomerData")
-            .add(customerMap) // 데이터를 저장
-            .addOnSuccessListener {
-                println("회원가입 성공: ${user.id}")
-            }
-            .addOnFailureListener { e ->
-                println("회원가입 실패: ${e.localizedMessage}")
-            }
+        return customerRepository.saveKakaoUserToFirebase(customerMap)
     }
 
-    fun fetchCustomerData(documentId: String, onResult: (CustomerModel) -> Unit) {
-        val db = FirebaseFirestore.getInstance()
-        db.collection("CustomerData")
-            .document(documentId)
-            .get()
-            .addOnSuccessListener { document ->
-                if (document.exists()) {
-                    // CustomerModel 객체 생성
-                    val customerModel = CustomerModel()
+    // Firestore에서 사용자 데이터를 가져옴
+    suspend fun fetchCustomerData(documentId: String): CustomerModel? {
+        return customerRepository.fetchCustomerData(documentId)
+    }
 
-                    // 문서 데이터를 CustomerModel에 수동 매핑
-                    customerModel.customerUserId = document.getString("customerUserId") ?: ""
-                    customerModel.customerUserPw = document.getString("customerUserPw") ?: ""
-                    customerModel.customerUserNickName = document.getString("customerUserNickName") ?: ""
-                    customerModel.customerUserName = document.getString("customerUserName") ?: ""
-                    customerModel.customerUserPhoneNumber = document.getString("customerUserPhoneNumber") ?: ""
-                    customerModel.customerUserProfileImage = document.getString("customerUserProfileImage") ?: "none"
-                    customerModel.customerUserGender = document.getString("customerUserGender") ?: ""
-                    customerModel.customerUserBirthDate = document.getString("customerUserBirthDate") ?: ""
-                    customerModel.customerUserAddress = document.getString("customerUserAddress") ?: ""
-                    customerModel.customerUserDetailAddress = document.getString("customerUserDetailAddress") ?: ""
+    suspend fun logoutUser(customerDocumentId: String, context: Context) {
+        // SharedPreferences에서 토큰 삭제
+        val sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+        sharedPreferences.edit().clear().apply()
 
-                    // customerUserState 값을 Enum으로 변환
-                    val stateNumber = document.getLong("customerUserState")?.toInt() ?: 0
-                    customerModel.customerUserState = UserState.values().find { state -> state.number == stateNumber }
-                        ?: UserState.USER_STATE_NORMAL
+        // Firebase에서 토큰 삭제
+        try {
+            customerRepository.clearAutoLoginToken(customerDocumentId)
+            println("Firebase에서 토큰 삭제 성공")
+        } catch (e: Exception) {
+            println("Firebase에서 토큰 삭제 실패: ${e.localizedMessage}")
+            throw e
+        }
+    }
 
-                    customerModel.customerUserAdvAgree = document.getBoolean("customerUserAdvAgree") ?: false
-                    customerModel.customerPersonInfoAgree = document.getBoolean("customerPersonInfoAgree") ?: true
-                    customerModel.customerUserSmsAgree = document.getString("customerUserSmsAgree") ?: "미동의"
-                    customerModel.customerUserAppPushAgree = document.getString("customerUserAppPushAgree") ?: "미동의"
-                    customerModel.fcmToken = document.getString("fcmToken") ?: ""
-                    customerModel.customerUserCreatedAt = document.getLong("customerUserCreatedAt") ?: 0L
-                    customerModel.customerUserUpdatedAt = document.getLong("customerUserUpdatedAt") ?: 0L
-                    customerModel.isCreator = document.getBoolean("isCreator") ?: false
+    // 네이버 사용자 정보를 Firebase에 저장
+    suspend fun saveNaverUser(userId: String, nickname: String, profileImage: String, gender: String,
+                              mobile: String, name: String, birthday: String, birthyear: String): Boolean {
+        // 성별, 프로필 이미지 등 기본 값 설정 (네이버 API는 일부 정보가 선택적 제공)
+        var naverGender = ""
+        if (gender == "M") {
+            naverGender = "남자"
+        } else if (gender == "F") {
+            naverGender = "여자"
+        } else {
+            naverGender = "상관없음"
+        }
 
-                    customerModel.customerDocumentId = documentId // 문서 ID 매핑
+        var replaceBirthday = birthday.replace("-","")
 
-                    // 결과 반환
-                    onResult(customerModel)
-                }
-            }
-            .addOnFailureListener { e ->
-                println("사용자 데이터 로드 실패: ${e.localizedMessage}")
-            }
+        var replaceMobile = mobile.replace("-","")
+
+        var naverBirthDate = ""
+        if (birthday.isNotEmpty() && birthyear.isNotEmpty()) {
+            naverBirthDate = birthyear + replaceBirthday
+        }
+
+        // 사용자 정보를 HashMap으로 매핑
+        val customerMap = hashMapOf(
+            "customerUserId" to userId,
+            "customerUserPw" to "",
+            "customerUserNickName" to nickname, // 네이버 사용자 이름
+            "customerUserName" to name, // 네이버 사용자 이름
+            "customerUserPhoneNumber" to replaceMobile, // 네이버 API로부터 전화번호를 가져오려면 권한 필요
+            "customerUserProfileImage" to profileImage,
+            "customerUserGender" to naverGender,
+            "customerUserBirthDate" to naverBirthDate, // 네이버 API에서 생년월일 제공 시 추가
+            "customerUserAddress" to "",
+            "customerUserDetailAddress" to "",
+            "customerUserState" to UserState.USER_STATE_NORMAL.number,
+            "customerUserAdvAgree" to false,
+            "customerPersonInfoAgree" to true,
+            "customerUserSmsAgree" to "미동의",
+            "customerUserAppPushAgree" to "미동의",
+            "fcmToken" to "",
+            "customerUserCreatedAt" to System.currentTimeMillis(),
+            "customerUserUpdatedAt" to 0L,
+            "isCreator" to false
+        )
+
+        // Firebase에 저장
+        return customerRepository.saveNaverUserToFirebase(customerMap)
+    }
+
+    suspend fun saveGoogleUser(userId: String, name: String, profileImage: String, phoneNumber: String, birthDate: String,
+        gender: String, address: String
+    ): Boolean {
+
+        val changeGender = if (gender == "male") {
+            "남자"
+        } else if (gender == "female"){
+            "여자"
+        } else {
+            "상관없음"
+        }
+
+        val defaultMobile = phoneNumber.replace("+82", "0")
+
+        // 사용자 정보를 HashMap으로 매핑
+        val customerMap = hashMapOf(
+            "customerUserId" to userId,
+            "customerUserPw" to "",
+            "customerUserNickName" to name,
+            "customerUserName" to name,
+            "customerUserPhoneNumber" to defaultMobile,
+            "customerUserProfileImage" to profileImage ,
+            "customerUserGender" to changeGender,
+            "customerUserBirthDate" to birthDate,
+            "customerUserAddress" to address,
+            "customerUserDetailAddress" to "",
+            "customerUserState" to UserState.USER_STATE_NORMAL.number,
+            "customerUserAdvAgree" to false,
+            "customerPersonInfoAgree" to true,
+            "customerUserSmsAgree" to "미동의",
+            "customerUserAppPushAgree" to "미동의",
+            "fcmToken" to "",
+            "customerUserCreatedAt" to System.currentTimeMillis(),
+            "customerUserUpdatedAt" to 0L,
+            "isCreator" to false
+        )
+
+        // Firebase에 저장
+        return customerRepository.saveGoogleUserToFirebase(customerMap)
     }
 }

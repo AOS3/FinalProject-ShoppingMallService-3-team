@@ -8,6 +8,7 @@ import com.kakao.sdk.common.KakaoSdk
 import com.lion.finalprojectshoppingmallservice3team.customer.data.model.CustomerModel
 
 import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @HiltAndroidApp
 class ShoppingApplication : Application(){
@@ -16,6 +17,8 @@ class ShoppingApplication : Application(){
 
     // 로그인한 사용자 객체
     lateinit var loginCustomerModel:CustomerModel
+
+    var isLoggedIn = MutableStateFlow(false)
 
     override fun onCreate() {
         super.onCreate()

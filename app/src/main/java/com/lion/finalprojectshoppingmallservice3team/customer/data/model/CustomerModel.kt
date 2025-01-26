@@ -21,6 +21,7 @@ class CustomerModel {
     var customerUserSmsAgree: String = ""
     var customerUserAppPushAgree: String = ""
     var fcmToken: String = ""
+    var autoLoginToken: String = ""
     var customerUserCreatedAt: Long = 0L
     var customerUserUpdatedAt: Long = 0L
     var isCreator: Boolean = false
@@ -44,6 +45,7 @@ class CustomerModel {
         customerVO.customerUserSmsAgree = customerUserSmsAgree
         customerVO.customerUserAppPushAgree = customerUserAppPushAgree
         customerVO.fcmToken = fcmToken
+        customerVO.autoLoginToken = autoLoginToken
         customerVO.customerUserCreatedAt = customerUserCreatedAt
         customerVO.customerUserUpdatedAt = customerUserUpdatedAt
         customerVO.isCreator = isCreator
