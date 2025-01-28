@@ -92,6 +92,8 @@ dependencies {
 
     implementation ("com.google.android.gms:play-services-auth:21.3.0")
     implementation ("com.google.firebase:firebase-auth")
+
+    implementation ("androidx.webkit:webkit:1.12.1")
 }
 
 kapt {
