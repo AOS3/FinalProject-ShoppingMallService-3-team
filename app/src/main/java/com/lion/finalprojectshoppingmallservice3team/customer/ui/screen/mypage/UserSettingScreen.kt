@@ -2,6 +2,10 @@ package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen
 
 import android.graphics.Bitmap
 import android.net.Uri
+import android.webkit.JavascriptInterface
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -42,9 +46,11 @@ import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,8 +66,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.bumptech.glide.Glide
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionAddressSearchWebView
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionAlertDialog
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
@@ -101,7 +111,7 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
 
     // 사진 촬영용 런처
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
-        if(it){
+        if (it) {
             Tools.takePictureData(context, contentUri, userSettingViewModel.imageBitmapState)
             userSettingViewModel.showImage1State.value = false
             userSettingViewModel.showImage2State.value = false
@@ -110,14 +120,15 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
     }
 
     // 앨범용 런처
-    val albumLauncher = rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
-        Tools.takeAlbumData(context, it, userSettingViewModel.imageBitmapState)
-        if (it != null) {
-            userSettingViewModel.showImage1State.value = false
-            userSettingViewModel.showImage2State.value = false
-            userSettingViewModel.showImage3State.value = true
+    val albumLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) {
+            Tools.takeAlbumData(context, it, userSettingViewModel.imageBitmapState)
+            if (it != null) {
+                userSettingViewModel.showImage1State.value = false
+                userSettingViewModel.showImage2State.value = false
+                userSettingViewModel.showImage3State.value = true
+            }
         }
-    }
 
     // LaunchedEffect로 프로필 이미지를 초기 로드
     LaunchedEffect(Unit) {
@@ -137,7 +148,9 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                 Text(
                     text = "사진 선택",
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp)
                 )
 
                 // 사진 보관함
@@ -261,7 +274,10 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                         if (userSettingViewModel.showImage3State.value) {
                             LikeLionImageBitmap(
                                 imageBitmap = userSettingViewModel.imageBitmapState.value!!.asImageBitmap(),
-                                modifier = Modifier.size(140.dp).clip(CircleShape).border(0.dp, Color.Transparent, CircleShape),
+                                modifier = Modifier
+                                    .size(140.dp)
+                                    .clip(CircleShape)
+                                    .border(0.dp, Color.Transparent, CircleShape),
                                 contentScale = ContentScale.Crop,
                             )
                         }
@@ -396,7 +412,10 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                     LikeLionFilledButton(
                         text = "중복확인",
                         isEnabled = userSettingViewModel.isButtonNicknameEnabled.value,
-                        modifier = Modifier.weight(0.4f).padding(top = 6.dp, start = 5.dp).height(56.dp),
+                        modifier = Modifier
+                            .weight(0.4f)
+                            .padding(top = 6.dp, start = 5.dp)
+                            .height(56.dp),
                         onClick = {
                             userSettingViewModel.buttonCheckNickNameOnClick()
                         }
@@ -404,7 +423,9 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                 }
 
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 20.dp)
                 ) {
                     Row(
                         modifier = Modifier.padding(end = 4.dp)
@@ -520,11 +541,24 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                     // 주소검색 버튼
                     LikeLionFilledButton(
                         text = "주소검색",
-                        modifier = Modifier.weight(0.4f).padding(top = 6.dp, start = 5.dp).height(56.dp),
+                        modifier = Modifier
+                            .weight(0.4f)
+                            .padding(top = 6.dp, start = 5.dp)
+                            .height(56.dp),
                         onClick = {
-
+                            userSettingViewModel.showAddressSearch.value = true
                         }
                     )
+                }
+
+                if (userSettingViewModel.showAddressSearch.value) {
+                    LikeLionAddressSearchWebView(
+                        context = LocalContext.current,
+                        onAddressSelected = { address ->
+                            userSettingViewModel.textFieldModifyAddressValue.value = address
+                        }
+                    )
+                    userSettingViewModel.showAddressSearch.value = false
                 }
 
                 LikeLionOutlinedTextField(
@@ -532,7 +566,7 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                     label = "상세 주소",
                     placeHolder = "상세 주소를 입력해 주세요.",
                     modifier = Modifier.fillMaxWidth(),
-                    inputCondition = "[^a-zA-Z0-9_]",
+                    inputCondition = "[^0-9ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]",
                     trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.TEXT,
                     inputType = LikeLionOutlinedTextFieldInputType.TEXT,
                     singleLine = true,
@@ -587,7 +621,7 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                     textModifier = Modifier.padding(5.dp),
                     modifier = Modifier.padding(bottom = 10.dp),
                     selectedOption = userSettingViewModel.selectedSmsAgree.value,
-                    onOptionSelected = { selectedOption  ->
+                    onOptionSelected = { selectedOption ->
                         userSettingViewModel.selectedSmsAgree.value = selectedOption
                     },
                     orientation = Orientation.Horizontal, // 가로 방향
@@ -642,12 +676,16 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                 LikeLionAlertDialog(
                     showDialogState = userSettingViewModel.showDialogWithdrawalState,
                     confirmButtonTitle = "확인",
-                    confirmbuttonModifier = Modifier.weight(1f).padding(start = 5.dp),
+                    confirmbuttonModifier = Modifier
+                        .weight(1f)
+                        .padding(start = 5.dp),
                     confirmButtonOnClick = {
                         userSettingViewModel.withdrawalOnClick()
                     },
                     dismissButtonTitle = "취소",
-                    dismissbuttonModifier = Modifier.weight(1f).padding(end = 5.dp),
+                    dismissbuttonModifier = Modifier
+                        .weight(1f)
+                        .padding(end = 5.dp),
                     dismissBorder = BorderStroke(1.dp, Color.LightGray),
                     dismissButtonOnClick = {
                         userSettingViewModel.showDialogWithdrawalState.value = false
@@ -673,12 +711,16 @@ fun UserSettingScreen(userSettingViewModel: UserSettingViewModel = hiltViewModel
                     confirmButtonOnClick = {
                         userSettingViewModel.dialogConfirmOnClick()
                     },
-                    confirmbuttonModifier = Modifier.weight(1f).padding(start = 5.dp),
+                    confirmbuttonModifier = Modifier
+                        .weight(1f)
+                        .padding(start = 5.dp),
                     dismissButtonTitle = "취소",
                     dismissButtonOnClick = {
                         userSettingViewModel.dialogDismissOnClick()
                     },
-                    dismissbuttonModifier = Modifier.weight(1f).padding(end = 5.dp),
+                    dismissbuttonModifier = Modifier
+                        .weight(1f)
+                        .padding(end = 5.dp),
                     dismissBorder = BorderStroke(1.dp, Color.LightGray),
                 )
 

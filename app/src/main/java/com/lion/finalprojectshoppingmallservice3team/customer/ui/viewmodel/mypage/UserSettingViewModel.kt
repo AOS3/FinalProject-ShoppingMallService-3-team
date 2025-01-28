@@ -3,14 +3,10 @@ package com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.mypa
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
-import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.ShoppingApplication
 import com.lion.finalprojectshoppingmallservice3team.customer.data.service.CustomerService
 import com.lion.finalprojectshoppingmallservice3team.customer.data.util.Tools
@@ -21,7 +17,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -130,6 +125,7 @@ class UserSettingViewModel @Inject constructor(
     val showDialogNickNameIsNotCheckState = mutableStateOf(false)
     val showDialogNickNameOk = mutableStateOf(false)
     val showDialogNickNameNo = mutableStateOf(false)
+    val showAddressSearch = mutableStateOf(false)
 
     // 회원 탈퇴 다이얼로그 상태 변수
     val showDialogWithdrawalState = mutableStateOf(false)
