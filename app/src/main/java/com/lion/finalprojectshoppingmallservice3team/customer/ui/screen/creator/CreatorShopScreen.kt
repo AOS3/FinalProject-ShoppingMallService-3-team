@@ -146,13 +146,10 @@ fun CreatorShopScreen(
 
                             LikeLionIconButton(
                                 icon = ImageVector.vectorResource(id = R.drawable.favorite_24px),
-                                text = "999+",
                                 size = 60.dp,
-                                fontSize = 14.sp,
                                 borderNull = true,
                                 color = Color(0xFFAFAFAF),
                                 iconBackColor = Color(0xFFAFAFAF),
-                                fontColor = Color.Black,
                                 modifier = Modifier.align(Alignment.End).offset((-10).dp,0.dp)
                             )
                         }

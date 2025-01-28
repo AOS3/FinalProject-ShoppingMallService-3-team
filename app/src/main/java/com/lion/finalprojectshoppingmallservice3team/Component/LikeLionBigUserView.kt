@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -66,18 +67,13 @@ fun LikeLionBigUserView(randomUser: CustomerModel){
                         text = randomUser.customerUserNickName,
                         style = typography.bodySmall
                     )
-                    LikeLionIconButton(
+                    LikeLionTextIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.favorite_24px),
                         text = "999+",
-                        size = 55.dp,
-                        borderNull = false
+                        modifier = Modifier.align(Alignment.End).offset((-10.dp), 0.dp)
                     )
 
                 }
-
-
-
-
             }
 
             val Img = List<String>(4){" "}

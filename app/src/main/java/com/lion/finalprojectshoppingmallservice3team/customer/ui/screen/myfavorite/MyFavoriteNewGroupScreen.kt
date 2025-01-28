@@ -73,12 +73,8 @@ fun MyFavoriteNewGroupScreen(viewModel: MyFavoriteNewGroupViewModel = hiltViewMo
                 iconBackColor = MainColor,
                 iconColor = Color.White,
                 color = Color.White,
-                text = "크리에이터 추가",
-                fontColor = MainColor,
-                fontSize = 20.sp,
                 size = 70.dp,
                 borderNull = true,
-                fillWidth = true,
                 iconButtonOnClick = { viewModel.creatorBottom()}
             )
             LazyColumn {
