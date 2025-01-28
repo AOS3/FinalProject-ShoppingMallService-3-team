@@ -120,4 +120,8 @@ class LoginMyPageViewModel @Inject constructor(
         shoppingApplication.navHostController.popBackStack("loginMyPage", inclusive = true)
         shoppingApplication.navHostController.navigate("inquiryList")
     }
+
+    fun creatorApplyOnClick(){
+        shoppingApplication.navHostController.navigate("creatorApply")
+    }
 }

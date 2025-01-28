@@ -96,6 +96,12 @@ class CustomerService(val customerRepository: CustomerRepository) {
         customerRepository.updateUserPwData(customerVO, customerModel.customerDocumentId)
     }
 
+    // 사용자 비밀번호 데이터를 수정한다.
+    suspend fun updateIsCreatorData(customerModel: CustomerModel){
+        val customerVO = customerModel.toCustomerVO()
+        customerRepository.updateUserIsCreatorData(customerVO, customerModel.customerDocumentId)
+    }
+
     // 사용자의 상태를 변경하는 메서드
     suspend fun updateUserState(customerDocumentId:String, newState:UserState){
         customerRepository.updateUserState(customerDocumentId, newState)

@@ -18,6 +18,7 @@ class ShoppingApplication : Application(){
     // 로그인한 사용자 객체
     lateinit var loginCustomerModel:CustomerModel
 
+    // 로그인했는지
     var isLoggedIn = MutableStateFlow(false)
 
     override fun onCreate() {

@@ -242,7 +242,7 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                     .fillMaxWidth()
                     .padding(bottom = 20.dp),
                 fontSize = 14.sp,
-                color = Color.LightGray,
+                color = Color.Gray,
             )
 
             Text(
@@ -299,7 +299,7 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                     .fillMaxWidth()
                     .padding(bottom = 20.dp),
                 fontSize = 14.sp,
-                color = Color.LightGray,
+                color = Color.Gray,
             )
 
             Text(
@@ -348,6 +348,16 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                     },
                 fontSize = 16.sp,
                 color = Color.Black,
+            )
+
+            LikeLionFilledButton(
+                text = "마크샵 크리에이터 신청하기",
+                modifier = Modifier.fillMaxWidth(),
+                contentColor = MainColor,
+                containerColor = SubColor,
+                onClick = {
+                    loginMyPageViewModel.creatorApplyOnClick()
+                }
             )
         }
     }

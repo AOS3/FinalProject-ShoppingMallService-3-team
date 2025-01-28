@@ -77,11 +77,24 @@ class CustomerRepository {
         documentReference.update(customerMap).await()
     }
 
-    // 사용자 데이터를 수정한다.
+    // 사용자 비밀번호를 수정한다.
     suspend fun updateUserPwData(customerVO: CustomerVO, customerDocumentId: String) {
         // 수정할 데이터를 담을 맵
         val customerMap = mapOf(
             "customerUserPw" to customerVO.customerUserPw,
+        )
+        // 수정할 문서에 접근할 수 있는 객체를 가져온다.
+        val firestore = FirebaseFirestore.getInstance()
+        val collectionReference = firestore.collection("CustomerData")
+        val documentReference = collectionReference.document(customerDocumentId)
+        documentReference.update(customerMap).await()
+    }
+
+    // 사용자 크리에이터 여부를 수정한다.
+    suspend fun updateUserIsCreatorData(customerVO: CustomerVO, customerDocumentId: String) {
+        // 수정할 데이터를 담을 맵
+        val customerMap = mapOf(
+            "isCreator" to customerVO.isCreator,
         )
         // 수정할 문서에 접근할 수 있는 객체를 가져온다.
         val firestore = FirebaseFirestore.getInstance()

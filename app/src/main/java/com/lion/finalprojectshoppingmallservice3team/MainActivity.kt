@@ -30,6 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -42,6 +44,9 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchFa
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchSuccessScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserSettingScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplySecondScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyThirdScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorShopScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.home.HomeScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.myfavorite.MyFavoriteBottomScreen
@@ -66,6 +71,7 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.Inq
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.InquiryProductWriteScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ProductInfoScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ShopScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.creator.CreatorApplyViewmodel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -75,6 +81,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+//        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
+//        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+
         setContent {
             FinalProjectShoppingMallService3teamTheme {
                 ShoppingMain()
@@ -89,6 +99,7 @@ fun ShoppingMain() {
     // Application 객체에 담는다.
     val shoppingApplication = LocalContext.current.applicationContext as ShoppingApplication
     shoppingApplication.navHostController = navController
+    val creatorApplyViewModel: CreatorApplyViewmodel = hiltViewModel()
 
     //***************** 바텀네비게이션 관련 코드 ****************************//
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -217,7 +228,9 @@ fun ShoppingMain() {
             composable("inquiryList") { InquiryListScreen() }
             composable("inquiryRead") { InquiryReadScreen() }
             composable("inquiryWrite") { InquiryWriteScreen() }
-
+            composable("creatorApply") { CreatorApplyScreen(creatorApplyViewModel = creatorApplyViewModel) }
+            composable("creatorApplySecond") { CreatorApplySecondScreen(creatorApplyViewModel = creatorApplyViewModel) }
+            composable("creatorApplyThird") { CreatorApplyThirdScreen(creatorApplyViewModel = creatorApplyViewModel) }
             // 상품상세 화면
             composable("productInfo/{productDocumentId}") {
                 val productDocumentId = it.arguments?.getString("productDocumentId")!!
