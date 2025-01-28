@@ -2,6 +2,5 @@
     <string name="app_name">MarCShop</string>
     <string name="kakao_app_key">32e30408b82fbd04f989ff81c00045ed</string>
     <string name="firebase_api_key3">389261570917-0a3vd8rm9bkojoudc4ikseus0pplb9p1.apps.googleusercontent.com</string>
-    <string name="firebase_api_key1">389261570917-55a5ia27ad8kn9oka5dn92ec7lvbfs9e.apps.googleusercontent.com</string>
     <string name="firebase_client_secret">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</string>
 </resources>
