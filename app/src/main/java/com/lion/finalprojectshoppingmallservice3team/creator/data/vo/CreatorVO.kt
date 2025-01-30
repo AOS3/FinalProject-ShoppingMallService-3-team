@@ -1,21 +1,15 @@
 package com.lion.finalprojectshoppingmallservice3team.creator.data.vo
 
 import com.lion.finalprojectshoppingmallservice3team.creator.data.model.CreatorModel
-import com.lion.finalprojectshoppingmallservice3team.creator.data.util.UserState
+import com.lion.finalprojectshoppingmallservice3team.creator.data.util.CreatorState
 
 class CreatorVO {
     var creatorUserPhoneNumber: String = ""
     var creatorUserBirthDate: String = ""
-    //    var creatorEmail: String = ""
+    var creatorId: String = ""
     var creatorUserName: String = ""
-    var creatorUserNickName: String = ""
-    var creatorDomainName: String = ""
-    var creatorShopName: String = ""
 
-    var creatorBrandDescription: String = ""
     var creatorCompanyFile: String = ""
-
-    var creatorBestSns: String = ""
     var creatorPortfolioFile: String = ""
     var creatorPortfolioSite: String = ""
 
@@ -40,13 +34,9 @@ class CreatorVO {
         creatorModel.creatorDocumentId = creatorDocumentId
         creatorModel.creatorUserPhoneNumber = creatorUserPhoneNumber
         creatorModel.creatorUserBirthDate = creatorUserBirthDate
+        creatorModel.creatorId = creatorId
         creatorModel.creatorUserName = creatorUserName
-        creatorModel.creatorUserNickName = creatorUserNickName
-        creatorModel.creatorDomainName = creatorDomainName
-        creatorModel.creatorShopName = creatorShopName
-        creatorModel.creatorBrandDescription = creatorBrandDescription
         creatorModel.creatorCompanyFile = creatorCompanyFile
-        creatorModel.creatorBestSns = creatorBestSns
         creatorModel.creatorPortfolioFile = creatorPortfolioFile
         creatorModel.creatorPortfolioSite = creatorPortfolioSite
         creatorModel.creatorCompanyName = creatorCompanyName
@@ -62,8 +52,8 @@ class CreatorVO {
         creatorModel.creatorUserCreatedAt = creatorUserCreatedAt
 
         when(creatorUserState){
-            UserState.USER_STATE_NORMAL.number -> creatorModel.creatorUserState = UserState.USER_STATE_NORMAL
-            UserState.USER_STATE_SIGNOUT.number -> creatorModel.creatorUserState = UserState.USER_STATE_SIGNOUT
+            CreatorState.Creator_STATE_NORMAL.number -> creatorModel.creatorUserState = CreatorState.Creator_STATE_NORMAL
+            CreatorState.Creator_STATE_SIGNOUT.number -> creatorModel.creatorUserState = CreatorState.Creator_STATE_SIGNOUT
         }
 
         return creatorModel

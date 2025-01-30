@@ -9,9 +9,11 @@ import androidx.compose.ui.state.ToggleableState
 import androidx.lifecycle.ViewModel
 import com.lion.finalprojectshoppingmallservice3team.ShoppingApplication
 import com.lion.finalprojectshoppingmallservice3team.creator.data.model.CreatorModel
+import com.lion.finalprojectshoppingmallservice3team.creator.data.model.ShopModel
 import com.lion.finalprojectshoppingmallservice3team.creator.data.service.CreatorService
-import com.lion.finalprojectshoppingmallservice3team.customer.data.model.CustomerModel
-import com.lion.finalprojectshoppingmallservice3team.creator.data.util.UserState
+import com.lion.finalprojectshoppingmallservice3team.creator.data.service.ShopService
+import com.lion.finalprojectshoppingmallservice3team.creator.data.util.CreatorState
+import com.lion.finalprojectshoppingmallservice3team.creator.data.util.ShopState
 import com.lion.finalprojectshoppingmallservice3team.customer.data.service.CustomerService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -25,7 +27,8 @@ import javax.inject.Inject
 class CreatorApplyViewmodel @Inject constructor(
     @ApplicationContext context: Context,
     val creatorService: CreatorService,
-    val customerService: CustomerService
+    val customerService: CustomerService,
+    val shopService: ShopService
 ): ViewModel(){
 
     val shoppingApplication = context as ShoppingApplication
@@ -192,21 +195,17 @@ class CreatorApplyViewmodel @Inject constructor(
         // 저장할 데이터를 추출한다.
         val creatorModel = CreatorModel()
 
-        creatorModel.creatorBestSns = bestSns.value
         creatorModel.creatorUserBirthDate = shoppingApplication.loginCustomerModel.customerUserBirthDate
         creatorModel.creatorUserPhoneNumber = shoppingApplication.loginCustomerModel.customerUserPhoneNumber
-        creatorModel.creatorBrandDescription = brandDescription.value
         creatorModel.creatorCompanyName = companyName.value
         creatorModel.creatorComNumber = 0L
         creatorModel.creatorComPosition = ""
         creatorModel.creatorInquery = ""
         creatorModel.creatorPortfolioFile = ""
-        creatorModel.creatorShopName = shopName.value
-        creatorModel.creatorDomainName = domainName.value
-        creatorModel.creatorUserNickName = shoppingApplication.loginCustomerModel.customerUserNickName
         creatorModel.creatorReturnNumber = ""
         creatorModel.creatorfcmToken = ""
         creatorModel.creatorCompanyFile = ""
+        creatorModel.creatorId = shoppingApplication.loginCustomerModel.customerUserId
         creatorModel.creatorUserName = shoppingApplication.loginCustomerModel.customerUserName
         creatorModel.creatorPortfolioSite = portfolioSite.value
         creatorModel.creatorUserAdvAgree = true
@@ -218,7 +217,8 @@ class CreatorApplyViewmodel @Inject constructor(
             creatorModel.creatorPersonInfoAgree = "미동의"
         }
         creatorModel.creatorUserCreatedAt = System.nanoTime()
-        creatorModel.creatorUserState = UserState.USER_STATE_NORMAL
+        creatorModel.creatorUserState = CreatorState.Creator_STATE_NORMAL
+
 
         // 저장한다.
         CoroutineScope(Dispatchers.Main).launch {
@@ -226,6 +226,22 @@ class CreatorApplyViewmodel @Inject constructor(
                 creatorService.addCreatorData(creatorModel)
             }
             work1.join()
+
+            val shopModel = ShopModel()
+
+            shopModel.shopName = shopName.value
+            shopModel.shopDomainName = domainName.value
+            shopModel.shopCreatorName = shoppingApplication.loginCustomerModel.customerUserName
+            shopModel.shopBrandDescription = brandDescription.value
+            shopModel.shopBestSns = bestSns.value
+            shopModel.shopCreatedAt = System.nanoTime()
+            shopModel.shopCreatorId = shoppingApplication.loginCustomerModel.customerUserId
+            shopModel.shopState = ShopState.Shop_STATE_NORMAL
+
+            val work2 = async(Dispatchers.IO){
+                shopService.addShopData(shopModel)
+            }
+            work2.join()
 
             Toast.makeText(shoppingApplication, "크리에이터 신청이 완료되었습니다", Toast.LENGTH_SHORT).show()
             shoppingApplication.navHostController.popBackStack()

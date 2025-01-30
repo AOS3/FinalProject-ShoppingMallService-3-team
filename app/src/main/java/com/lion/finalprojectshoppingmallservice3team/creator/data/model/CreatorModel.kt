@@ -1,39 +1,50 @@
 package com.lion.finalprojectshoppingmallservice3team.creator.data.model
 
-import com.lion.finalprojectshoppingmallservice3team.creator.data.util.UserState
+import com.lion.finalprojectshoppingmallservice3team.creator.data.util.CreatorState
+
 import com.lion.finalprojectshoppingmallservice3team.creator.data.vo.CreatorVO
 import com.lion.finalprojectshoppingmallservice3team.customer.data.vo.CustomerVO
 
 class CreatorModel {
+    // 크리에이터 문서
     var creatorDocumentId: String = ""
+    // 크리에이터 연락처
     var creatorUserPhoneNumber: String = ""
+    // 크리에이터 생년월일
     var creatorUserBirthDate: String = ""
-//    var creatorEmail: String = ""
+    // 크리에이터 아이디
+    var creatorId: String = ""
+    // 크리에이터 실명
     var creatorUserName: String = ""
-    var creatorUserNickName: String = ""
-    var creatorDomainName: String = ""
-    var creatorShopName: String = ""
-
-    var creatorBrandDescription: String = ""
+    // 회사 증빙 파일
     var creatorCompanyFile: String = ""
-
-    var creatorBestSns: String = ""
+    // 포트폴리오 파일
     var creatorPortfolioFile: String = ""
+    // 포트폴리오 사이트
     var creatorPortfolioSite: String = ""
-
+    // 크리에이터 회사 이름
     var creatorCompanyName: String = ""
+    // 크리에이터 소속
     var creatorComPosition: String = ""
+    // 크리에이터 사업자번호
     var creatorComNumber: Long = 0L
-
-    var creatorUserState = UserState.USER_STATE_NORMAL
+    // 크리에이터 상태
+    var creatorUserState = CreatorState.Creator_STATE_NORMAL
+    // 크리에이터 반품문의 연락처
     var creatorReturnNumber: String = ""
+    // 크리에이터 문의 방법 선택
     var creatorInquery: String = ""
-
+    // 광고정보동의
     var creatorUserAdvAgree : Boolean = false
+    // 개인정보동의
     var creatorPersonInfoAgree: String = ""
+    // 문자수신동의
     var creatorUserSmsAgree: String = ""
+    // 앱푸쉬동의
     var creatorUserAppPushAgree: String = ""
+    // 앱푸쉬토큰
     var creatorfcmToken: String = ""
+    // 크리에이터 가입시간
     var creatorUserCreatedAt: Long = 0L
 
     // VO로 변환
@@ -42,14 +53,10 @@ class CreatorModel {
         creatorVO.creatorUserPhoneNumber = creatorUserPhoneNumber
         creatorVO.creatorUserBirthDate = creatorUserBirthDate
         creatorVO.creatorUserName = creatorUserName
-        creatorVO.creatorUserNickName = creatorUserNickName
-        creatorVO.creatorDomainName = creatorDomainName
-        creatorVO.creatorShopName = creatorShopName
-        creatorVO.creatorBrandDescription = creatorBrandDescription
         creatorVO.creatorCompanyFile = creatorCompanyFile
         creatorVO.creatorUserState = creatorUserState.number
-        creatorVO.creatorBestSns = creatorBestSns
         creatorVO.creatorPortfolioFile = creatorPortfolioFile
+        creatorVO.creatorId = creatorId
         creatorVO.creatorPortfolioSite = creatorPortfolioSite
         creatorVO.creatorCompanyName = creatorCompanyName
         creatorVO.creatorComPosition = creatorComPosition
