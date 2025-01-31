@@ -6,9 +6,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBigUserListView
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionChipGroup
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionSmallUserListView
@@ -44,12 +47,10 @@ fun MyFavoriteScreen(
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
                         padding = 10.dp,
-                        borderNull = true
                     )
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.shopping_cart_24px),
                         padding = 10.dp,
-                        borderNull = true
                     )
                 }
             )
@@ -66,7 +67,7 @@ fun MyFavoriteScreen(
         ) {
             Row {
                 LikeLionChipGroup(
-                    modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+                    modifier = Modifier.padding(start = 10.dp)
                         .fillMaxWidth(0.9f),
                     elements = viewModel.chipElements,
                     chipStyle =  viewModel.chipState,
@@ -76,10 +77,10 @@ fun MyFavoriteScreen(
                 )
                 LikeLionIconButton(
                     icon = ImageVector.vectorResource(id = R.drawable.menu_24px),
-                    borderNull = true,
                     iconButtonOnClick = {
                         viewModel.myGroupScreen()
-                    }
+                    },
+                    padding = 10.dp
                 )
             }
 
@@ -104,7 +105,7 @@ fun MyFavoriteScreen(
 
             LikeLonPostListView(list)
 
-            //LikeLionBigUserListView(list)
+            LikeLionBigUserListView(list)
         }
 
     }
