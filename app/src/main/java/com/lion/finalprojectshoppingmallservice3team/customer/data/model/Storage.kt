@@ -1,4 +1,4 @@
-package com.lion.finalprojectshoppingmallservice3team.data
+package com.lion.finalprojectshoppingmallservice3team.customer.data.model
 
 import com.lion.finalprojectshoppingmallservice3team.Component.Product
 import java.util.UUID
