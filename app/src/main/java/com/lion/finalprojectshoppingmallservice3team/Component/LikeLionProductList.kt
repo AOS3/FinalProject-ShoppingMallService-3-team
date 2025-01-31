@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import android.R.attr.fontWeight
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,7 +39,7 @@ import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 @Composable
 fun LikeLionProductList(
     productList: List<Product>,
-    onCreatorNameClick: (Product) -> Unit,
+    onCreatorNameClick: ((Product) -> Unit)?,
     onLikeClick: (Product) -> Unit,
     onItemClick: (Product) -> Unit,
     columns: Int = 2,
@@ -46,7 +47,7 @@ fun LikeLionProductList(
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(columns),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .padding(),
         contentPadding = PaddingValues(horizontal = 10.dp)
@@ -65,7 +66,7 @@ fun LikeLionProductList(
 @Composable
 fun LikeLionProductItem(
     product: Product,
-    onCreatorNameClick: (Product) -> Unit,
+    onCreatorNameClick: ((Product) -> Unit)?,
     onLikeClick: (Product) -> Unit,
     onItemClick: (Product) -> Unit
 ) {
@@ -142,12 +143,14 @@ fun LikeLionProductItem(
 
         Spacer(modifier = Modifier.height(8.dp))
         // 크리에이터 이름과 좋아요 버튼
+
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
+            if (onCreatorNameClick!=null)
             Text(
                 text = product.creator,
                 //style = Typography.bodySmall,
@@ -156,7 +159,20 @@ fun LikeLionProductItem(
                     .padding(start = 5.dp)
                     .weight(1f)
                     .clickable { onCreatorNameClick(product) }
+
             )
+            else{
+                // 상품 이름
+                Text(
+                    text = product.name,
+                    //style = Typography.bodyMedium,
+                    modifier = Modifier
+                        .padding(start = 5.dp, end = 5.dp)
+                        .weight(1f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
             IconButton(
                 onClick = { onLikeClick(product) },
                 modifier = Modifier.padding(0.dp)
@@ -174,16 +190,17 @@ fun LikeLionProductItem(
                 )
             }
         }
-
-        // 상품 이름
-        Text(
-            text = product.name,
-            //style = Typography.bodyMedium,
-            modifier = Modifier
-                .padding(start = 5.dp, end = 5.dp),
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis
-        )
+        if (onCreatorNameClick!=null) {
+            // 상품 이름
+            Text(
+                text = product.name,
+                //style = Typography.bodyMedium,
+                modifier = Modifier
+                    .padding(start = 5.dp, end = 5.dp),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
 
         val formattedPrice = String.format("%,d", product.price)
         // 상품 가격
