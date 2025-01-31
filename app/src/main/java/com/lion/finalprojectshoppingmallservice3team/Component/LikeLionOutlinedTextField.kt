@@ -81,7 +81,6 @@ fun LikeLionOutlinedTextField(
         Modifier.focusRequester(focusRequest.value)
     }
 
-
     OutlinedTextField(
         modifier = defaultModifier,
         value = textFieldValue.value,

@@ -71,14 +71,12 @@ fun LikeLonPostView(randomUser: CustomerModel){
             Row {
                 LikeLionIconButton(
                     icon = ImageVector.vectorResource(id = R.drawable.visibility_24px),
-                    text = "999+",
                     size = 55.dp,
                     borderNull = true
                 )
                 Text(text = "·")
                 LikeLionIconButton(
                     icon = ImageVector.vectorResource(id = R.drawable.favorite_24px),
-                    text = "999+",
                     size = 55.dp,
                     borderNull = true
                 )

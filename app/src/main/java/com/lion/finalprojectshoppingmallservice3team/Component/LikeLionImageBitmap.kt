@@ -11,10 +11,11 @@ import androidx.compose.ui.layout.ContentScale
 @Composable
 fun LikeLionImageBitmap(
     imageBitmap: ImageBitmap,
+    modifier: Modifier = Modifier,
     contentScale: ContentScale = ContentScale.Fit
 ) {
     Image(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         bitmap = imageBitmap,
         contentDescription = null,
         contentScale = contentScale,

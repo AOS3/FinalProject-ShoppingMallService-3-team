@@ -14,13 +14,13 @@ import androidx.compose.ui.Modifier
 fun LikeLionList(
     dataList: SnapshotStateList<Map<String, *>>,
     rowComposable: @Composable (Map<String, *>) -> Unit,
-    onRowClick:() -> Unit = {},
+    onRowClick: (Map<String, *>) -> Unit = {}, // ✅ 클릭한 item을 받도록 변경
 ) {
     LazyColumn {
         items(dataList){ dataMap ->
             Column(
                 modifier = Modifier.fillMaxWidth().clickable {
-                    onRowClick()
+                    onRowClick(dataMap)
                 }
             ) {
                 rowComposable(dataMap)
