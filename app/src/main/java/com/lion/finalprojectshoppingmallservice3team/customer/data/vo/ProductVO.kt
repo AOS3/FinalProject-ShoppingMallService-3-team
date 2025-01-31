@@ -1,5 +1,7 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.data.vo
 
+import com.lion.finalprojectshoppingmallservice3team.customer.data.model.ProductModel
+
 class ProductVO {
     var productSellerId : String = ""
     var productName : String = ""
