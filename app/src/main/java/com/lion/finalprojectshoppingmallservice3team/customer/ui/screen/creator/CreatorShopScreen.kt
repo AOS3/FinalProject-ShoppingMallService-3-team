@@ -52,7 +52,6 @@ import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 import me.onebone.toolbar.CollapsingToolbarScaffold
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.data.model.CustomerModel
-import com.lion.finalprojectshoppingmallservice3team.data.Storage
 import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 
@@ -182,7 +181,7 @@ fun CreatorShopScreen(
                     {
 
                         LikeLionProductList(
-                            productList = Storage.products,
+                            productList = emptyList(),
                             onCreatorNameClick = { /*크리에이터 화면으로 이동*/ },
                             onItemClick = { /*shopViewModel.listItemImageOnClick(it.productDocumentId) */ },
                             onLikeClick = { /*shopViewModel.onLikeClick(it)*/ },

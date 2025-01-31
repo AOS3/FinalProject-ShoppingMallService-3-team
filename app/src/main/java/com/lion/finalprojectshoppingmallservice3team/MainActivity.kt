@@ -12,22 +12,12 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material.Scaffold
-import androidx.compose.material.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -45,11 +34,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBottomNavItems
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBottomNavigation
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchFailScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchSuccessScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.ShoppingCartScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorShopScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.home.HomeScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.myfavorite.MyFavoriteBottomScreen
@@ -73,7 +62,8 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.U
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.InquiryProductListScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.InquiryProductReadScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.InquiryProductWriteScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ProductInfoScreen
+//import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ProductInfoScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ShopOrderSheetWriteScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ShopScreen
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -92,6 +82,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 
 @Composable
 fun ShoppingMain() {
@@ -114,7 +105,7 @@ fun ShoppingMain() {
             if (isSplashCompleted && currentRoute in listOf("home", "creator", "myFavorite", "shop", "logoutMyPage", "loginMyPage"))
             LikeLionBottomNavigation(
                 navController = navController,
-                items = LikeLionBottomNavItems(isLoggedIn)
+                items = bottomNavItems(isLoggedIn)
             )
         },
     ) {
@@ -214,14 +205,11 @@ fun ShoppingMain() {
             //***************** 바텀네비게이션 관련 코드 ****************************//
 
             composable("login") { LoginScreen() }
-            //composable("home") { HomeScreen(navController) }
             composable("search") { SearchScreen(navController) }
             composable("searchFail") { SearchFailScreen(navController) }
             composable("searchSuccess") { SearchSuccessScreen(navController) }
             composable("userJoin") { UserJoinScreen() }
             composable("userJoinInfo") { UserJoinInfoScreen() }
-            //composable("logoutMyPage") { LogoutMyPageScreen() }
-            //composable("loginMyPage") { LoginMyPageScreen() }
             composable("userSetting") { UserSettingScreen() }
             composable("modifyUserPw") { ModifyUserPwScreen() }
             composable("myPosts") { MyPostsScreen() }
@@ -231,12 +219,10 @@ fun ShoppingMain() {
             composable("inquiryRead") { InquiryReadScreen() }
             composable("inquiryWrite") { InquiryWriteScreen() }
 
-            // shop 화면
-            //composable( "shop") { ShopScreen() }
             // 상품상세 화면
             composable("productInfo/{productDocumentId}") {
                 val productDocumentId = it.arguments?.getString("productDocumentId")!!
-                ProductInfoScreen(productDocumentId = productDocumentId)
+                //ProductInfoScreen(productDocumentId = productDocumentId)
             }
             // 상품 문의화면
             composable("inquiryProductWrite",
@@ -262,7 +248,11 @@ fun ShoppingMain() {
             composable("inquiryProductRead") { InquiryProductReadScreen() }
             // 취소/환불 FAQ
             composable("cancelRefundFAQ") { CancelRefundFAQScreen() }
-            //composable("myFavorite") { MyFavoriteScreen() }
+            // 장바구니 화면
+            composable("shoppingCart") { ShoppingCartScreen() }
+            // 주문서 작성화면
+            composable("ShopOrderSheetWrite") { ShopOrderSheetWriteScreen() }
+
             composable("myFavoriteGroup") { MyFavoriteGroupScreen() }
             composable("MyFavoriteNewGroup") { MyFavoriteNewGroupScreen() }
             composable(

@@ -16,6 +16,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.shop.ProductInfoViewModel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,7 +26,8 @@ fun LikeLionBottomSheet(
     onDismissRequest: () -> Unit,
     productPrice: Long, // 상품 가격
     selectedSize: String?,
-    selectedColor: String?
+    selectedColor: String?,
+    viewModel : ProductInfoViewModel = hiltViewModel()
 ) {
     var quantity by remember { mutableStateOf(1) }
 
@@ -129,7 +132,7 @@ fun LikeLionBottomSheet(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     LikeLionFilledButton(
-                        onClick = { /* 장바구니에 담는다 */},
+                        onClick = { viewModel.shoppingCartButtonOnClick()},
                         modifier = Modifier.weight(1f),
                         contentColor = MainColor,
                         containerColor = Color.White,
@@ -140,7 +143,7 @@ fun LikeLionBottomSheet(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     LikeLionFilledButton(
-                        onClick = {/* 주문서 작성화면으로 이동한다. */},
+                        onClick = { viewModel.shopOrderSheetWriteButtonOnClick() },
                         modifier = Modifier.weight(1f),
                         text = "바로 구매하기"
                     )
