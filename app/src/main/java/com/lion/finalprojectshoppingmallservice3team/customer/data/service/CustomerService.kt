@@ -1,6 +1,7 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.data.service
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kakao.sdk.user.model.User
@@ -9,6 +10,7 @@ import com.lion.finalprojectshoppingmallservice3team.customer.data.repository.Cu
 import com.lion.finalprojectshoppingmallservice3team.customer.data.util.LoginResult
 import com.lion.finalprojectshoppingmallservice3team.customer.data.util.UserState
 import com.lion.finalprojectshoppingmallservice3team.customer.data.vo.CustomerVO
+import java.io.File
 
 class CustomerService(val customerRepository: CustomerRepository) {
     // 사용자 정보를 추가하는 메서드
@@ -110,6 +112,10 @@ class CustomerService(val customerRepository: CustomerRepository) {
     // 이미지 데이터를 서버로 업로드 하는 메서드
     suspend fun uploadImage(sourceFilePath:String, serverFilePath:String){
         customerRepository.uploadImage(sourceFilePath, serverFilePath)
+    }
+
+    suspend fun uploadImages(sourceFilePaths: List<String>): List<String> {
+        return customerRepository.uploadImages(sourceFilePaths) // ✅ 리스트를 처리할 수 있도록 변경
     }
 
     // 서버에서 이미지 파일을 삭제한다.

@@ -1,8 +1,11 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.creator
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.state.ToggleableState
@@ -21,6 +24,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,7 +39,7 @@ class CreatorApplyViewmodel @Inject constructor(
     val shoppingApplication = context as ShoppingApplication
 
     // 샵 이름
-    val shopName = mutableStateOf("")
+    val creatorShopName = mutableStateOf("")
     // 도메인 명
     val domainName = mutableStateOf("")
     // 본인 또는 브랜드 소개
@@ -53,6 +58,30 @@ class CreatorApplyViewmodel @Inject constructor(
     val triCheckboxAllValue = mutableStateOf(ToggleableState.Off)
     // 개인정보 동의
     val checkboxPersonalInfoAgree = mutableStateOf(false)
+
+    // 여러 개의 이미지를 저장하는 상태 변수
+    val imageBitmapCompanyList = mutableStateListOf<Bitmap>()
+    val imageCompanyUriList = mutableStateListOf<String>()
+
+    // 여러 개의 이미지를 저장하는 상태 변수
+    val imageBitmapPortfolioList = mutableStateListOf<Bitmap>()
+    val imagePortfolioUriList = mutableStateListOf<String>()
+
+    fun getFileNameFromUri(uri: String): String {
+        return Uri.parse(uri).lastPathSegment ?: "알 수 없는 파일"
+    }
+
+    // 이미지 삭제 버튼을 눌렀을 때
+    fun deleteCompanyImageOnClick(){
+        // 카메라나 앨범에서 가져온 사진이 있다면 삭제한다.
+        imageBitmapCompanyList.clear()
+    }
+
+    // 이미지 삭제 버튼을 눌렀을 때
+    fun deletePortfolioImageOnClick(){
+        // 카메라나 앨범에서 가져온 사진이 있다면 삭제한다.
+        imageBitmapPortfolioList.clear()
+    }
 
     // 약관 체크박스를 눌렀을 때 호출되는 메서드
     fun triCheckboxAllValueOnClick(){
@@ -106,7 +135,7 @@ class CreatorApplyViewmodel @Inject constructor(
     fun updateApplySecondButtonState() {
         // 조건: 아이디 중복 확인, 닉네임 중복 확인, 비밀번호 조건 만족, 약관 필수 체크
         isButtonSecondEnabled.value =
-            shopName.value.isNotBlank() &&
+            creatorShopName.value.isNotBlank() &&
                     domainName.value.isNotBlank() &&
                     brandDescription.value.isNotBlank() &&
                     companyName.value.isNotBlank()
@@ -124,7 +153,7 @@ class CreatorApplyViewmodel @Inject constructor(
     fun updateApplySubmitButtonState() {
         // 조건: 아이디 중복 확인, 닉네임 중복 확인, 비밀번호 조건 만족, 약관 필수 체크
         isButtonSubmitEnabled.value =
-            shopName.value.isNotBlank() &&
+            creatorShopName.value.isNotBlank() &&
                     domainName.value.isNotBlank() &&
                     brandDescription.value.isNotBlank() &&
                     companyName.value.isNotBlank() &&
@@ -169,8 +198,6 @@ class CreatorApplyViewmodel @Inject constructor(
         shoppingApplication.navHostController.navigate("")
     }
 
-
-
     fun onFileUpload() {
         fileUploaded.value = true
     }
@@ -201,7 +228,6 @@ class CreatorApplyViewmodel @Inject constructor(
         creatorModel.creatorComNumber = 0L
         creatorModel.creatorComPosition = ""
         creatorModel.creatorInquery = ""
-        creatorModel.creatorPortfolioFile = ""
         creatorModel.creatorReturnNumber = ""
         creatorModel.creatorfcmToken = ""
         creatorModel.creatorCompanyFile = ""
@@ -219,37 +245,53 @@ class CreatorApplyViewmodel @Inject constructor(
         creatorModel.creatorUserCreatedAt = System.nanoTime()
         creatorModel.creatorUserState = CreatorState.Creator_STATE_NORMAL
 
-
         // 저장한다.
         CoroutineScope(Dispatchers.Main).launch {
-            val work1 = async(Dispatchers.IO){
-                creatorService.addCreatorData(creatorModel)
+            try {
+                val imageCompanyPaths = imageBitmapCompanyList.map { bitmap -> saveBitmapToFile(bitmap) } // Bitmap → 파일 변환
+                val uploadedCompanyUrls = customerService.uploadImages(imageCompanyPaths) // Firebase Storage 업로드
+                creatorModel.creatorCompanyFile = uploadedCompanyUrls.joinToString(",") // Firestore에 저장할 URL 리스트
+
+                val imagePortfolioPaths = imageBitmapPortfolioList.map { bitmap -> saveBitmapToFile(bitmap) } // Bitmap → 파일 변환
+                val uploadedPortfolioUrls = customerService.uploadImages(imagePortfolioPaths) // Firebase Storage 업로드
+                creatorModel.creatorPortfolioFile = uploadedPortfolioUrls.joinToString(",") // Firestore에 저장할 URL 리스트
+
+                val work1 = async(Dispatchers.IO) {
+                    creatorService.addCreatorData(creatorModel) // ✅ Firestore 저장
+                }
+                work1.await()
+
+                val shopModel = ShopModel().apply {
+                    shopName = creatorShopName.value
+                    shopDomainName = domainName.value
+                    shopCreatorName = shoppingApplication.loginCustomerModel.customerUserName
+                    shopBrandDescription = brandDescription.value
+                    shopBestSns = bestSns.value
+                    shopCreatedAt = System.nanoTime()
+                    shopCreatorId = shoppingApplication.loginCustomerModel.customerUserId
+                    shopState = ShopState.Shop_STATE_NORMAL
+                }
+
+                val work2 = async(Dispatchers.IO) {
+                    shopService.addShopData(shopModel)
+                }
+                work2.await()
+
+                Toast.makeText(shoppingApplication, "크리에이터 신청이 완료되었습니다", Toast.LENGTH_SHORT).show()
+                shoppingApplication.navHostController.popBackStack("loginMyPage", inclusive = true)
+                shoppingApplication.navHostController.navigate("loginMyPage")
+            } catch (e: Exception) {
+                Toast.makeText(shoppingApplication, "이미지 업로드 실패: ${e.message}", Toast.LENGTH_SHORT).show()
             }
-            work1.join()
-
-            val shopModel = ShopModel()
-
-            shopModel.shopName = shopName.value
-            shopModel.shopDomainName = domainName.value
-            shopModel.shopCreatorName = shoppingApplication.loginCustomerModel.customerUserName
-            shopModel.shopBrandDescription = brandDescription.value
-            shopModel.shopBestSns = bestSns.value
-            shopModel.shopCreatedAt = System.nanoTime()
-            shopModel.shopCreatorId = shoppingApplication.loginCustomerModel.customerUserId
-            shopModel.shopState = ShopState.Shop_STATE_NORMAL
-
-            val work2 = async(Dispatchers.IO){
-                shopService.addShopData(shopModel)
-            }
-            work2.join()
-
-            Toast.makeText(shoppingApplication, "크리에이터 신청이 완료되었습니다", Toast.LENGTH_SHORT).show()
-            shoppingApplication.navHostController.popBackStack()
-            shoppingApplication.navHostController.popBackStack("loginMyPage", inclusive = true)
-            shoppingApplication.navHostController.popBackStack("creatorApply", inclusive = true)
-            shoppingApplication.navHostController.popBackStack("creatorApplySecond", inclusive = true)
-            shoppingApplication.navHostController.popBackStack("creatorApplyThird", inclusive = true)
-            shoppingApplication.navHostController.navigate("loginMyPage")
         }
+    }
+
+    fun saveBitmapToFile(bitmap: Bitmap): String {
+        val file = File(shoppingApplication.filesDir, "image_${System.currentTimeMillis()}.jpg")
+        val outputStream = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
+        outputStream.flush()
+        outputStream.close()
+        return file.absolutePath // ✅ 변환된 파일 경로 반환
     }
 }

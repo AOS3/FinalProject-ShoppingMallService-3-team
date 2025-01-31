@@ -73,20 +73,6 @@ fun CreatorApplyThirdScreen(creatorApplyViewModel: CreatorApplyViewmodel = hiltV
                 },
             )
         },
-        bottomBar = {
-            LikeLionFilledButton(
-                text = "신청하기",
-                isEnabled = creatorApplyViewModel.isButtonSubmitEnabled.value,
-                containerColor = MainColor,
-                contentColor = Color.White,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                onClick = {
-                    creatorApplyViewModel.buttonSubmitOnClick()
-                }
-            )
-        }
     ) { paddingValue ->
 
         val scrollState = rememberScrollState()
@@ -251,6 +237,19 @@ fun CreatorApplyThirdScreen(creatorApplyViewModel: CreatorApplyViewmodel = hiltV
                                 top = 8.dp,
                                 end = 16.dp
                             ),
+                        )
+
+                        LikeLionFilledButton(
+                            text = "신청하기",
+                            isEnabled = creatorApplyViewModel.isButtonSubmitEnabled.value,
+                            containerColor = MainColor,
+                            contentColor = Color.White,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            onClick = {
+                                creatorApplyViewModel.buttonSubmitOnClick()
+                            }
                         )
                     }
                 }

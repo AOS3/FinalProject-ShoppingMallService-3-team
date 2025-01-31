@@ -127,6 +127,37 @@ class CustomerRepository {
         childReference.putFile(fileUri).await()
     }
 
+    suspend fun uploadImageUri(sourceFilePath: String, serverFilePath: String): String {
+        val firebaseStorage = FirebaseStorage.getInstance()
+        val file = File(sourceFilePath)
+        val fileUri = Uri.fromFile(file)
+        val childReference = firebaseStorage.reference.child("image/$serverFilePath")
+
+        return try {
+            // 파일 업로드
+            childReference.putFile(fileUri).await()
+            // 업로드된 파일의 다운로드 URL 반환
+            childReference.downloadUrl.await().toString()
+        } catch (e: Exception) {
+            // 업로드 실패 시 빈 문자열 반환
+            ""
+        }
+    }
+
+    suspend fun uploadImages(sourceFilePaths: List<String>): List<String> {
+        val uploadedUrls = mutableListOf<String>()
+
+        sourceFilePaths.forEachIndexed { index, sourceFilePath ->
+            val serverFilePath = "image/${System.currentTimeMillis()}_${index}.jpg"
+            val uploadedUrl = uploadImageUri(sourceFilePath, serverFilePath) // URL 반환됨
+            if (uploadedUrl.isNotEmpty()) { // 빈 값 방지
+                uploadedUrls.add(uploadedUrl)
+            }
+        }
+
+        return uploadedUrls // 올바른 URL 리스트 반환
+    }
+
     // 서버에서 이미지 파일을 삭제한다.
     suspend fun removeImageFile(imageFileName: String) {
         if (imageFileName.isBlank() || imageFileName == "none") {
