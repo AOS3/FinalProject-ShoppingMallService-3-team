@@ -20,7 +20,7 @@ import com.lion.finalprojectshoppingmallservice3team.ui.theme.SubColor
 
 @Composable
 fun LikeLionInquiryCard(item: Map<String, *>) {
-    val isAnswer = item["isAnswer"] as Boolean // 답변 여부를 가져옴
+    val isAnswer = (item["isAnswer"] as? Boolean) ?: false
     val backgroundColor = if (isAnswer) SubColor else Color(0xFFE0E0E0) // 답변 여부에 따른 배경색
 
     Column(
@@ -39,12 +39,12 @@ fun LikeLionInquiryCard(item: Map<String, *>) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = item["author"] as String,
+                text = (item["author"] as? String) ?: "",
                 fontSize = 14.sp,
                 color = if (isAnswer) Color(0xFF673AB7) else Color.Black // 답변이면 보라색
             )
             Text(
-                text = item["date"] as String,
+                text = (item["date"] as? String) ?: "",
                 fontSize = 14.sp,
                 color = Color.Gray
             )
@@ -65,7 +65,7 @@ fun LikeLionInquiryCard(item: Map<String, *>) {
 
         // 내용
         Text(
-            text = if (isAnswer) "답변 내용: ${(item["content"] as String)}" else "내용: ${(item["content"] as String)}",
+            text = if (isAnswer) "답변 내용: ${(item["content"] ?: "")}" else "내용: ${(item["content"] ?: "")}",
             fontSize = 14.sp,
             color = Color.Black
         )
