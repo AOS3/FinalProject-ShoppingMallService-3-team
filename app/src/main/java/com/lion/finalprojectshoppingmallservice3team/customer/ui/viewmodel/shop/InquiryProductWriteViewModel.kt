@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.lion.finalprojectshoppingmallservice3team.Component.Product
 import com.lion.finalprojectshoppingmallservice3team.ShoppingApplication
-import com.lion.finalprojectshoppingmallservice3team.data.Storage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject

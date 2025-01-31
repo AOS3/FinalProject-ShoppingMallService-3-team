@@ -35,42 +35,7 @@ import com.lion.finalprojectshoppingmallservice3team.ui.theme.SubColor
 
 @Composable
 fun LogoutMyPageScreen(logoutMyPageViewModel: LogoutMyPageViewModel = hiltViewModel()) {
-    val bottomNavItems = listOf(
-        BottomNavigationItemData(
-            icon = Icons.Default.Home,
-            label = "Home",
-            route = "home"
-        ),
-        BottomNavigationItemData(
-            icon = Icons.Default.Mood,
-            label = "Creator",
-            route = "creator"
-        ),
-        BottomNavigationItemData(
-            icon = Icons.Default.Star,
-            label = "My",
-            route = "myfavorite"
-        ),
-        BottomNavigationItemData(
-            icon = Icons.Default.Shop,
-            label = "Shop",
-            route = "shop"
-        ),
-        BottomNavigationItemData(
-            icon = Icons.Default.Person,
-            label = "My Page",
-            route = "logoutmypage"
-        )
-    )
-
-    Scaffold(
-        bottomBar = {
-            LikeLionBottomNavigation(
-                navController = logoutMyPageViewModel.shoppingApplication.navHostController,
-                items = bottomNavItems,
-            )
-        }
-    ) {
+    Scaffold{
         Column(
             modifier = Modifier
                 .fillMaxSize()

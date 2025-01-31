@@ -54,14 +54,12 @@ fun CheerUpWriteScreen() {
                 actions = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.baseline_close_24),
-                        text = "",
                         color = Color.Transparent,
                         iconBackColor = Color.Transparent,
                         padding = 10.dp,
                         iconButtonOnClick = {
 
                         },
-                        borderNull = true,
                     )
                 }
             )

@@ -31,8 +31,7 @@ class SearchViewModel @Inject constructor(
     // 검색 결과
     val searchResults = mutableStateOf<List<Any>>(emptyList())
 
-    // 최근 검색어 목록 관리
-    val recentSearches = mutableStateListOf<String>()
+
 
     fun performSearch(query: String) {
         if (query.isBlank()) {
@@ -51,16 +50,16 @@ class SearchViewModel @Inject constructor(
 
         // 검색어 추가 함수
         fun addSearchQuery(query: String) {
-            if (query.isNotBlank() && !recentSearches.contains(query)) {
-                recentSearches.add(0, query)
+            if (query.isNotBlank() && !shoppingApplication.recentSearches.contains(query)) {
+                shoppingApplication.recentSearches.add(0, query)
             }
             searchValue.value = "" // 검색창 초기화
         }
 
         // 최근 검색어 삭제 함수
         fun removeSearchQuery(index: Int) {
-            if (index in recentSearches.indices) {
-                recentSearches.removeAt(index)
+            if (index in shoppingApplication.recentSearches.indices) {
+                shoppingApplication.recentSearches.removeAt(index)
             }
         }
     }

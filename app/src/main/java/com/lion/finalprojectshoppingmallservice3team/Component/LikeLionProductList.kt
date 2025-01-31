@@ -1,6 +1,5 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
-import android.R.attr.fontWeight
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,20 +33,21 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lion.finalprojectshoppingmallservice3team.R
+import com.lion.finalprojectshoppingmallservice3team.customer.data.model.ProductModel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 
 @Composable
 fun LikeLionProductList(
-    productList: List<Product>,
-    onCreatorNameClick: ((Product) -> Unit)?,
-    onLikeClick: (Product) -> Unit,
-    onItemClick: (Product) -> Unit,
+    productList: List<ProductModel>,
+    onCreatorNameClick: (ProductModel) -> Unit,
+    onLikeClick: (ProductModel) -> Unit,
+    onItemClick: (ProductModel) -> Unit,
     columns: Int = 2,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(columns),
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
             .padding(),
         contentPadding = PaddingValues(horizontal = 10.dp)
@@ -65,10 +65,10 @@ fun LikeLionProductList(
 
 @Composable
 fun LikeLionProductItem(
-    product: Product,
-    onCreatorNameClick: ((Product) -> Unit)?,
-    onLikeClick: (Product) -> Unit,
-    onItemClick: (Product) -> Unit
+    product: ProductModel,
+    onCreatorNameClick: (ProductModel) -> Unit,
+    onLikeClick: (ProductModel) -> Unit,
+    onItemClick: (ProductModel) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -96,11 +96,11 @@ fun LikeLionProductItem(
                     LikeLionProductImage(
                         modifier = Modifier
                             .graphicsLayer {
-                                if(product.stockQuantity == 0){
+                                if(product.productManagementAllQuantity == 0L){
                                     alpha = 0.5f
                                 }
                             },
-                        imgUrl = product.imageUrls.firstOrNull() ?: "",
+                        imgUrl = product.productImages.firstOrNull() ?: "",
                         size = 200.dp,
                         fixedImage = R.drawable.marcshop_logo
                     )
@@ -113,7 +113,7 @@ fun LikeLionProductItem(
                     .align(Alignment.TopStart)
                     .padding(10.dp)
             ) {
-                if (product.stockQuantity == 0) {
+                if (product.productManagementAllQuantity == 0L) {
                     Text(
                         text = "Soldout",
                         color = Color.White,
@@ -124,11 +124,11 @@ fun LikeLionProductItem(
                     )
                 }
                 // Spacer를 이용해 두 텍스트 사이에 간격을 추가
-                if (product.stockQuantity == 0 && product.isLimited) {
+                if (product.productManagementAllQuantity == 0L && !product.productLimitedSalesPeriod.isBlank()) {
                     Spacer(modifier = Modifier.width(5.dp)) // "Soldout"과 "Limited" 사이에 간격 추가
                 }
 
-                if (product.isLimited) {
+                if (!product.productLimitedSalesPeriod.isBlank()) {
                     Text(
                         text = "Limited",
                         color = Color.White,
@@ -143,36 +143,21 @@ fun LikeLionProductItem(
 
         Spacer(modifier = Modifier.height(8.dp))
         // 크리에이터 이름과 좋아요 버튼
-
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (onCreatorNameClick!=null)
             Text(
-                text = product.creator,
+                text = product.productSellerId,
                 //style = Typography.bodySmall,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .padding(start = 5.dp)
                     .weight(1f)
                     .clickable { onCreatorNameClick(product) }
-
             )
-            else{
-                // 상품 이름
-                Text(
-                    text = product.name,
-                    //style = Typography.bodyMedium,
-                    modifier = Modifier
-                        .padding(start = 5.dp, end = 5.dp)
-                        .weight(1f),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
             IconButton(
                 onClick = { onLikeClick(product) },
                 modifier = Modifier.padding(0.dp)
@@ -180,29 +165,30 @@ fun LikeLionProductItem(
             ) { // 클릭 시 상태 변경
                 Icon(
                     painter = painterResource(
-                        id = if (product.isFavorite)
-                            R.drawable.favorite_fill_24px
-                        else
-                            R.drawable.favorite_24px
+//                        id = if (product.isFavorite)
+//                            R.drawable.favorite_fill_24px
+//                        else
+//                            R.drawable.favorite_24px
+                        R.drawable.favorite_24px
                     ),
                     contentDescription = "Like Button",
-                    tint = if (product.isFavorite) MainColor else Color.LightGray,
+//                    tint = if (product.isFavorite) MainColor else Color.LightGray,
+                    tint = Color.LightGray,
                 )
             }
         }
-        if (onCreatorNameClick!=null) {
-            // 상품 이름
-            Text(
-                text = product.name,
-                //style = Typography.bodyMedium,
-                modifier = Modifier
-                    .padding(start = 5.dp, end = 5.dp),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
 
-        val formattedPrice = String.format("%,d", product.price)
+        // 상품 이름
+        Text(
+            text = product.productName,
+            //style = Typography.bodyMedium,
+            modifier = Modifier
+                .padding(start = 5.dp, end = 5.dp),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+
+        val formattedPrice = String.format("%,d", product.productPrice)
         // 상품 가격
         Text(
             text = "${formattedPrice}원",
@@ -211,11 +197,11 @@ fun LikeLionProductItem(
             modifier = Modifier.padding(
                 start = 5.dp,
                 top = 2.dp,
-                bottom = if(product.reviewCount > 0) 0.dp else 10.dp)
+                bottom = if(product.productReviewCount > 0) 0.dp else 10.dp)
         )
 
         // 리뷰 정보
-        if (product.reviewCount > 0) {
+        if (product.productReviewCount > 0) {
             Row(
                 modifier = Modifier
                     .padding(start = 5.dp, top = 2.dp, bottom = 10.dp)
@@ -232,7 +218,7 @@ fun LikeLionProductItem(
 
                 // 평점과 리뷰 수
                 Text(
-                    text = "${product.rating}(${product.reviewCount})",
+                    text = "${product.productRating}(${product.productReviewCount})",
                     fontSize = 12.sp,
                     modifier = Modifier.padding(start = 5.dp),
                     color = Color.Gray
@@ -242,19 +228,19 @@ fun LikeLionProductItem(
     }
 }
 
-data class Product(
-    val productDocumentId: String,
-    val name: String,     // 상품 이름
-    val price: Long,    // 상품 가격
-    val imageUrl: String,// 상품 이미지 URL (일단 기본값)
-    val imageUrls: List<String> = emptyList(),
-    val description: String, // 상품 설명
-    val creator: String,  // 크리에이터 이름
-    val category: String, // 대카테고리 (예: 의류, 굿즈 등)
-    val subCategory: String, // 소카테고리 (예: 티셔츠, 키링 등)
-    var isFavorite: Boolean, // 좋아요
-    var isLimited: Boolean, // 한정판 여부
-    val stockQuantity: Int, // 재고 수
-    val rating: Float, // 상품 평점 (예: 4.5)
-    val reviewCount: Int // 리뷰 수
-)
+//data class Product(
+//    val productDocumentId: String,
+//    val name: String,     // 상품 이름
+//    val price: Long,    // 상품 가격
+//    val imageUrl: String,// 상품 이미지 URL (일단 기본값)
+//    val imageUrls: List<String> = emptyList(),
+//    val description: String, // 상품 설명
+//    val creator: String,  // 크리에이터 이름
+//    val category: String, // 대카테고리 (예: 의류, 굿즈 등)
+//    val subCategory: String, // 소카테고리 (예: 티셔츠, 키링 등)
+//    var isFavorite: Boolean, // 좋아요
+//    var isLimited: Boolean, // 한정판 여부
+//    val stockQuantity: Int, // 재고 수
+//    val rating: Float, // 상품 평점 (예: 4.5)
+//    val reviewCount: Int // 리뷰 수
+//)

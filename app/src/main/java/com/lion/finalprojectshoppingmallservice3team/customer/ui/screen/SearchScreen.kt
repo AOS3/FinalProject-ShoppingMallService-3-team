@@ -1,6 +1,13 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen
 
+import android.util.Log
+import androidx.compose.foundation.Indication
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.InteractionSource
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.foundation.interaction.collectIsHoveredAsState
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,16 +18,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Scaffold
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.ContentDrawScope
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.vectorResource
@@ -55,7 +66,11 @@ fun SearchScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .clickable {focusManager.clearFocus()}
+                .clickable(
+                    onClick = {focusManager.clearFocus()},
+                    interactionSource = remember{ MutableInteractionSource() },
+                    indication = null,
+                )
         ) {
 
             Row(
@@ -92,26 +107,22 @@ fun SearchScreen(
 
                 LikeLionIconButton(
                     icon = ImageVector.vectorResource(id = R.drawable.baseline_close_24),
-                    text = "",
-                    color = Color.Transparent,
-                    iconBackColor = Color.Transparent,
                     padding = 10.dp,
                     iconButtonOnClick = {
                         navController.popBackStack()
                     },
-                    borderNull = true,
                 )
             }
 
             Spacer(modifier = Modifier.height(8.dp))
-
+            Log.d("st","${viewModel.shoppingApplication.recentSearches}")
             Column(modifier = Modifier.padding(16.dp)) {
                 Text(text = "최근 검색어", style = MaterialTheme.typography.titleMedium, color = Color.Gray)
                 Spacer(modifier = Modifier.height(8.dp))
                 // ChipGroup으로 최근 검색어 표시
                 LikeLionChipGroup(
                     modifier = Modifier.fillMaxWidth(),
-                    elements = viewModel.recentSearches.map { ChipState(it, mutableStateOf(false)) },
+                    elements = viewModel.shoppingApplication.recentSearches.map { ChipState(it, mutableStateOf(false)) },
                     chipStyle = ChipStyle(
                         selectedColor = MaterialTheme.colorScheme.primary,
                         unselectedColor = MaterialTheme.colorScheme.surface,
@@ -130,8 +141,6 @@ fun SearchScreen(
         }
     }
 }
-
-
 //@Preview
 //@Composable
 //fun SearchPreview(){

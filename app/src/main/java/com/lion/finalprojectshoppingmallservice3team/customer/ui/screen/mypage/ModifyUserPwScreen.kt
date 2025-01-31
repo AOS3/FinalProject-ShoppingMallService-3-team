@@ -43,7 +43,6 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
                         padding = 10.dp,
                         color = Color.Transparent,
                         iconBackColor = Color.Transparent,
-                        borderNull = true,
                         iconButtonOnClick = {
                             modifyUserPwViewModel.menuCloseOnClick()
                         }
