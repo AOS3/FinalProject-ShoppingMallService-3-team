@@ -1,5 +1,7 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import android.R.attr.contentDescription
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -43,7 +45,7 @@ fun LikeLionIconButton(
             )
         ){
             Icon(
-                modifier = Modifier
+                modifier = Modifier.background(color)
                     .size(iconSize),
                 imageVector = icon,
                 contentDescription = null,

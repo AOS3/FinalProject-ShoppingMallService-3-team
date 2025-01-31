@@ -8,16 +8,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 @HiltViewModel
-class CreatorShopViewModel @Inject constructor(
+class CreatorListViewModel @Inject constructor(
     @ApplicationContext context: Context
 ) : ViewModel()  {
     val shoppingApplication = context as ShoppingApplication
 
     fun popBack(){
         shoppingApplication.navHostController.popBackStack()
-    }
-
-    fun navigation(){
-        shoppingApplication.navHostController.navigate("CreatorNotice")
     }
 }
