@@ -42,7 +42,6 @@ fun InquiryWriteScreen(inquiryWriteViewModel: InquiryWriteViewModel = hiltViewMo
                         iconBackColor = Color.Transparent,
                         icon = ImageVector.vectorResource(R.drawable.close_24px),
                         padding = 10.dp,
-                        borderNull = true,
                         iconButtonOnClick = {
                             inquiryWriteViewModel.inquiryWriteCloseOnClick()
                         }
