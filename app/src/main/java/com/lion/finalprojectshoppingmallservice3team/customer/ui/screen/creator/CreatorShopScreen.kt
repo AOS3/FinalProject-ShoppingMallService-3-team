@@ -191,16 +191,16 @@ fun CreatorShopScreen(
                     CreatorShopTab.PRODUCT_LIST -> // 상품 리스트를 2열 그리드로 표시
                     {
 
-                        LikeLionProductList(
-                            productList = Storage.products,
-                            onCreatorNameClick = null,
-                            onItemClick = { /*shopViewModel.listItemImageOnClick(it.productDocumentId) */ },
-                            onLikeClick = { /*shopViewModel.onLikeClick(it)*/ },
-                            columns = 2,
-                            modifier = Modifier
-                                .padding(top = 120.dp)
-                                .background(Color.White)
-                        ) // 상품 화면
+//                        LikeLionProductList(
+//                            productList = Storage.products,
+//                            onCreatorNameClick = null,
+//                            onItemClick = { /*shopViewModel.listItemImageOnClick(it.productDocumentId) */ },
+//                            onLikeClick = { /*shopViewModel.onLikeClick(it)*/ },
+//                            columns = 2,
+//                            modifier = Modifier
+//                                .padding(top = 120.dp)
+//                                .background(Color.White)
+//                        ) // 상품 화면
                     }
 
                     CreatorShopTab.CHEER_UP_LIST -> {

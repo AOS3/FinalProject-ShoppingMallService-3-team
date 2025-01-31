@@ -3,9 +3,9 @@ package com.lion.finalprojectshoppingmallservice3team.customer.data.service
 import com.lion.finalprojectshoppingmallservice3team.customer.data.model.ProductModel
 import com.lion.finalprojectshoppingmallservice3team.customer.data.repository.CustomerRepository
 import com.lion.finalprojectshoppingmallservice3team.customer.data.repository.ProductRepository
-import com.lion.finalprojectshoppingmallservice3team.customer.data.repository.SellerRepository
+//import com.lion.finalprojectshoppingmallservice3team.customer.data.repository.SellerRepository
 import com.lion.finalprojectshoppingmallservice3team.customer.data.vo.ProductVO
-import com.lion.finalprojectshoppingmallservice3team.customer.data.vo.SellerVO
+//import com.lion.finalprojectshoppingmallservice3team.customer.data.vo.SellerVO
 
 class ProductService(val productRepository: ProductRepository, /*val sellerRepository: SellerRepository*/) {
 
