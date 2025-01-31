@@ -13,7 +13,6 @@ import com.lion.finalprojectshoppingmallservice3team.Component.ChipState
 import com.lion.finalprojectshoppingmallservice3team.Component.ChipStyle
 import com.lion.finalprojectshoppingmallservice3team.Component.Product
 import com.lion.finalprojectshoppingmallservice3team.ShoppingApplication
-import com.lion.finalprojectshoppingmallservice3team.data.Storage
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.Typography
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
