@@ -42,23 +42,7 @@ import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 fun InquiryListScreen(inquiryListViewModel: InquiryListViewModel = hiltViewModel()) {
     val selectedOption = remember { mutableStateOf("전체") }
 
-    // 샘플 데이터
-    val inquiryList = remember {
-        mutableStateListOf<Map<String, *>>(
-            mapOf(
-                "status" to "답변 대기",
-                "title" to "문의 제목 1",
-                "name" to "작성자 닉네임",
-                "date" to "2025.01.09"
-            ),
-            mapOf(
-                "status" to "답변 완료",
-                "title" to "문의 제목 2",
-                "name" to "작성자 닉네임",
-                "date" to "2025.01.09"
-            )
-        )
-    }
+    inquiryListViewModel.refreshContentList()
 
     Scaffold(
         topBar = {
@@ -132,10 +116,10 @@ fun InquiryListScreen(inquiryListViewModel: InquiryListViewModel = hiltViewModel
 
             // 필터링된 리스트 출력
             val filteredList = when (selectedOption.value) {
-                "전체" -> inquiryList // 전체 데이터
-                "답변대기" -> inquiryList.filter { it["status"] == "답변 대기" }
-                "답변완료" -> inquiryList.filter { it["status"] == "답변 완료" }
-                else -> inquiryList
+                "전체" -> inquiryListViewModel.contentListState // 전체 데이터
+                "답변대기" -> inquiryListViewModel.contentListState.filter { it["state"] == "답변 대기" }
+                "답변완료" -> inquiryListViewModel.contentListState.filter { it["state"] == "답변 완료" }
+                else -> inquiryListViewModel.contentListState
             }
 
             // 리스트 컴포넌트
@@ -144,8 +128,9 @@ fun InquiryListScreen(inquiryListViewModel: InquiryListViewModel = hiltViewModel
                 rowComposable = { item ->
                     LikeLionInquiryListItem(item)
                 },
-                onRowClick = {
-                    inquiryListViewModel.inquiryListOnClick()
+                onRowClick = { item -> // ✅ 클릭한 아이템 직접 전달
+                    val documentId = item["documentId"] as? String ?: return@LikeLionList
+                    inquiryListViewModel.inquiryListOnClick(documentId)
                 }
             )
         }

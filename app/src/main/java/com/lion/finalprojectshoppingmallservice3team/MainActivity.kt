@@ -34,10 +34,12 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBottomNavItems
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBottomNavigation
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchFailScreen
@@ -226,7 +228,13 @@ fun ShoppingMain() {
             composable("myRecent") { MyRecentScreen() }
             composable("myPurchaseHistory") { MyPurchaseHistoryScreen() }
             composable("inquiryList") { InquiryListScreen() }
-            composable("inquiryRead") { InquiryReadScreen() }
+            composable(
+                route = "inquiryRead/{documentId}",
+                arguments = listOf(navArgument("documentId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val inquiryDocumentId = backStackEntry.arguments?.getString("documentId") ?: ""
+                InquiryReadScreen(inquiryDocumentId = inquiryDocumentId)
+            }
             composable("inquiryWrite") { InquiryWriteScreen() }
             composable("creatorApply") { CreatorApplyScreen(creatorApplyViewModel = creatorApplyViewModel) }
             composable("creatorApplySecond") { CreatorApplySecondScreen(creatorApplyViewModel = creatorApplyViewModel) }

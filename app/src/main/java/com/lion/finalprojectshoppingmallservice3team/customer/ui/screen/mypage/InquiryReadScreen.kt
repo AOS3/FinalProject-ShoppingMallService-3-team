@@ -23,24 +23,11 @@ import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.mypage.InquiryReadViewModel
 
 @Composable
-fun InquiryReadScreen(inquiryReadViewModel: InquiryReadViewModel = hiltViewModel()) {
-    val inquiries = listOf(
-        mapOf(
-            "author" to "작성자 닉네임",
-            "title" to "제목제목제목제목제목",
-            "content" to "내용내용내용내용내용내용내용내용",
-            "attachment" to "-",
-            "date" to "2025.01.09 16:03",
-            "isAnswer" to false // 문의
-        ),
-        mapOf(
-            "author" to "운영진 닉네임",
-            "content" to "답변 내용답변 내용답변 내용답변 내용",
-            "attachment" to "-",
-            "date" to "2025.01.10 12:03",
-            "isAnswer" to true // 답변
-        )
-    )
+fun InquiryReadScreen(inquiryReadViewModel: InquiryReadViewModel = hiltViewModel(),
+                      inquiryDocumentId:String) {
+
+    inquiryReadViewModel.gettingInquiryData(inquiryDocumentId)
+
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
@@ -72,9 +59,14 @@ fun InquiryReadScreen(inquiryReadViewModel: InquiryReadViewModel = hiltViewModel
                 .padding(it)
                 .padding(horizontal = 10.dp)
         ) {
-            inquiries.forEach { item ->
-                LikeLionInquiryCard(item = item)
-                Spacer(modifier = Modifier.height(8.dp))
+            // 고객이 작성한 문의 내용 표시
+            LikeLionInquiryCard(item = inquiryReadViewModel.contentCustomerMapState)
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // 답변이 있는 경우 답변 내용을 표시
+            if (inquiryReadViewModel.contentAnswerMapState.isNotEmpty()) {
+                LikeLionInquiryCard(item = inquiryReadViewModel.contentAnswerMapState)
             }
         }
     }
