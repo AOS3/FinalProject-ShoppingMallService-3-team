@@ -33,14 +33,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lion.finalprojectshoppingmallservice3team.R
+import com.lion.finalprojectshoppingmallservice3team.customer.data.model.ProductModel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 
 @Composable
 fun LikeLionProductList(
-    productList: List<Product>,
-    onCreatorNameClick: (Product) -> Unit,
-    onLikeClick: (Product) -> Unit,
-    onItemClick: (Product) -> Unit,
+    productList: List<ProductModel>,
+    onCreatorNameClick: (ProductModel) -> Unit,
+    onLikeClick: (ProductModel) -> Unit,
+    onItemClick: (ProductModel) -> Unit,
     columns: Int = 2,
     modifier: Modifier = Modifier
 ) {
@@ -64,10 +65,10 @@ fun LikeLionProductList(
 
 @Composable
 fun LikeLionProductItem(
-    product: Product,
-    onCreatorNameClick: (Product) -> Unit,
-    onLikeClick: (Product) -> Unit,
-    onItemClick: (Product) -> Unit
+    product: ProductModel,
+    onCreatorNameClick: (ProductModel) -> Unit,
+    onLikeClick: (ProductModel) -> Unit,
+    onItemClick: (ProductModel) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -95,11 +96,11 @@ fun LikeLionProductItem(
                     LikeLionProductImage(
                         modifier = Modifier
                             .graphicsLayer {
-                                if(product.stockQuantity == 0){
+                                if(product.productManagementAllQuantity == 0L){
                                     alpha = 0.5f
                                 }
                             },
-                        imgUrl = product.imageUrls.firstOrNull() ?: "",
+                        imgUrl = product.productImages.firstOrNull() ?: "",
                         size = 200.dp,
                         fixedImage = R.drawable.marcshop_logo
                     )
@@ -112,7 +113,7 @@ fun LikeLionProductItem(
                     .align(Alignment.TopStart)
                     .padding(10.dp)
             ) {
-                if (product.stockQuantity == 0) {
+                if (product.productManagementAllQuantity == 0L) {
                     Text(
                         text = "Soldout",
                         color = Color.White,
@@ -123,11 +124,11 @@ fun LikeLionProductItem(
                     )
                 }
                 // Spacer를 이용해 두 텍스트 사이에 간격을 추가
-                if (product.stockQuantity == 0 && product.isLimited) {
+                if (product.productManagementAllQuantity == 0L && !product.productLimitedSalesPeriod.isBlank()) {
                     Spacer(modifier = Modifier.width(5.dp)) // "Soldout"과 "Limited" 사이에 간격 추가
                 }
 
-                if (product.isLimited) {
+                if (!product.productLimitedSalesPeriod.isBlank()) {
                     Text(
                         text = "Limited",
                         color = Color.White,
@@ -149,7 +150,7 @@ fun LikeLionProductItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = product.creator,
+                text = product.productSellerId,
                 //style = Typography.bodySmall,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
@@ -164,20 +165,22 @@ fun LikeLionProductItem(
             ) { // 클릭 시 상태 변경
                 Icon(
                     painter = painterResource(
-                        id = if (product.isFavorite)
-                            R.drawable.favorite_fill_24px
-                        else
-                            R.drawable.favorite_24px
+//                        id = if (product.isFavorite)
+//                            R.drawable.favorite_fill_24px
+//                        else
+//                            R.drawable.favorite_24px
+                        R.drawable.favorite_24px
                     ),
                     contentDescription = "Like Button",
-                    tint = if (product.isFavorite) MainColor else Color.LightGray,
+//                    tint = if (product.isFavorite) MainColor else Color.LightGray,
+                    tint = Color.LightGray,
                 )
             }
         }
 
         // 상품 이름
         Text(
-            text = product.name,
+            text = product.productName,
             //style = Typography.bodyMedium,
             modifier = Modifier
                 .padding(start = 5.dp, end = 5.dp),
@@ -185,7 +188,7 @@ fun LikeLionProductItem(
             overflow = TextOverflow.Ellipsis
         )
 
-        val formattedPrice = String.format("%,d", product.price)
+        val formattedPrice = String.format("%,d", product.productPrice)
         // 상품 가격
         Text(
             text = "${formattedPrice}원",
@@ -194,11 +197,11 @@ fun LikeLionProductItem(
             modifier = Modifier.padding(
                 start = 5.dp,
                 top = 2.dp,
-                bottom = if(product.reviewCount > 0) 0.dp else 10.dp)
+                bottom = if(product.productReviewCount > 0) 0.dp else 10.dp)
         )
 
         // 리뷰 정보
-        if (product.reviewCount > 0) {
+        if (product.productReviewCount > 0) {
             Row(
                 modifier = Modifier
                     .padding(start = 5.dp, top = 2.dp, bottom = 10.dp)
@@ -215,7 +218,7 @@ fun LikeLionProductItem(
 
                 // 평점과 리뷰 수
                 Text(
-                    text = "${product.rating}(${product.reviewCount})",
+                    text = "${product.productRating}(${product.productReviewCount})",
                     fontSize = 12.sp,
                     modifier = Modifier.padding(start = 5.dp),
                     color = Color.Gray

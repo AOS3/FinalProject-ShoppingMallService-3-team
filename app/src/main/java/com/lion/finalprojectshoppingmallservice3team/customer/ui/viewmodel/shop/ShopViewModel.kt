@@ -9,22 +9,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.lion.finalprojectshoppingmallservice3team.Component.ChipState
 import com.lion.finalprojectshoppingmallservice3team.Component.ChipStyle
-import com.lion.finalprojectshoppingmallservice3team.Component.Product
 import com.lion.finalprojectshoppingmallservice3team.ShoppingApplication
-import com.lion.finalprojectshoppingmallservice3team.data.Storage
+import com.lion.finalprojectshoppingmallservice3team.customer.data.model.ProductModel
+import com.lion.finalprojectshoppingmallservice3team.customer.data.service.ProductService
+import com.lion.finalprojectshoppingmallservice3team.customer.data.util.CategoryMapping
+import com.lion.finalprojectshoppingmallservice3team.customer.data.util.ProductCategory
+import com.lion.finalprojectshoppingmallservice3team.customer.data.vo.ProductVO
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.Typography
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ShopViewModel @Inject constructor(
     @ApplicationContext context: Context,
+    private val productService: ProductService
 ) : ViewModel() {
     val shoppingApplication = context as ShoppingApplication
 
@@ -36,19 +42,20 @@ class ShopViewModel @Inject constructor(
     val topAppBarTitle = mutableStateOf("Shop")
 
     // 좋아요 상태를 관리하는 Map
-    private val favoriteState = mutableStateOf(mutableMapOf<String, Boolean>())
+    private val _favoriteState = MutableStateFlow<Map<String, Boolean>>(emptyMap())
+    val favoriteState = _favoriteState.asStateFlow()
 
     //**************** 칩 *********************
     val chipElements: SnapshotStateList<ChipState> = mutableStateListOf(
-        ChipState("전체 상품", mutableStateOf(true)),
-        ChipState("의류", mutableStateOf(false)),
-        ChipState("굿즈", mutableStateOf(false)),
-        ChipState("패션잡화", mutableStateOf(false)),
-        ChipState("쿠션/패브릭", mutableStateOf(false)),
-        ChipState("문구/오피스", mutableStateOf(false)),
-        ChipState("폰액세서리", mutableStateOf(false)),
-        ChipState("스티커/지류", mutableStateOf(false)),
-        ChipState("리빙", mutableStateOf(false)),
+        ChipState(ProductCategory.PRODUCT_CATEGORY_ALL.str, mutableStateOf(true)),
+        ChipState(ProductCategory.PRODUCT_CATEGORY_CLOTHING.str, mutableStateOf(false)),
+        ChipState(ProductCategory.PRODUCT_CATEGORY_GOODS.str, mutableStateOf(false)),
+        ChipState(ProductCategory.PRODUCT_CATEGORY_FASHION_ACCESSORIES.str, mutableStateOf(false)),
+        ChipState(ProductCategory.PRODUCT_CATEGORY_CUSHION_FABRIC.str, mutableStateOf(false)),
+        ChipState(ProductCategory.PRODUCT_CATEGORY_OFFICE_SUPPLIES.str, mutableStateOf(false)),
+        ChipState(ProductCategory.PRODUCT_CATEGORY_PHONE_ACCESSORIES.str, mutableStateOf(false)),
+        ChipState(ProductCategory.PRODUCT_CATEGORY_STICKER_PAPER.str, mutableStateOf(false)),
+        ChipState(ProductCategory.PRODUCT_CATEGORY_LIVING.str, mutableStateOf(false)),
     )
 
     val chipState = ChipStyle(
@@ -68,21 +75,19 @@ class ShopViewModel @Inject constructor(
     }
 
     //**************** 탭 *********************
-    private val categoryTabs = mapOf(
-        "전체 상품" to listOf("전체 상품"),
-        "의류" to listOf("전체", "티셔츠", "맨투맨", "후드"),
-        "굿즈" to listOf("전체", "아크릴굿즈", "키링", "거울/핀버튼"),
-        "패션잡화" to listOf("전체", "가방"),
-        "쿠션/패브릭" to listOf("전체", "쿠션/방석"),
-        "문구/오피스" to listOf("전체", "마우스패드"),
-        "폰액세서리" to listOf("전체", "스마트톡"),
-        "스티커/지류" to listOf("전체", "카드"),
-        "리빙" to listOf("전체", "머그컵")
-    )
+    private val categoryTabs: Map<String, List<String>> = buildMap {
+        // "전체 상품" 카테고리는 직접 추가
+        put(ProductCategory.PRODUCT_CATEGORY_ALL.str, listOf("전체 상품"))
 
-    var selectedCategory = mutableStateOf("전체 상품")
+        // CategoryMapping을 기반으로 나머지 카테고리 추가
+        CategoryMapping.categoryToSubCategory.forEach { (category, subCategories) ->
+            put(category, listOf("전체") + subCategories) // "전체"를 포함해서 리스트 생성
+        }
+    }
+
+    var selectedCategory = mutableStateOf(ProductCategory.PRODUCT_CATEGORY_ALL.str)
     var selectedTabIndex = mutableStateOf(0)
-    val selectedTabs = mutableStateOf<List<String>>(categoryTabs["전체 상품"]!!)
+    val selectedTabs = mutableStateOf(categoryTabs[ProductCategory.PRODUCT_CATEGORY_ALL.str]!!)
 
     // 카테고리 선택
     fun onCategoryClick(category: String) {
@@ -117,53 +122,70 @@ class ShopViewModel @Inject constructor(
     //******************상품***********
 
     //**************** 상품 필터링 *********************
-    private val _productList = mutableStateOf(listOf<Product>())
-    private val _filteredProductList = MutableStateFlow(listOf<Product>())
-    val filteredProductList: StateFlow<List<Product>> = _filteredProductList.asStateFlow()
+    private val _productList = mutableStateOf(mutableListOf<ProductModel>())
+    private val _filteredProductList = MutableStateFlow(listOf<ProductModel>())
+    val filteredProductList: StateFlow<List<ProductModel>> = _filteredProductList.asStateFlow()
 
     // 상품 목록 로드
     fun loadProductList() {
-        _productList.value = Storage.products
-        filterProducts()
+//        _productList.value = Storage.products
+//        filterProducts()
+        viewModelScope.launch {
+            val productList = productService.selectAllProductData(selectedCategory.value)
+            _productList.value = productList
+            filterProducts()
+        }
     }
 
     fun filterProducts() {
         val category = selectedCategory.value
         val subCategory = selectedTabs.value[selectedTabIndex.value]
 
-        var filteredList = if (category == "전체 상품") {
-            _productList.value
-        } else {
-            _productList.value.filter {
-                (it.category == category || category == "전체 상품") &&
-                        (it.subCategory == subCategory || subCategory == "전체")
-            }
+//        // Firestore에서 가져온 데이터를 Product 객체 리스트로 변환
+//        var filteredList = _productList.value.mapNotNull { map ->
+//            val productVO = map["productVO"] as? ProductVO
+//            val productDocumentId = map["productDocumentId"] as? String
+//            productVO?.toProductModel(productDocumentId ?: "")
+//        }
+//
+//        // 카테고리 필터링
+//        if (category != ProductCategory.PRODUCT_CATEGORY_ALL.str) {
+//            filteredList = filteredList.filter {
+//                (it.productCategory == category || category == ProductCategory.PRODUCT_CATEGORY_ALL.str) &&
+//                        (it.productSubCategory == subCategory || subCategory == "전체")
+//            }
+//        }
+
+        // 상품 필터링 로직
+        var filteredList = _productList.value.filter {
+            (it.productCategory == category || category == ProductCategory.PRODUCT_CATEGORY_ALL.str) &&
+                    (it.productSubCategory == subCategory || subCategory == "전체")
         }
 
         // 품절 제외
         if (excludeSoldOut.value) {
-            filteredList = filteredList.filter { it.stockQuantity > 0 }
+            filteredList = filteredList.filter { it.productManagementAllQuantity > 0 }
         }
 
         // 한정판만
         if (limitedEditionOnly.value) {
-            filteredList = filteredList.filter { it.isLimited }
+            filteredList = filteredList.filter { !it.productLimitedSalesPeriod.isBlank() }
         }
 
-        // 좋아요 상태를 동적으로 반영
-        _filteredProductList.value = filteredList.map { product ->
-            product.copy(isFavorite = favoriteState.value[product.productDocumentId] ?: false)
-        }
+        _filteredProductList.value = filteredList
+
+//        // 좋아요 상태 유지
+//        _filteredProductList.value = filteredList.map { product ->
+//            product.copy(isFavorite = favoriteState.value.getOrDefault(product.productDocumentId, false))
+//        }
     }
 
 
-    // 좋아요 버튼 클릭 시 호출
-    fun onLikeClick(product: Product) {
-        // 좋아요 상태 토글
-        val currentFavorite = favoriteState.value[product.productDocumentId] ?: false
-        favoriteState.value[product.productDocumentId] = !currentFavorite
-
-        // 필터링된 목록 갱신
-        filterProducts()
+    fun onLikeClick(productModel: ProductModel) {
+        val currentFavorite = favoriteState.value[productModel.productDocumentId] ?: false
+        _favoriteState.value = favoriteState.value.toMutableMap().apply {
+            this[productModel.productDocumentId] = !currentFavorite
+        }
+        filterProducts() // 변경된 좋아요 상태 반영
     }
 }
