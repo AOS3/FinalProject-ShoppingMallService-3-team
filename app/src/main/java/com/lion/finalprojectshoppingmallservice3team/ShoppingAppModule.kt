@@ -22,7 +22,7 @@ object ShoppingAppModule {
 
     @Provides
     @Singleton
-    fun customerServiceProvider(customerRepository: CustomerRepository) : CustomerService{
+    fun customerServiceProvider(customerRepository: CustomerRepository) : CustomerService {
         return CustomerService(customerRepository)
     }
 
