@@ -32,7 +32,6 @@ fun MyFavoriteGroupScreen(viewModel: MyFavoriteGroupViewModel = hiltViewModel())
                 menuItems = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.close_24px),
-                        borderNull = true,
                         iconButtonOnClick = {
                             viewModel.popBack()
                         }

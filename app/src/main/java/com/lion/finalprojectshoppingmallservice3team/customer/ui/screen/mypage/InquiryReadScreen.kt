@@ -55,14 +55,12 @@ fun InquiryReadScreen(inquiryReadViewModel: InquiryReadViewModel = hiltViewModel
                         iconBackColor = Color.Transparent,
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
                         padding = 10.dp,
-                        borderNull = true
                     )
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.shopping_cart_24px),
                         color = Color.Transparent,
                         iconBackColor = Color.Transparent,
                         padding = 10.dp,
-                        borderNull = true
                     )
                 }
             )

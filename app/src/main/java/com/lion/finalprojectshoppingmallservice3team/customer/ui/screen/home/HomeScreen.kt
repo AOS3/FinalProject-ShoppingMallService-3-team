@@ -16,6 +16,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -23,6 +24,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.lion.finalprojectshoppingmallservice3team.Component.AutoScrollingBanner
@@ -38,10 +41,14 @@ import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 @Composable
 fun HomeScreen(
     navController: NavController,
+    windowInsetsController: WindowInsetsControllerCompat,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
     val circularBoxItems = homeViewModel.circularBoxItems
 
+    LaunchedEffect(Unit) {
+        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+    }
 
     Scaffold(
         topBar = {
@@ -57,14 +64,12 @@ fun HomeScreen(
                         iconButtonOnClick = {
                             navController.navigate("search")
                         },
-                        borderNull = true,
                     )
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.baseline_shopping_cart_24),
                         iconButtonOnClick = {
 
                         },
-                        borderNull = true,
                     )
                 },
             )

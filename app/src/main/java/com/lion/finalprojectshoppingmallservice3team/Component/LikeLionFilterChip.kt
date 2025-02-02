@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import com.google.common.math.LinearTransformation.horizontal
 
 @Composable
 fun LikeLionFilterChip(
@@ -29,7 +30,6 @@ fun LikeLionFilterChip(
     chipTextStyle: TextStyle,
     selectedTextColor: Color,
     unselectedTextColor: Color,
-    @SuppressLint("ModifierParameter")
     chipModifier: Modifier,
     modifier: Modifier = Modifier,
     onChipClicked: (String, Boolean) -> Unit,
@@ -57,7 +57,6 @@ fun LikeLionFilterChip(
                 },
                 style = chipTextStyle,
                 modifier = chipModifier
-                    .clickable { onChipClicked(text, selected) }
             )
             if (onDeleteButtonClicked!=null) {
                 IconButton(
