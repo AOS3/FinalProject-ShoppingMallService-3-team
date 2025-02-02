@@ -245,7 +245,7 @@ fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
                     windowInsetsController
                 )
             }
-            composable("creatorMain",
+            composable("creator",
                 enterTransition = {EnterTransition.None},
                 exitTransition = { ExitTransition.None },
             ){
