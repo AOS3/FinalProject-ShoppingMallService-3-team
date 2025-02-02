@@ -29,12 +29,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBottomNavigation
+import com.lion.finalprojectshoppingmallservice3team.customer.data.repository.ProductRepository
+import com.lion.finalprojectshoppingmallservice3team.customer.data.service.ProductService
+import com.lion.finalprojectshoppingmallservice3team.customer.data.util.ProductCategory
+import com.lion.finalprojectshoppingmallservice3team.customer.data.util.ProductSubCategory
+import com.lion.finalprojectshoppingmallservice3team.customer.data.vo.ProductVO
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchFailScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchSuccessScreen
@@ -62,16 +68,18 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.U
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.InquiryProductListScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.InquiryProductReadScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.InquiryProductWriteScreen
-//import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ProductInfoScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ProductInfoScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ShopOrderSheetWriteScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ShopScreen
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private lateinit var productService: ProductService
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -80,8 +88,43 @@ class MainActivity : ComponentActivity() {
                 ShoppingMain()
             }
         }
+        val productRepository = ProductRepository()
+        productService = ProductService(productRepository)
+
+        addProductTest()
+
+    }
+    fun addProductTest(){
+        lifecycleScope.launch {
+            val dummyProduct = listOf(
+                ProductVO().apply {
+                    productSellerName = "마젯"
+                    productName = "마짱이 터렛에디션 티셔츠"
+                    productPrice = 27000
+                    productImages = listOf(
+                        "https://image1.marpple.co/files/u_2627081/2023/8/original/8b5410899a618e447e8eb73097eb44ddbd0e95ba1.png?q=92&w=300&f=webp&bg=f6f6f6"
+                    )
+                    productCategory = ProductCategory.PRODUCT_CATEGORY_CLOTHING.str
+                    productSubCategory = ProductSubCategory.PRODUCT_SUB_CATEGORY_TSHIRT.str
+                    productLimitedSalesPeriod = "한정"
+                    productManagementAllQuantity = 100L
+                    productInfoTitle = "상품 상세 제목"
+                    productInfoContent = "상품 상세 내용"
+                    productReviewCount = 0L
+                    productRating = 0.0
+                    productSalesCount = 40L
+                    productCreatedAt = System.currentTimeMillis()
+                    productUpdatedAt = System.currentTimeMillis()
+                },
+                )
+            for (product in dummyProduct){
+                productService.registerProduct(product)
+            }
+        }
     }
 }
+
+
 
 
 @Composable
@@ -222,7 +265,7 @@ fun ShoppingMain() {
             // 상품상세 화면
             composable("productInfo/{productDocumentId}") {
                 val productDocumentId = it.arguments?.getString("productDocumentId")!!
-                //ProductInfoScreen(productDocumentId = productDocumentId)
+                ProductInfoScreen(productDocumentId = productDocumentId)
             }
             // 상품 문의화면
             composable("inquiryProductWrite",

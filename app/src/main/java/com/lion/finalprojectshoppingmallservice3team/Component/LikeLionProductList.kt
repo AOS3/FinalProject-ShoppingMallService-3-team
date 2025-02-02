@@ -150,7 +150,7 @@ fun LikeLionProductItem(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = product.productSellerId,
+                text = product.productSellerName,
                 //style = Typography.bodySmall,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier

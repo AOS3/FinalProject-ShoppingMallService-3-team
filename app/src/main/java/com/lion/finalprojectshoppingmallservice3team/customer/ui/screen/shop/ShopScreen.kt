@@ -150,7 +150,10 @@ fun FilterSection(shopViewModel: ShopViewModel) {
             LikeLionDropDownMenu(
                 options = listOf("인기순", "최신순", "낮은 가격순", "높은 가격순", "리뷰순"),
                 selectedOption = shopViewModel.selectedSortOption.value,
-                onOptionSelected = { option -> shopViewModel.selectedSortOption.value = option }
+                onOptionSelected = { option ->
+                    shopViewModel.selectedSortOption.value = option
+                    shopViewModel.filterProducts() // 정렬 즉시 반영
+                }
             )
         }
     }

@@ -56,6 +56,7 @@ class ShopViewModel @Inject constructor(
         ChipState(ProductCategory.PRODUCT_CATEGORY_PHONE_ACCESSORIES.str, mutableStateOf(false)),
         ChipState(ProductCategory.PRODUCT_CATEGORY_STICKER_PAPER.str, mutableStateOf(false)),
         ChipState(ProductCategory.PRODUCT_CATEGORY_LIVING.str, mutableStateOf(false)),
+        ChipState(ProductCategory.PRODUCT_CATEGORY_TOY_HOBBY.str, mutableStateOf(false)),
     )
 
     val chipState = ChipStyle(
@@ -141,25 +142,15 @@ class ShopViewModel @Inject constructor(
         val category = selectedCategory.value
         val subCategory = selectedTabs.value[selectedTabIndex.value]
 
-//        // Firestore에서 가져온 데이터를 Product 객체 리스트로 변환
-//        var filteredList = _productList.value.mapNotNull { map ->
-//            val productVO = map["productVO"] as? ProductVO
-//            val productDocumentId = map["productDocumentId"] as? String
-//            productVO?.toProductModel(productDocumentId ?: "")
-//        }
-//
-//        // 카테고리 필터링
-//        if (category != ProductCategory.PRODUCT_CATEGORY_ALL.str) {
-//            filteredList = filteredList.filter {
-//                (it.productCategory == category || category == ProductCategory.PRODUCT_CATEGORY_ALL.str) &&
-//                        (it.productSubCategory == subCategory || subCategory == "전체")
-//            }
-//        }
-
         // 상품 필터링 로직
         var filteredList = _productList.value.filter {
-            (it.productCategory == category || category == ProductCategory.PRODUCT_CATEGORY_ALL.str) &&
-                    (it.productSubCategory == subCategory || subCategory == "전체")
+            // '전체 상품' 카테고리일 때는 모든 상품을 포함
+            if (category == ProductCategory.PRODUCT_CATEGORY_ALL.str) {
+                true // 전체 상품 카테고리일 땐 모든 상품을 포함
+            } else {
+                (it.productCategory == category || category == ProductCategory.PRODUCT_CATEGORY_ALL.str) &&
+                        (it.productSubCategory == subCategory || subCategory == "전체")
+            }
         }
 
         // 품절 제외
@@ -172,12 +163,18 @@ class ShopViewModel @Inject constructor(
             filteredList = filteredList.filter { !it.productLimitedSalesPeriod.isBlank() }
         }
 
+        // 🔥 정렬 로직 추가
+        filteredList = when (selectedSortOption.value) {
+            "인기순" -> filteredList.sortedByDescending { it.productSalesCount }
+            "최신순" -> filteredList.sortedByDescending { it.productCreatedAt }
+            "낮은 가격순" -> filteredList.sortedBy { it.productPrice }
+            "높은 가격순" -> filteredList.sortedByDescending { it.productPrice }
+            "리뷰순" -> filteredList.sortedByDescending { it.productReviewCount }
+            else -> filteredList
+        }
+
         _filteredProductList.value = filteredList
 
-//        // 좋아요 상태 유지
-//        _filteredProductList.value = filteredList.map { product ->
-//            product.copy(isFavorite = favoriteState.value.getOrDefault(product.productDocumentId, false))
-//        }
     }
 
 

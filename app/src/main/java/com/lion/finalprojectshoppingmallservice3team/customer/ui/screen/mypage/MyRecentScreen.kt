@@ -75,11 +75,11 @@ fun MyRecentScreen(myRecentViewModel: MyRecentViewModel = hiltViewModel()) {
                 }
             )
 
-//            // 탭에 따른 화면 변경
-//            when (selectedTabIndex.value) {
-//                0 -> MyRecentProductScreen()
-//                1 -> MyRecentCreatorScreen()
-//            }
+            // 탭에 따른 화면 변경
+            when (selectedTabIndex.value) {
+                0 -> MyRecentProductScreen()
+                1 -> MyRecentCreatorScreen()
+            }
         }
     }
 }
