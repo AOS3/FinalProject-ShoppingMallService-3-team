@@ -190,7 +190,6 @@ class CreatorApplyViewmodel @Inject constructor(
         shoppingApplication.navHostController.popBackStack("creatorApplyThird", inclusive = true)
         shoppingApplication.navHostController.navigate("creatorApplySecond"){
             launchSingleTop = true // 중복 생성 방지
-
         }
     }
 
@@ -226,15 +225,20 @@ class CreatorApplyViewmodel @Inject constructor(
         creatorModel.creatorUserPhoneNumber = shoppingApplication.loginCustomerModel.customerUserPhoneNumber
         creatorModel.creatorCompanyName = companyName.value
         creatorModel.creatorComNumber = 0L
-        creatorModel.creatorComPosition = ""
+
+        if (companyName.value.equals("개인")) {
+            creatorModel.creatorComPosition = "개인"
+        } else {
+            creatorModel.creatorComPosition = "사업자"
+        }
+
         creatorModel.creatorInquery = ""
         creatorModel.creatorReturnNumber = ""
         creatorModel.creatorfcmToken = ""
-        creatorModel.creatorCompanyFile = ""
         creatorModel.creatorId = shoppingApplication.loginCustomerModel.customerUserId
         creatorModel.creatorUserName = shoppingApplication.loginCustomerModel.customerUserName
         creatorModel.creatorPortfolioSite = portfolioSite.value
-        creatorModel.creatorUserAdvAgree = true
+        creatorModel.creatorUserAdvAgree = false
 //        customerModel.isAdult = checkBoxUserJoinInfo1Value.value
 //        customerModel.useAgree = checkBoxUserJoinInfo2Value.value
         if (checkboxPersonalInfoAgree.value == true){
@@ -242,7 +246,7 @@ class CreatorApplyViewmodel @Inject constructor(
         } else {
             creatorModel.creatorPersonInfoAgree = "미동의"
         }
-        creatorModel.creatorUserCreatedAt = System.nanoTime()
+        creatorModel.creatorUserCreatedAt = System.currentTimeMillis()
         creatorModel.creatorUserState = CreatorState.Creator_STATE_NORMAL
 
         // 저장한다.
@@ -257,7 +261,7 @@ class CreatorApplyViewmodel @Inject constructor(
                 creatorModel.creatorPortfolioFile = uploadedPortfolioUrls.joinToString(",") // Firestore에 저장할 URL 리스트
 
                 val work1 = async(Dispatchers.IO) {
-                    creatorService.addCreatorData(creatorModel) // ✅ Firestore 저장
+                    creatorService.addCreatorData(creatorModel)
                 }
                 work1.await()
 
@@ -267,7 +271,7 @@ class CreatorApplyViewmodel @Inject constructor(
                     shopCreatorName = shoppingApplication.loginCustomerModel.customerUserName
                     shopBrandDescription = brandDescription.value
                     shopBestSns = bestSns.value
-                    shopCreatedAt = System.nanoTime()
+                    shopCreatedAt = System.currentTimeMillis()
                     shopCreatorId = shoppingApplication.loginCustomerModel.customerUserId
                     shopState = ShopState.Shop_STATE_NORMAL
                 }
@@ -292,6 +296,6 @@ class CreatorApplyViewmodel @Inject constructor(
         bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
         outputStream.flush()
         outputStream.close()
-        return file.absolutePath // ✅ 변환된 파일 경로 반환
+        return file.absolutePath
     }
 }

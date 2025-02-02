@@ -305,7 +305,7 @@ fun CreatorApplyScreen(creatorApplyViewModel: CreatorApplyViewmodel = hiltViewMo
                                 creatorApplyViewModel.updateApplySecondButtonState()
                             },
                             textFieldValue = creatorApplyViewModel.companyName,
-                            placeHolder = "회사 이름을 입력해주세요.",
+                            placeHolder = "회사 이름을 입력해주세요.(개인사업자는 개인)",
                             inputType = LikeLionOutlinedTextFieldInputType.TEXT,
                             modifier = Modifier
                                 .fillMaxWidth()

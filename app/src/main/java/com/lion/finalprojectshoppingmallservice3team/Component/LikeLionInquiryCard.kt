@@ -38,7 +38,6 @@ fun LikeLionInquiryCard(item: Map<String, *>) {
 
     var imageUrl by remember { mutableStateOf<String?>(null) }
 
-    // 🔥 Firebase Storage에서 다운로드 URL 가져오기
     LaunchedEffect(fileName) {
         if (!fileName.isNullOrEmpty()) {
             val storageRef = FirebaseStorage.getInstance().reference.child("image/$fileName")

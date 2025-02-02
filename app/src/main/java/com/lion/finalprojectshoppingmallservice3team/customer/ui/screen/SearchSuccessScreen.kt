@@ -66,11 +66,8 @@ fun SearchSuccessScreen(
                     )
                 }
             )
-
         }
-        )
-    { paddingValues ->
-
+    ) { paddingValues ->
         Column(
             modifier = Modifier.padding(paddingValues)
         ) {
