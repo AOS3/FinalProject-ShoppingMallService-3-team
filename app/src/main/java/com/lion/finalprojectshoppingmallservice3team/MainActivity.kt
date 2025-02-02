@@ -111,36 +111,7 @@ class MainActivity : ComponentActivity() {
         val productRepository = ProductRepository()
         productService = ProductService(productRepository)
 
-        addProductTest()
 
-    }
-    fun addProductTest(){
-        lifecycleScope.launch {
-            val dummyProduct = listOf(
-                ProductVO().apply {
-                    productSellerName = "마젯"
-                    productName = "마짱이 터렛에디션 티셔츠"
-                    productPrice = 27000
-                    productImages = listOf(
-                        "https://image1.marpple.co/files/u_2627081/2023/8/original/8b5410899a618e447e8eb73097eb44ddbd0e95ba1.png?q=92&w=300&f=webp&bg=f6f6f6"
-                    )
-                    productCategory = ProductCategory.PRODUCT_CATEGORY_CLOTHING.str
-                    productSubCategory = ProductSubCategory.PRODUCT_SUB_CATEGORY_TSHIRT.str
-                    productLimitedSalesPeriod = "한정"
-                    productManagementAllQuantity = 100L
-                    productInfoTitle = "상품 상세 제목"
-                    productInfoContent = "상품 상세 내용"
-                    productReviewCount = 0L
-                    productRating = 0.0
-                    productSalesCount = 40L
-                    productCreatedAt = System.currentTimeMillis()
-                    productUpdatedAt = System.currentTimeMillis()
-                },
-                )
-            for (product in dummyProduct){
-                productService.registerProduct(product)
-            }
-        }
     }
 }
 
