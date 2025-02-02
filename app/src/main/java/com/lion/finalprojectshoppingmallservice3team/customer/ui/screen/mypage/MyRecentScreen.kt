@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,7 +32,7 @@ fun MyRecentScreen(myRecentViewModel: MyRecentViewModel = hiltViewModel()) {
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
-                backColor = Color.Transparent,
+                backColor = Color.White,
                 title = "최근 본",
                 navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationIconOnClick = {
@@ -40,16 +41,12 @@ fun MyRecentScreen(myRecentViewModel: MyRecentViewModel = hiltViewModel()) {
                 menuItems = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                         borderNull = true
                     )
 
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.shopping_cart_24px),
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                         borderNull = true
                     )
@@ -58,7 +55,7 @@ fun MyRecentScreen(myRecentViewModel: MyRecentViewModel = hiltViewModel()) {
         }
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(it)
+            modifier = Modifier.fillMaxSize().background(Color.White).padding(it)
         ) {
             LikeLionFixedTabs(
                 modifier = Modifier.fillMaxWidth(),

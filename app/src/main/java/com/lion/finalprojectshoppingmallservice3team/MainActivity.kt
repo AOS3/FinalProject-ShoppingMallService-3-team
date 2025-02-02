@@ -18,9 +18,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Scaffold
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,19 +33,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBottomNavItems
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBottomNavigation
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchFailScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchSuccessScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorListScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorMainScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorNoticeScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserSettingScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplySecondScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyThirdScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorShopScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.home.HomeScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.myfavorite.MyFavoriteBottomScreen
@@ -70,9 +76,9 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.Inq
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.InquiryProductWriteScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ProductInfoScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ShopScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.creator.CreatorApplyViewmodel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
 
 
 @AndroidEntryPoint
@@ -80,13 +86,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        
         // Remember that you should never show the action bar if the
         // status bar is hidden, so hide that too if necessary.
         val windowInsetsController =
             WindowCompat.getInsetsController(window, window.decorView)
 
         windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
-
 
         setContent {
             FinalProjectShoppingMallService3teamTheme {
@@ -102,23 +108,25 @@ fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
     // Application 객체에 담는다.
     val shoppingApplication = LocalContext.current.applicationContext as ShoppingApplication
     shoppingApplication.navHostController = navController
+    val creatorApplyViewModel: CreatorApplyViewmodel = hiltViewModel()
 
     //***************** 바텀네비게이션 관련 코드 ****************************//
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    var isLoggedIn by remember { mutableStateOf(false) }
+    val isLoggedIn by shoppingApplication.isLoggedIn.collectAsState()
+
 
     // 스플래시 상태 관리
     var isSplashCompleted by remember { mutableStateOf(false) }
 
     Scaffold(
         bottomBar = {
-            if (isSplashCompleted && currentRoute in listOf("home", "creatorMain", "myFavorite", "shop", "logoutMyPage", "loginMyPage"))
-                LikeLionBottomNavigation(
-                    navController = navController,
-                    items = bottomNavItems(isLoggedIn)
-                )
+            if (isSplashCompleted && currentRoute in listOf("home", "creator", "myFavorite", "shop", "logoutMyPage", "loginMyPage"))
+            LikeLionBottomNavigation(
+                navController = navController,
+                items = LikeLionBottomNavItems(isLoggedIn),
+            )
         },
     ) {
         //***************** 바텀네비게이션 관련 코드 ****************************//
@@ -177,7 +185,7 @@ fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
             },
         ) {
             composable("splash") {
-                SplashScreen(navController,windowInsetsController)
+                SplashScreen(navController = navController)
             }
 
             //***************** 바텀네비게이션 관련 코드 ****************************//
@@ -185,6 +193,7 @@ fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
                 enterTransition = {EnterTransition.None},
                 exitTransition = { ExitTransition.None },
             ){
+
                 isSplashCompleted = true
                 HomeScreen(
                     navController,
@@ -200,12 +209,13 @@ fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
             composable("myFavorite",
                 enterTransition = {EnterTransition.None},
                 exitTransition = { ExitTransition.None },
+
             ) {
                 MyFavoriteScreen()
             }
             composable("shop",
                 enterTransition = {EnterTransition.None},
-                exitTransition = { ExitTransition.None },
+                exitTransition = { ExitTransition.None },  
             ) {
                 ShopScreen()
             }
@@ -213,14 +223,12 @@ fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
                 enterTransition = {EnterTransition.None},
                 exitTransition = { ExitTransition.None },
             ) {
-                isLoggedIn = false
                 LogoutMyPageScreen()
             }
             composable("loginMyPage",
                 enterTransition = {EnterTransition.None},
                 exitTransition = { ExitTransition.None },
             ) {
-                isLoggedIn = true
                 LoginMyPageScreen()
             }
             //***************** 바텀네비게이션 관련 코드 ****************************//
@@ -237,10 +245,17 @@ fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
             composable("myRecent") { MyRecentScreen() }
             composable("myPurchaseHistory") { MyPurchaseHistoryScreen() }
             composable("inquiryList") { InquiryListScreen() }
-            composable("inquiryRead") { InquiryReadScreen() }
+            composable(
+                route = "inquiryRead/{documentId}",
+                arguments = listOf(navArgument("documentId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val inquiryDocumentId = backStackEntry.arguments?.getString("documentId") ?: ""
+                InquiryReadScreen(inquiryDocumentId = inquiryDocumentId)
+            }
             composable("inquiryWrite") { InquiryWriteScreen() }
-
-
+            composable("creatorApply") { CreatorApplyScreen(creatorApplyViewModel = creatorApplyViewModel) }
+            composable("creatorApplySecond") { CreatorApplySecondScreen(creatorApplyViewModel = creatorApplyViewModel) }
+            composable("creatorApplyThird") { CreatorApplyThirdScreen(creatorApplyViewModel = creatorApplyViewModel) }
             // 상품상세 화면
             composable("productInfo/{productDocumentId}") {
                 val productDocumentId = it.arguments?.getString("productDocumentId")!!
@@ -297,6 +312,7 @@ fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
             ) { MyFavoriteBottomScreen() }
 
 
+
             composable("CreatorShop"){ CreatorShopScreen() }
 
             composable("creatorList"){ CreatorListScreen() }
@@ -306,12 +322,25 @@ fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
 }
 
 @Composable
-fun SplashScreen(navController: NavHostController,windowInsetsController: WindowInsetsControllerCompat) {
-    // 스플래시 화면에서 1초 대기 후 로그인 화면으로 이동
+fun SplashScreen(
+    navController: NavHostController,
+    splashViewModel: SplashViewModel = hiltViewModel()
+) {
+    val context = LocalContext.current
+    // `navigationTarget` 상태 관찰
+    val navigationTarget by splashViewModel.navigationTarget.collectAsState()
+
+    // 스플래시 화면이 처음 표시될 때 자동 로그인 로직 실행
     LaunchedEffect(Unit) {
-        delay(1000) // 1초 대기
-        navController.navigate("home") {
-            popUpTo("splash") { inclusive = true } // 스플래시 화면 제거
+        splashViewModel.checkAutoLogin(context) // 자동 로그인 로직 실행
+    }
+
+    // `navigationTarget` 상태 변화에 따라 네비게이션 처리
+    LaunchedEffect(navigationTarget) {
+        if (navigationTarget.isNotEmpty() && navigationTarget != "splash") {
+            navController.navigate(navigationTarget) {
+                popUpTo("splash") { inclusive = true }
+            }
         }
     }
 
@@ -324,9 +353,9 @@ fun SplashScreen(navController: NavHostController,windowInsetsController: Window
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.marcshop_logo), // mipmap 폴더에서 로고 사용
+            painter = painterResource(id = R.drawable.marcshop_logo),
             contentDescription = "MarcShop Logo",
-            modifier = Modifier.size(200.dp) // 로고 크기 설정
+            modifier = Modifier.size(200.dp)
         )
     }
 }

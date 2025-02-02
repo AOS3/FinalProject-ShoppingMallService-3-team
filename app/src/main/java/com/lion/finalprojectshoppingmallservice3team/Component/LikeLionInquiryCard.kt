@@ -1,5 +1,7 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import android.util.Log
+import android.widget.ImageView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,17 +13,41 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import com.bumptech.glide.Glide
+import com.google.firebase.storage.FirebaseStorage
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.SubColor
+import kotlinx.coroutines.tasks.await
 
 @Composable
 fun LikeLionInquiryCard(item: Map<String, *>) {
-    val isAnswer = item["isAnswer"] as Boolean // 답변 여부를 가져옴
+    val isAnswer = (item["isAnswer"] as? Boolean) ?: false
     val backgroundColor = if (isAnswer) SubColor else Color(0xFFE0E0E0) // 답변 여부에 따른 배경색
+
+    val fileName = item["attachment"] as? String
+
+    var imageUrl by remember { mutableStateOf<String?>(null) }
+
+    LaunchedEffect(fileName) {
+        if (!fileName.isNullOrEmpty()) {
+            val storageRef = FirebaseStorage.getInstance().reference.child("image/$fileName")
+            try {
+                imageUrl = storageRef.downloadUrl.await().toString() // ✅ URL 비동기 가져오기
+            } catch (e: Exception) {
+                Log.e("FirebaseStorage", "이미지 로드 실패: ${e.message}")
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -39,12 +65,12 @@ fun LikeLionInquiryCard(item: Map<String, *>) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Text(
-                text = item["author"] as String,
+                text = (item["author"] as? String) ?: "",
                 fontSize = 14.sp,
                 color = if (isAnswer) Color(0xFF673AB7) else Color.Black // 답변이면 보라색
             )
             Text(
-                text = item["date"] as String,
+                text = (item["date"] as? String) ?: "",
                 fontSize = 14.sp,
                 color = Color.Gray
             )
@@ -65,18 +91,37 @@ fun LikeLionInquiryCard(item: Map<String, *>) {
 
         // 내용
         Text(
-            text = if (isAnswer) "답변 내용: ${(item["content"] as String)}" else "내용: ${(item["content"] as String)}",
+            text = if (isAnswer) "답변 내용: ${(item["content"] ?: "")}" else "내용: ${(item["content"] ?: "")}",
             fontSize = 14.sp,
             color = Color.Black
         )
 
         Spacer(modifier = Modifier.height(4.dp))
 
-        // 첨부 파일
-        Text(
-            text = "첨부파일: ${(item["attachment"] ?: "-") as String}",
-            fontSize = 14.sp,
-            color = Color.Gray
-        )
+        // ✅ Glide를 이용한 이미지 표시
+        if (!imageUrl.isNullOrEmpty()) {
+            AndroidView(
+                factory = { context ->
+                    ImageView(context).apply {
+                        scaleType = ImageView.ScaleType.CENTER_CROP
+                    }
+                },
+                update = { imageView ->
+                    Glide.with(imageView.context)
+                        .load(imageUrl)
+                        .into(imageView)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+            )
+        } else {
+            // 첨부 파일
+            Text(
+                text = "첨부파일: - ",
+                fontSize = 14.sp,
+                color = Color.Gray
+            )
+        }
     }
 }

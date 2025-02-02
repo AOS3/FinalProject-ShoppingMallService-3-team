@@ -2,12 +2,11 @@ package com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.mypa
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide
-import com.lion.finalprojectshoppingmallservice3team.R
+import com.google.firebase.storage.FirebaseStorage
 import com.lion.finalprojectshoppingmallservice3team.ShoppingApplication
 import com.lion.finalprojectshoppingmallservice3team.customer.data.service.CustomerService
 import com.lion.finalprojectshoppingmallservice3team.customer.data.util.Tools
@@ -18,7 +17,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -41,38 +39,58 @@ class UserSettingViewModel @Inject constructor(
         mutableStateOf(shoppingApplication.loginCustomerModel.customerUserDetailAddress)
     val textFieldModifyBirthValue =
         mutableStateOf(shoppingApplication.loginCustomerModel.customerUserBirthDate)
-    val imageUri = mutableStateOf<Bitmap?>(null)
-    var imageFileName = "none"
+
+    // 보여줄 이미지 요소
+    val showImage1State = mutableStateOf(false)
+    val showImage2State = mutableStateOf(false)
+    val showImage3State = mutableStateOf(false)
+
+    // 카메라나 앨범을 통해 가져온 사진을 담을 상태변수
+    val imageBitmapState = mutableStateOf<Bitmap?>(null)
+    // 서버로 부터 이미지를 받아올 수 있는 Uri를 담을 상태 변수
+    val imageUriState = mutableStateOf<Uri?>(null)
+    // 서버상에서의 파일 이름
+    var newFileName = shoppingApplication.loginCustomerModel.customerUserProfileImage
 
     fun loadProfileImage() {
-        val profileImageUrl = shoppingApplication.loginCustomerModel.customerUserProfileImage
+        val profileImage = shoppingApplication.loginCustomerModel.customerUserProfileImage
 
-        viewModelScope.launch(Dispatchers.IO) {
-            val context = shoppingApplication.applicationContext
-            val bitmap = try {
-                if (profileImageUrl.isBlank()) {
-                    // 기본 이미지 로드
-                    Glide.with(context)
-                        .asBitmap()
-                        .load(R.drawable.account_circle_24px) // 기본 이미지
-                        .submit()
-                        .get()
-                } else {
-                    // URL 이미지 로드
-                    Glide.with(context)
-                        .asBitmap()
-                        .load(profileImageUrl) // URL 이미지
-                        .submit()
-                        .get()
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                null // 실패 시 null
-            }
+        // 값이 비어 있거나 기본값으로 설정된 경우
+        if (profileImage.isNullOrEmpty() || profileImage == "none") {
+            // 기본 이미지 표시
+            showImage1State.value = true
+        }
+        // 외부 URL인 경우 (카카오 이미지)
+        else if (profileImage.startsWith("http://") || profileImage.startsWith("https://")) {
+            loadImageFromUrl(profileImage)
+        }
+        // Firebase Storage 파일 이름인 경우 (기존 이미지)
+        else {
+            loadImageFromFirebaseStorage(profileImage)
+        }
+    }
 
-            withContext(Dispatchers.Main) {
-                imageUri.value = bitmap // Bitmap 상태 업데이트
-            }
+    // 외부 URL에서 이미지 로드
+    fun loadImageFromUrl(url: String) {
+        try {
+            val imageUri = Uri.parse(url) // URL을 URI로 변환
+            showImage2State.value = true
+            imageUriState.value = imageUri
+        } catch (e: Exception) {
+            println("URL 이미지 로드 실패: ${e.localizedMessage}")
+            showImage1State.value = true // 기본 이미지 표시
+        }
+    }
+
+    // Firebase Storage에서 이미지 로드
+    fun loadImageFromFirebaseStorage(fileName: String) {
+        val storageRef = FirebaseStorage.getInstance().reference.child("profile_images/$fileName")
+        storageRef.downloadUrl.addOnSuccessListener { uri ->
+            showImage2State.value = true
+            imageUriState.value = uri
+        }.addOnFailureListener { e ->
+            println("Firebase Storage 이미지 로드 실패: ${e.localizedMessage}")
+            showImage1State.value = true // 기본 이미지 표시
         }
     }
 
@@ -107,6 +125,7 @@ class UserSettingViewModel @Inject constructor(
     val showDialogNickNameIsNotCheckState = mutableStateOf(false)
     val showDialogNickNameOk = mutableStateOf(false)
     val showDialogNickNameNo = mutableStateOf(false)
+    val showAddressSearch = mutableStateOf(false)
 
     // 회원 탈퇴 다이얼로그 상태 변수
     val showDialogWithdrawalState = mutableStateOf(false)
@@ -121,6 +140,19 @@ class UserSettingViewModel @Inject constructor(
         // 초기화 시 닉네임 조건 업데이트
         updateNicknameConditions()
         loadProfileImage()
+    }
+
+    // 이미지 삭제 버튼을 눌렀을 때
+    fun deleteImageOnClick(){
+        showImage1State.value = false
+        showImage2State.value = false
+        showImage3State.value = false
+
+        // 카메라나 앨범에서 가져온 사진이 있다면 삭제한다.
+        imageBitmapState.value = null
+
+        // 기본 이미지를 보여준다.
+        showImage1State.value = true
     }
 
     fun updateNicknameConditions() {
@@ -203,41 +235,60 @@ class UserSettingViewModel @Inject constructor(
             }
             work1.join()
 
+            shoppingApplication.isLoggedIn.value = false
             shoppingApplication.navHostController.popBackStack("userSetting", inclusive = true)
             shoppingApplication.navHostController.navigate("logoutMyPage")
         }
     }
 
-    // 저장하기를 눌렀을때
     fun saveSettingButtonOnClick() {
-        // 닉네임
         val nickName = textFieldModifyNicknameValue.value
 
-        // 원래의 닉네임과 입력 요소에 입력된 닉네임이 서로 다르고 중복 검사를 안했을 경우 입력 오류로 처리
         if (shoppingApplication.loginCustomerModel.customerUserNickName != nickName) {
-            if (isCheckNickName.value == false) {
+            if (!isCheckNickName.value) {
                 showDialogNickNameIsNotCheckState.value = true
                 return
             }
         }
 
         CoroutineScope(Dispatchers.Main).launch {
-            // 이미지가 첨부되어 있다면
-            if(imageUri.value != null){
-                // 서버상에서의 파일 이름
-                imageFileName = "image_${System.currentTimeMillis()}.jpg"
-                // 로컬에 ImageView에 있는 이미지 데이터를 저장한다.
-                Tools.saveBitmap(shoppingApplication, imageUri.value!!)
-
-                val work1 = async(Dispatchers.IO){
-                    // 외부 저장소의 경로를 가져온다.
-                    val filePath = shoppingApplication.getExternalFilesDir(null).toString()
-//                    customerService.uploadImage("${filePath}/uploadTemp.jpg", imageFileName)
+            // 첨부 이미지가 있다면
+            if(imageUriState.value != null){
+                // 만약 이미지를 삭제했다면
+                if(showImage1State.value){
+                    // 이미지 파일을 삭제한다.
+                    val work1 = async(Dispatchers.IO) {
+                        customerService.removeImageFile(shoppingApplication.loginCustomerModel.customerUserNickName)
+                    }
+                    work1.join()
+                    newFileName = "none"
                 }
-                work1.join()
+            }
+            // 카메라나 앨범에서 사진을 가져온 적이 있다면
+            if(showImage3State.value){
+                // 첨부 이미지가 있다면
+                if(imageUriState.value != null){
+                    // 이미지 파일을 삭제한다.
+                    val work1 = async(Dispatchers.IO) {
+                        customerService.removeImageFile(shoppingApplication.loginCustomerModel.customerUserNickName)
+                    }
+                    work1.join()
+                }
+
+                // 서버상에서의 파일 이름
+                newFileName = "image_${System.currentTimeMillis()}.jpg"
+                // 로컬에 ImageView에 있는 이미지 데이터를 저장한다.
+                Tools.saveBitmap(shoppingApplication,  imageBitmapState.value!!)
+
+                val work2 = async(Dispatchers.IO){
+                    val filePath = shoppingApplication.getExternalFilesDir(null).toString()
+                    customerService.uploadImage("${filePath}/uploadTemp.jpg", newFileName)
+                }
+                work2.join()
             }
 
             shoppingApplication.loginCustomerModel.customerUserNickName = nickName
+            shoppingApplication.loginCustomerModel.customerUserProfileImage = newFileName
             shoppingApplication.loginCustomerModel.customerUserName = textFieldModifyNameValue.value
             shoppingApplication.loginCustomerModel.customerUserPhoneNumber = textFieldModifyPhoneValue.value
             shoppingApplication.loginCustomerModel.customerUserAddress = textFieldModifyAddressValue.value
@@ -247,10 +298,10 @@ class UserSettingViewModel @Inject constructor(
             shoppingApplication.loginCustomerModel.customerUserSmsAgree = selectedSmsAgree.value
             shoppingApplication.loginCustomerModel.customerUserAppPushAgree = selectedPushAgree.value
 
-            val work2 = async(Dispatchers.IO) {
+            val work3 = async(Dispatchers.IO) {
                 customerService.updateUserData(shoppingApplication.loginCustomerModel)
             }
-            work2.join()
+            work3.join()
 
             Toast.makeText(shoppingApplication, "수정이 완료되었습니다", Toast.LENGTH_SHORT).show()
             shoppingApplication.navHostController.popBackStack("userSetting", inclusive = true)

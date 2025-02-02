@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -9,6 +10,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionList
@@ -44,7 +46,7 @@ fun MyReviewScreen(myReviewViewModel: MyReviewViewModel = hiltViewModel()) {
     }
     Scaffold {
         Column(
-            modifier = Modifier.fillMaxSize().padding(it).padding(horizontal = 10.dp)
+            modifier = Modifier.fillMaxSize().background(Color.White).padding(it).padding(horizontal = 10.dp)
         ) {
             var previousCreatorName: String? = null // 이전 크리에이터 이름을 저장
             // 리스트 렌더링

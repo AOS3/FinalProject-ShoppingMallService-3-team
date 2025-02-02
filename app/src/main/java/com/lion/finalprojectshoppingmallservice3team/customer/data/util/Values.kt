@@ -16,6 +16,16 @@ enum class LoginResult(val number:Int, val str:String){
     LOGIN_RESULT_SIGNOUT_MEMBER(4, "탈퇴한 회원"),
 }
 
+// 문의 상태
+enum class InquiryState(val number:Int, val str:String){
+    // 정상
+    INQUIRY_STATE_SUBMIT(1, "답변 대기"),
+    // 탈퇴
+    INQUIRY_STATE_SUCCESS(2, "답변 완료"),
+    // 탈퇴
+    INQUIRY_STATE_DELETE(2, "답변 삭제")
+}
+
 // 상품 판매상태
 enum class SellingState(val number:Int, val str:String){
     // 판매중

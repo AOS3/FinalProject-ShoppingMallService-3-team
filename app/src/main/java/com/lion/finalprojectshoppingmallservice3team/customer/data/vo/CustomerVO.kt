@@ -16,9 +16,11 @@ class CustomerVO {
     var customerUserBirthDate: String = ""
     var customerUserGender: String = ""
     var customerUserAdvAgree: Boolean = false
+    var customerPersonInfoAgree: Boolean = false
     var customerUserSmsAgree: String = ""
     var customerUserAppPushAgree: String = ""
     var fcmToken: String = ""
+    var autoLoginToken: String = ""
     var customerUserCreatedAt: Long = 0L
     var customerUserUpdatedAt: Long = 0L
     var isCreator: Boolean = false
@@ -38,9 +40,11 @@ class CustomerVO {
         customerModel.customerUserBirthDate = customerUserBirthDate
         customerModel.customerUserGender = customerUserGender
         customerModel.customerUserAdvAgree = customerUserAdvAgree
+        customerModel.customerPersonInfoAgree = customerPersonInfoAgree
         customerModel.customerUserSmsAgree = customerUserSmsAgree
         customerModel.customerUserAppPushAgree = customerUserAppPushAgree
         customerModel.fcmToken = fcmToken
+        customerModel.autoLoginToken = autoLoginToken
         customerModel.customerUserCreatedAt = customerUserCreatedAt
         customerModel.customerUserUpdatedAt = customerUserUpdatedAt
         customerModel.isCreator = isCreator

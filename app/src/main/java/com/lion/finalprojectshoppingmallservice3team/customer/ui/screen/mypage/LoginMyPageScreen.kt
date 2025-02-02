@@ -1,5 +1,7 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage
 
+import android.graphics.Bitmap
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,17 +15,22 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.bumptech.glide.Glide
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionImage
@@ -32,28 +39,33 @@ import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.mypage.LoginMyPageViewModel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.SubColor
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel()) {
+    val context = LocalContext.current
+
+    // LaunchedEffect로 프로필 이미지를 초기 로드
+    LaunchedEffect(Unit) {
+        loginMyPageViewModel.loadProfileImage() // Glide로 프로필 이미지 로드
+    }
+
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
-                backColor = Color.Transparent,
+                backColor = Color.White,
                 navigationIconImage = ImageVector.vectorResource(R.drawable.marcshop),
                 navigationIconOnClick = {
 
                 },
                 menuItems = {
                     LikeLionIconButton(
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
                         padding = 10.dp,
                     )
 
                     LikeLionIconButton(
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
                         icon = ImageVector.vectorResource(id = R.drawable.shopping_cart_24px),
                         padding = 10.dp,
                     )
@@ -65,6 +77,7 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(it)
                 .padding(horizontal = 10.dp)
                 .verticalScroll(state = rememberScrollState())
@@ -73,16 +86,42 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
             ) {
-                LikeLionImage(
-                    painter = painterResource(id = R.drawable.account_circle_24px),
-                    contentScale = ContentScale.Crop,
-                    isCircular = true, // 원형 설정
-                    modifier = Modifier
-                        .size(140.dp), // 크기 설정
-                    onClick = {
-                        // 클릭 이벤트 처리
+                // 이미지 요소
+                // 첨부 이미지가 없는 경우
+                if (loginMyPageViewModel.showImage1State.value) {
+                    LikeLionImage(
+                        painter = painterResource(R.drawable.account_circle_24px),
+                        contentScale = ContentScale.Crop,
+                        isCircular = true,
+                        modifier = Modifier.size(140.dp) // 이미지 크기 설정
+                    )
+                }
+                // 서버로부터 받은 이미지 표시
+                if (loginMyPageViewModel.showImage2State.value) {
+                    val bitmapState = remember { mutableStateOf<Bitmap?>(null) }
+
+                    // Glide로 이미지를 비동기 로드
+                    LaunchedEffect(loginMyPageViewModel.imageUriState.value) {
+                        loginMyPageViewModel.imageUriState.value?.let { uri ->
+                            val bitmap = withContext(Dispatchers.IO) {
+                                Glide.with(context)
+                                    .asBitmap()
+                                    .load(uri)
+                                    .submit()
+                                    .get()
+                            }
+                            bitmapState.value = bitmap
+                        }
                     }
-                )
+
+                    LikeLionImage(
+                        bitmap = bitmapState.value, // 로드된 Bitmap 전달
+                        painter = painterResource(R.drawable.account_circle_24px), // 기본 이미지
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.size(140.dp), // 이미지 크기
+                        isCircular = true // 원형 이미지
+                    )
+                }
             }
 
             Row(
@@ -201,7 +240,7 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                     .fillMaxWidth()
                     .padding(bottom = 20.dp),
                 fontSize = 14.sp,
-                color = Color.LightGray,
+                color = Color.Gray,
             )
 
             Text(
@@ -258,7 +297,7 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                     .fillMaxWidth()
                     .padding(bottom = 20.dp),
                 fontSize = 14.sp,
-                color = Color.LightGray,
+                color = Color.Gray,
             )
 
             Text(
@@ -303,10 +342,20 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                     .fillMaxWidth()
                     .padding(bottom = 20.dp)
                     .clickable {
-                        loginMyPageViewModel.logoutOnClick()
+                        loginMyPageViewModel.logoutOnClick(context)
                     },
                 fontSize = 16.sp,
                 color = Color.Black,
+            )
+
+            LikeLionFilledButton(
+                text = "마크샵 크리에이터 신청하기",
+                modifier = Modifier.fillMaxWidth(),
+                contentColor = MainColor,
+                containerColor = SubColor,
+                onClick = {
+                    loginMyPageViewModel.creatorApplyOnClick()
+                }
             )
         }
     }

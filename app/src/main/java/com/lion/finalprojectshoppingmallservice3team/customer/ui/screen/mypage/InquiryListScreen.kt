@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -41,28 +42,12 @@ import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 fun InquiryListScreen(inquiryListViewModel: InquiryListViewModel = hiltViewModel()) {
     val selectedOption = remember { mutableStateOf("전체") }
 
-    // 샘플 데이터
-    val inquiryList = remember {
-        mutableStateListOf<Map<String, *>>(
-            mapOf(
-                "status" to "답변 대기",
-                "title" to "문의 제목 1",
-                "name" to "작성자 닉네임",
-                "date" to "2025.01.09"
-            ),
-            mapOf(
-                "status" to "답변 완료",
-                "title" to "문의 제목 2",
-                "name" to "작성자 닉네임",
-                "date" to "2025.01.09"
-            )
-        )
-    }
+    inquiryListViewModel.refreshContentList()
 
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
-                backColor = Color.Transparent,
+                backColor = Color.White,
                 title = "문의",
                 navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationIconOnClick = {
@@ -71,14 +56,10 @@ fun InquiryListScreen(inquiryListViewModel: InquiryListViewModel = hiltViewModel
                 menuItems = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                     )
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.shopping_cart_24px),
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                     )
                 }
@@ -96,7 +77,7 @@ fun InquiryListScreen(inquiryListViewModel: InquiryListViewModel = hiltViewModel
         floatingActionButtonPosition = FabPosition.End // 오른쪽 하단 정렬
     ) {
         Column(
-            modifier = Modifier.fillMaxSize().padding(it).padding(horizontal = 10.dp)
+            modifier = Modifier.fillMaxSize().background(Color.White).padding(it).padding(horizontal = 10.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
@@ -133,10 +114,10 @@ fun InquiryListScreen(inquiryListViewModel: InquiryListViewModel = hiltViewModel
 
             // 필터링된 리스트 출력
             val filteredList = when (selectedOption.value) {
-                "전체" -> inquiryList // 전체 데이터
-                "답변대기" -> inquiryList.filter { it["status"] == "답변 대기" }
-                "답변완료" -> inquiryList.filter { it["status"] == "답변 완료" }
-                else -> inquiryList
+                "전체" -> inquiryListViewModel.contentListState // 전체 데이터
+                "답변대기" -> inquiryListViewModel.contentListState.filter { it["state"] == "답변 대기" }
+                "답변완료" -> inquiryListViewModel.contentListState.filter { it["state"] == "답변 완료" }
+                else -> inquiryListViewModel.contentListState
             }
 
             // 리스트 컴포넌트
@@ -145,8 +126,9 @@ fun InquiryListScreen(inquiryListViewModel: InquiryListViewModel = hiltViewModel
                 rowComposable = { item ->
                     LikeLionInquiryListItem(item)
                 },
-                onRowClick = {
-                    inquiryListViewModel.inquiryListOnClick()
+                onRowClick = { item -> // ✅ 클릭한 아이템 직접 전달
+                    val documentId = item["documentId"] as? String ?: return@LikeLionList
+                    inquiryListViewModel.inquiryListOnClick(documentId)
                 }
             )
         }

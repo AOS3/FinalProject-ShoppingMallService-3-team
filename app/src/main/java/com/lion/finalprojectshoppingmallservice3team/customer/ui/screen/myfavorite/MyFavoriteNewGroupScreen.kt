@@ -68,6 +68,7 @@ fun MyFavoriteNewGroupScreen(viewModel: MyFavoriteNewGroupViewModel = hiltViewMo
 
             Text(text = "크리에이터(0)")
             Spacer(modifier = Modifier.height(15.dp))
+
             LikeLionTextIconButton(
                 text = "크리에이터 추가",
                 icon = ImageVector.vectorResource(id = R.drawable.add_24px),

@@ -1,6 +1,7 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,13 +37,11 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
         topBar = {
             LikeLionTopAppBar(
                 title = "비밀번호 변경",
-                backColor = Color.Transparent,
+                backColor = Color.White,
                 menuItems = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(R.drawable.close_24px),
                         padding = 10.dp,
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
                         iconButtonOnClick = {
                             modifyUserPwViewModel.menuCloseOnClick()
                         }
@@ -54,6 +53,7 @@ fun ModifyUserPwScreen(modifyUserPwViewModel: ModifyUserPwViewModel = hiltViewMo
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(it)
                 .padding(horizontal = 10.dp)
         ) {
