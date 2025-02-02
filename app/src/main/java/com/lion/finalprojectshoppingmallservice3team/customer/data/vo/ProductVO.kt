@@ -4,6 +4,7 @@ import com.lion.finalprojectshoppingmallservice3team.customer.data.model.Product
 
 class ProductVO {
     var productSellerId : String = ""
+    var productSellerName : String = ""
     var productName : String = ""
     var productPrice : Long = 0L
     var productImages : List<String> = emptyList()
@@ -23,7 +24,7 @@ class ProductVO {
     var productCertification : String = ""
     var productReviewCount : Long = 0L
     var productLikeCount : Long = 0L
-    var productRating : Long = 0L
+    var productRating : Double = 0.0
     var productSalesCount : Long = 0L
     var productCreatedAt : Long = 0L
     var productUpdatedAt : Long = 0L
@@ -32,6 +33,7 @@ class ProductVO {
         val productModel = ProductModel()
         productModel.productSellerId = productSellerId
         productModel.productDocumentId = productDocumentId
+        productModel.productSellerName = productSellerName
         productModel.productName = productName
         productModel.productPrice = productPrice
         productModel.productImages = productImages

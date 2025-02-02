@@ -59,6 +59,8 @@ enum class ProductCategory(val str : String){
     PRODUCT_CATEGORY_STICKER_PAPER("스티커/지류"),
     // 리빙
     PRODUCT_CATEGORY_LIVING("리빙"),
+    //  토이/취미
+    PRODUCT_CATEGORY_TOY_HOBBY("토이/취미"),
 }
 
 // 상품 소카테고리
@@ -77,6 +79,10 @@ enum class ProductSubCategory(val str : String){
     PRODUCT_SUB_CATEGORY_KEYRING("키링"),
     // 거울/핀버튼
     PRODUCT_SUB_CATEGORY_MIRROR_BUTTON("거울/핀버튼"),
+    // 키캡
+    PRODUCT_SUB_CATEGORY_KEYCAP("키캡"),
+    // 포토카드
+    PRODUCT_SUB_CATEGORY_PHOTO_CARD("포토카드"),
     // 가방
     PRODUCT_SUB_CATEGORY_BAG("가방"),
     // 쿠션/방석
@@ -85,10 +91,20 @@ enum class ProductSubCategory(val str : String){
     PRODUCT_SUB_CATEGORY_MOUSE_PAD("마우스패드"),
     // 스마트톡
     PRODUCT_SUB_CATEGORY_SMART_TOK("스마트톡"),
+    // 아이폰
+    PRODUCT_SUB_CATEGORY_IPHONE("아이폰"),
+    // 갤럭시
+    PRODUCT_SUB_CATEGORY_GALAXY("갤럭시"),
     // 카드
     PRODUCT_SUB_CATEGORY_CARD("카드"),
     // 머그컵
     PRODUCT_SUB_CATEGORY_MUG("머그컵"),
+    // 시계
+    PRODUCT_SUB_CATEGORY_WATCH("시계"),
+    // 컵받침
+    PRODUCT_SUB_CATEGORY_COASTER("컵받침"),
+    // 인형/피규어
+    PRODUCT_SUB_CATEGORY_DOLL_FIGURE("인형/피규어"),
 }
 object CategoryMapping {
     // 불변 Map 사용
@@ -103,7 +119,10 @@ object CategoryMapping {
         ProductCategory.PRODUCT_CATEGORY_GOODS.str to listOf(
             ProductSubCategory.PRODUCT_SUB_CATEGORY_ACRYL_GOODS.str,
             ProductSubCategory.PRODUCT_SUB_CATEGORY_KEYRING.str,
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_MIRROR_BUTTON.str
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_MIRROR_BUTTON.str,
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_KEYCAP.str,
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_PHOTO_CARD.str
+
         ),
         // 패션잡화
         ProductCategory.PRODUCT_CATEGORY_FASHION_ACCESSORIES.str to listOf(
@@ -119,7 +138,10 @@ object CategoryMapping {
         ),
         // 폰액세서리
         ProductCategory.PRODUCT_CATEGORY_PHONE_ACCESSORIES.str to listOf(
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_SMART_TOK.str
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_SMART_TOK.str,
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_IPHONE.str,
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_GALAXY.str
+
         ),
         // 스티커/지류
         ProductCategory.PRODUCT_CATEGORY_STICKER_PAPER.str to listOf(
@@ -127,7 +149,13 @@ object CategoryMapping {
         ),
         // 리빙
         ProductCategory.PRODUCT_CATEGORY_LIVING.str to listOf(
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_MUG.str
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_MUG.str,
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_WATCH.str,
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_COASTER.str
+        ),
+        // 토이/취미
+        ProductCategory.PRODUCT_CATEGORY_TOY_HOBBY.str to listOf(
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_DOLL_FIGURE.str
         )
     )
 
