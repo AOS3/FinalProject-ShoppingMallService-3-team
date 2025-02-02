@@ -43,7 +43,6 @@ fun SearchSuccessScreen(
                         iconButtonOnClick = {
                             navController.popBackStack()
                         },
-                        borderNull = true,
                     )
                 },
                 actions = {
@@ -55,14 +54,12 @@ fun SearchSuccessScreen(
                         iconButtonOnClick = {
 //                            navController.navigate("search")
                         },
-                        borderNull = true,
                     )
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.baseline_shopping_cart_24),
                         color = Color.Transparent,
                         iconBackColor = Color.Transparent,
                         padding = 10.dp,
-                        borderNull = true,
                     )
                 }
             )

@@ -69,6 +69,23 @@ fun InquiryWriteScreen(inquiryWriteViewModel: InquiryWriteViewModel = hiltViewMo
     val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) {
         if (it) {
             Tools.takePictureData(context, contentUri, inquiryWriteViewModel.imageBitmapInquiryState)
+    Scaffold(
+        topBar = {
+            LikeLionTopAppBar(
+                title = "문의하기",
+                backColor = Color.Transparent,
+                menuItems = {
+                    LikeLionIconButton(
+                        color = Color.Transparent,
+                        iconBackColor = Color.Transparent,
+                        icon = ImageVector.vectorResource(R.drawable.close_24px),
+                        padding = 10.dp,
+                        iconButtonOnClick = {
+                            inquiryWriteViewModel.inquiryWriteCloseOnClick()
+                        }
+                    )
+                }
+            )
         }
     }
 

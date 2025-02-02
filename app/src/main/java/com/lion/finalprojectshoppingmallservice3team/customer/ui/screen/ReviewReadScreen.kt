@@ -63,7 +63,6 @@ fun ReviewReadScreen() {
                         iconButtonOnClick = {
 
                         },
-                        borderNull = true,
                     )
                 }
             )
@@ -147,7 +146,6 @@ fun ReviewReadScreen() {
                             iconButtonOnClick = {
 
                             },
-                            borderNull = true,
                         )
 
                     }

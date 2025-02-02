@@ -2,6 +2,7 @@ package com.lion.finalprojectshoppingmallservice3team
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -33,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -68,6 +70,7 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.M
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.MyRecentScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.UserJoinInfoScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.UserJoinScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.UserSettingScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.InquiryProductListScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.InquiryProductReadScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.InquiryProductWriteScreen
@@ -83,20 +86,24 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        
+        // Remember that you should never show the action bar if the
+        // status bar is hidden, so hide that too if necessary.
+        val windowInsetsController =
+            WindowCompat.getInsetsController(window, window.decorView)
 
-//        val windowInsetsController = WindowCompat.getInsetsController(window, window.decorView)
-//        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
+        windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
 
         setContent {
             FinalProjectShoppingMallService3teamTheme {
-                ShoppingMain()
+                ShoppingMain(windowInsetsController)
             }
         }
     }
 }
 
 @Composable
-fun ShoppingMain() {
+fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
     val navController = rememberNavController()
     // Application 객체에 담는다.
     val shoppingApplication = LocalContext.current.applicationContext as ShoppingApplication
@@ -108,6 +115,7 @@ fun ShoppingMain() {
     val currentRoute = navBackStackEntry?.destination?.route
 
     val isLoggedIn by shoppingApplication.isLoggedIn.collectAsState()
+
 
     // 스플래시 상태 관리
     var isSplashCompleted by remember { mutableStateOf(false) }
@@ -185,19 +193,30 @@ fun ShoppingMain() {
                 enterTransition = {EnterTransition.None},
                 exitTransition = { ExitTransition.None },
             ){
-                isSplashCompleted = true // Splash 완료 처리
-                HomeScreen(navController)
+
+                isSplashCompleted = true
+                HomeScreen(
+                    navController,
+                    windowInsetsController
+                )
+            }
+            composable("creatorMain",
+                enterTransition = {EnterTransition.None},
+                exitTransition = { ExitTransition.None },
+            ){
+                CreatorMainScreen()
             }
             composable("myFavorite",
                 enterTransition = {EnterTransition.None},
                 exitTransition = { ExitTransition.None },
-                ) {
+
+            ) {
                 MyFavoriteScreen()
             }
             composable("shop",
                 enterTransition = {EnterTransition.None},
-                exitTransition = { ExitTransition.None },
-                ) {
+                exitTransition = { ExitTransition.None },  
+            ) {
                 ShopScreen()
             }
             composable("logoutMyPage",
@@ -212,8 +231,6 @@ fun ShoppingMain() {
             ) {
                 LoginMyPageScreen()
             }
-
-
             //***************** 바텀네비게이션 관련 코드 ****************************//
 
             composable("login") { LoginScreen() }
@@ -262,12 +279,14 @@ fun ShoppingMain() {
                                 tween(300)
                             )
                 }) { InquiryProductWriteScreen() }
+
             // 크리에이터 문의 내역확인 화면
             composable("inquiryProductList") { InquiryProductListScreen() }
             // 문의 내역 상세
             composable("inquiryProductRead") { InquiryProductReadScreen() }
             // 취소/환불 FAQ
             composable("cancelRefundFAQ") { CancelRefundFAQScreen() }
+
             composable("myFavoriteGroup") { MyFavoriteGroupScreen() }
             composable("MyFavoriteNewGroup") { MyFavoriteNewGroupScreen() }
             composable(
@@ -291,7 +310,13 @@ fun ShoppingMain() {
                             )
                 },
             ) { MyFavoriteBottomScreen() }
+
+
+
             composable("CreatorShop"){ CreatorShopScreen() }
+
+            composable("creatorList"){ CreatorListScreen() }
+            composable("creatorNotice"){ CreatorNoticeScreen() }
         }
     }
 }

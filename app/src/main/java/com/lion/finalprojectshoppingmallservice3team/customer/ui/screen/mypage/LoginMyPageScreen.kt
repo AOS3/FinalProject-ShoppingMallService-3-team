@@ -63,13 +63,11 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
                         padding = 10.dp,
-                        borderNull = true
                     )
 
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.shopping_cart_24px),
                         padding = 10.dp,
-                        borderNull = true
                     )
                 },
 

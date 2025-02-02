@@ -47,8 +47,8 @@ import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButto
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionImageSlider
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionReviewItem
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
-import com.lion.finalprojectshoppingmallservice3team.Component.Product
 import com.lion.finalprojectshoppingmallservice3team.R
+import com.lion.finalprojectshoppingmallservice3team.customer.data.model.ProductModel
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.shop.ProductInfoViewModel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 import kotlinx.coroutines.launch
@@ -58,7 +58,7 @@ fun ProductInfoScreen(
     productInfoViewModel: ProductInfoViewModel = hiltViewModel(),
     productDocumentId:String,
 ) {
-    var product by remember { mutableStateOf<Product?>(null) }
+    var product by remember { mutableStateOf<ProductModel?>(null) }
     var showBottomSheet by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
@@ -141,7 +141,7 @@ fun ProductInfoScreen(
                     }
 
 
-                    if (it.stockQuantity == 0){
+                    if (it.productManagementAllQuantity == 0L){
                         // 구매하기 버튼
                         LikeLionFilledButton(
                             text = "판매가 종료되었어요!",
@@ -193,28 +193,28 @@ fun ProductInfoScreen(
         ){
             product?.let {
                 // 이미지 슬라이더
-                LikeLionImageSlider(imageUrls = it.imageUrls)
+                LikeLionImageSlider(imageUrls = it.productImages)
 
                 Spacer(modifier = Modifier.height(10.dp))
 
                 // 크리에이터 이름
                 Text(
-                    text = it.creator,
+                    text = it.productSellerName,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(10.dp)
                 )
 
                 // 상품명
                 Text(
-                    text = it.name,
+                    text = it.productName,
                     fontSize = 20.sp,
                     modifier = Modifier.padding(start = 10.dp, end = 10.dp))
                 // 상품 카테고리
-                Text(text = "${it.category} > ${it.subCategory}",
+                Text(text = "${it.productCategory} > ${it.productSubCategory}",
                     color = Color.Gray,
                     modifier = Modifier.padding(start = 10.dp, end = 10.dp)
                 )
-                val formattedPrice = String.format("%,d", it.price)
+                val formattedPrice = String.format("%,d", it.productPrice)
                 // 가격
                 Text(text = "${formattedPrice}원",
                     fontWeight = FontWeight.Bold,
@@ -278,9 +278,9 @@ fun ProductInfoScreen(
             LikeLionDivider()
 
             Column(modifier = Modifier
-                    .background(Color.White)
-                    .fillMaxWidth()
-                    .padding().padding(10.dp)
+                .background(Color.White)
+                .fillMaxWidth()
+                .padding().padding(10.dp)
             ) {
                 Text(
                     text = "상품 안내",
@@ -295,10 +295,17 @@ fun ProductInfoScreen(
 
                 product?.let { it ->
                     Text(
-                        text = it.description,
+                        text = it.productInfoTitle,
                         style = TextStyle(
                             fontSize = 16.sp,
                             lineHeight = 16.sp
+                        ),
+                    )
+                    Text(
+                        text = it.productInfoContent,
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            lineHeight = 14.sp
                         ),
                     )
                 }
@@ -543,7 +550,7 @@ fun ProductInfoScreen(
             product?.let {
                 LikeLionBottomSheet(
                     onDismissRequest = { showBottomSheet = false },
-                    productPrice = it.price, // 상품 가격 전달
+                    productPrice = it.productPrice, // 상품 가격 전달
                     selectedSize = null, // 사이즈 정보 없음
                     selectedColor = null, // 컬러 정보 없음
                 )

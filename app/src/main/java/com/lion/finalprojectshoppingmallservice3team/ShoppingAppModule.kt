@@ -8,6 +8,9 @@ import com.lion.finalprojectshoppingmallservice3team.customer.data.repository.Cu
 import com.lion.finalprojectshoppingmallservice3team.customer.data.repository.InquiryRepository
 import com.lion.finalprojectshoppingmallservice3team.customer.data.service.CustomerService
 import com.lion.finalprojectshoppingmallservice3team.customer.data.service.InquiryService
+import com.lion.finalprojectshoppingmallservice3team.customer.data.repository.ProductRepository
+import com.lion.finalprojectshoppingmallservice3team.customer.data.service.CustomerService
+import com.lion.finalprojectshoppingmallservice3team.customer.data.service.ProductService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,6 +37,12 @@ object ShoppingAppModule {
     @Singleton
     fun creatorRepositoryProvider() : CreatorRepository{
         return CreatorRepository()
+    }
+    
+    @Provides
+    @Singleton 
+    fun productRepositoryProvider() : ProductRepository {
+        return ProductRepository()
     }
 
     @Provides
@@ -64,5 +73,12 @@ object ShoppingAppModule {
     @Singleton
     fun inquiryServiceProvider(inquiryRepository: InquiryRepository) : InquiryService{
         return InquiryService(inquiryRepository)
+    }
+    
+    @Provides
+    @Singleton
+    fun productServiceProvider(productRepository: ProductRepository) : ProductService{
+        return ProductService(productRepository)
+
     }
 }

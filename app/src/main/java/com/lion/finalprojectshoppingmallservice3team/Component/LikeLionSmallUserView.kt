@@ -1,7 +1,9 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import android.R.attr.onClick
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -23,20 +25,22 @@ fun LikeLionSmallUserView(randomUser: CustomerModel, viewModel: MyFavoriteViewMo
 
     Card(  // Card View
         modifier = Modifier
-            .padding(10.dp)
-            .clickable(
-                onClick = {
-                    viewModel.creatorShopScreen()
-                }
-            ), // fillMaxWidth로 가로를 꽉 차게
+            .padding(10.dp), // fillMaxWidth로 가로를 꽉 차게
         colors = CardDefaults.cardColors(
             Color.White
         ),
     ) {
-        Column(modifier = Modifier.padding(10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(3.dp)
-        ) {
+        Box(modifier = Modifier
+            .clickable(
+                onClick = {
+                    viewModel.creatorShopScreen()
+                }
+            ),
+        ){
+            Column(modifier = Modifier.padding(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(3.dp)
+            ) {
 
 //            Box(
 //                modifier = Modifier
@@ -45,19 +49,21 @@ fun LikeLionSmallUserView(randomUser: CustomerModel, viewModel: MyFavoriteViewMo
 //                    .background(Color.Red)
 //            ) {}
 
-            LikeLionProfileImg(
-                imgUrl = randomUser.customerUserProfileImage,
-                iconTint = Color.White,
-                profileBack = Color(0xFFA16DEB)
-            )
-            Text(
-                text = randomUser.customerUserNickName,
-                fontSize = 12.sp,
-            )
+                LikeLionProfileImg(
+                    imgUrl = randomUser.customerUserProfileImage,
+                    iconTint = Color.White,
+                    profileBack = Color(0xFFA16DEB)
+                )
+                Text(
+                    text = randomUser.customerUserNickName,
+                    fontSize = 12.sp,
+                )
+
+            }
 
         }
-
     }
+
 }
 
 @Composable

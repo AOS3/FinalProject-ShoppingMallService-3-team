@@ -60,7 +60,6 @@ fun CheerUpWriteScreen() {
                         iconButtonOnClick = {
 
                         },
-                        borderNull = true,
                     )
                 }
             )
