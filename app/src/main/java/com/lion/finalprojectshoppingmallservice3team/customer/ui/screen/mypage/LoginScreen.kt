@@ -1,5 +1,8 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,11 +20,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionAlertDialog
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionImage
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextField
@@ -35,10 +40,17 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.mypag
 
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
+    val context = LocalContext.current
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        loginViewModel.handleGoogleLoginResult(context, task) // 결과 처리
+    }
+
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
-                backColor = Color.Transparent,
+                backColor = Color.White,
                 navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationIconOnClick = {
                     loginViewModel.navigationIconOnClick()
@@ -49,6 +61,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(it)
                 .padding(horizontal = 10.dp),
             verticalArrangement = Arrangement.Center,
@@ -153,15 +166,13 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
             Row(
                 modifier = Modifier.padding(bottom = 10.dp)
             ) {
-
-                // 카카오 아이콘으로 바꾸기
                 LikeLionImage(
                     painter = painterResource(id = R.drawable.kakao_login_logo),
                     modifier = Modifier
                         .size(50.dp),
                     isCircular = true,
                     onClick = {
-
+                        loginViewModel.kakaoLogin(context)
                     }
                 )
 
@@ -174,7 +185,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                             .size(50.dp),
                         isCircular = true,
                         onClick = {
-
+                            loginViewModel.naverLogin(context)
                         }
                     )
                 }
@@ -191,7 +202,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                         borderColor = Color.LightGray, // 테두리 색상
                         isCircular = true,
                         onClick = {
-
+                            loginViewModel.googleLogin(context, launcher)
                         }
                     )
                 }

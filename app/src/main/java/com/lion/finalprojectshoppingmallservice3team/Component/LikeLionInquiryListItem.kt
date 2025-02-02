@@ -29,13 +29,13 @@ fun LikeLionInquiryListItem(item: Map<String, *>, isShop: Boolean = false) {
         if (isShop) {
             // 상태 텍스트
             Text(
-                text = item["status"] as String,
+                text = item["state"] as String,
                 fontWeight = FontWeight.Bold,
-                color = if (item["status"] == "문의 대기") Color.Gray else MainColor, // 상태에 따른 색상
+                color = if (item["state"] == "문의 대기") Color.Gray else MainColor, // 상태에 따른 색상
                 fontSize = 14.sp,
                 modifier = Modifier
                     .background(
-                        color = if (item["status"] == "문의 대기") Color.LightGray else SubColor, // 상태에 따른 배경색
+                        color = if (item["state"] == "문의 대기") Color.LightGray else SubColor, // 상태에 따른 배경색
                         shape = RoundedCornerShape(5.dp)
                     ) // 둥근 모서리 설정
                     .padding(horizontal = 4.dp, vertical = 2.dp)
@@ -43,13 +43,13 @@ fun LikeLionInquiryListItem(item: Map<String, *>, isShop: Boolean = false) {
         } else {
             // 상태 텍스트
             Text(
-                text = item["status"] as String,
+                text = item["state"] as String,
                 fontWeight = FontWeight.Bold,
-                color = if (item["status"] == "답변 대기") Color.Gray else MainColor, // 상태에 따른 색상
+                color = if (item["state"] == "답변 대기") Color.Gray else MainColor, // 상태에 따른 색상
                 fontSize = 14.sp,
                 modifier = Modifier
                     .background(
-                        color = if (item["status"] == "답변 대기") Color.LightGray else SubColor, // 상태에 따른 배경색
+                        color = if (item["state"] == "답변 대기") Color.LightGray else SubColor, // 상태에 따른 배경색
                         shape = RoundedCornerShape(5.dp)
                     ) // 둥근 모서리 설정
                     .padding(horizontal = 4.dp, vertical = 2.dp)
@@ -71,7 +71,7 @@ fun LikeLionInquiryListItem(item: Map<String, *>, isShop: Boolean = false) {
                 modifier = Modifier.padding(top = 4.dp, bottom = 2.dp)
             )
             Text(
-                text = item["date"] as String,
+                text = (item["createdAt"]).toString(),
                 color = Color.Gray,
                 fontSize = 16.sp
             )
@@ -139,7 +139,7 @@ fun LikeLionInquiryListItem(item: Map<String, *>, isShop: Boolean = false) {
                     .padding(bottom = 10.dp),
             ) {
                 Text(
-                    text = item["name"] as String,
+                    text = item["nickname"] as String,
                     color = Color.Gray,
                     fontSize = 14.sp
                 )

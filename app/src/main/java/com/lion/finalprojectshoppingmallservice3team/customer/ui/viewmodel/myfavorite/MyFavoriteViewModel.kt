@@ -2,6 +2,7 @@ package com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.myfa
 
 import android.content.Context
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -36,7 +37,7 @@ class MyFavoriteViewModel @Inject constructor(
         unselectedColor = Color.White,
         unselectedTextColor = Color.Black,
         chipTextStyle = Typography.bodySmall,
-        chipModifier = Modifier.padding(start = 15.dp, top = 8.dp, bottom = 8.dp, end = 15.dp)
+        chipModifier = Modifier.padding(start = 15.dp, top = 8.dp, bottom = 8.dp, end = 15.dp),
     )
 
     fun setEvent(idx:Int){

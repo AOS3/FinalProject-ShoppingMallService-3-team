@@ -1,12 +1,15 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import android.util.Log.e
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Clear
@@ -29,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
@@ -40,9 +44,9 @@ fun LikeLionSearchBar(
     placeholder:String = "검색어를 입력해주세요",
     trailingIcon:ImageVector? = null,
     trailingIconOnClick: () -> Unit = {},
-    searchResultComposable : @Composable () -> Unit,
-    contentComposable: @Composable () -> Unit,
+    searchResultComposable: @Composable () -> Unit,
     composableContent: @Composable (List<String>) -> Unit, // 최근 검색어 전달
+    contentComposable: @Composable () -> Unit,
     onSearch: () -> Unit = {} // 엔터키 입력 시 호출할 콜백 추가
 
 ) {
@@ -132,12 +136,11 @@ fun LikeLionSearchBar(
                 expandedValue = it
             }
         ) {
-            // 검색 결과를 구성해주는 부분
             searchResultComposable()
         }
 
         // 최근 검색어 표시 부분
-        Column(modifier = Modifier.padding(top = 120.dp)) {
+        Column(modifier = Modifier.padding(top = 120.dp, bottom = 100.dp)) {
             composableContent(recentSearches)
         }
 

@@ -69,6 +69,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.compose.material3:material3:1.3.1")
     implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.compose.material:material:1.7.0")
 
     // 배너 가로 스크롤 라이브러리 (Accompanist Pager)
     implementation ("com.google.accompanist:accompanist-pager:0.28.0")
@@ -78,12 +79,24 @@ dependencies {
     implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
 
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-firestore:25.1.1")
     implementation("com.google.firebase:firebase-storage:21.0.1")
 
     implementation("me.onebone:toolbar-compose:2.3.5")
+
+    implementation("com.kakao.sdk:v2-user:2.20.1") // 카카오 로그인 API 모듈
+
+    implementation("com.navercorp.nid:oauth:5.10.0")
+
+    implementation ("com.google.android.gms:play-services-auth:21.3.0")
+    implementation ("com.google.firebase:firebase-auth")
+
+    implementation ("androidx.webkit:webkit:1.12.1")
+    // Kotlin
+    //implementation("androidx.activity:activity-ktx:")
 }
 
 kapt {

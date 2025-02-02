@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -74,7 +75,7 @@ fun MyPurchaseHistoryScreen(myPurchaseHistoryViewModel: MyPurchaseHistoryViewMod
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
-                backColor = Color.Transparent,
+                backColor = Color.White,
                 title = "구매내역",
                 navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationIconOnClick = {
@@ -83,15 +84,11 @@ fun MyPurchaseHistoryScreen(myPurchaseHistoryViewModel: MyPurchaseHistoryViewMod
                 menuItems = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                         borderNull = true
                     )
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.shopping_cart_24px),
-                        color = Color.Transparent,
-                        iconBackColor = Color.Transparent,
                         padding = 10.dp,
                         borderNull = true
                     )
@@ -102,6 +99,7 @@ fun MyPurchaseHistoryScreen(myPurchaseHistoryViewModel: MyPurchaseHistoryViewMod
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(it)
                 .padding(horizontal = 10.dp)
         ) {

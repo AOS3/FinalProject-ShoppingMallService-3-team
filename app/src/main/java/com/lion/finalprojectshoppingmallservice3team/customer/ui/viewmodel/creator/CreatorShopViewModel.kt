@@ -16,4 +16,8 @@ class CreatorShopViewModel @Inject constructor(
     fun popBack(){
         shoppingApplication.navHostController.popBackStack()
     }
+
+    fun navigation(){
+        shoppingApplication.navHostController.navigate("CreatorNotice")
+    }
 }

@@ -56,12 +56,10 @@ fun LikeLionGroupEditView(myGroup:String,idx:Int) {
                 LikeLionIconButton(
                     icon = ImageVector.vectorResource(id = R.drawable.edit_24px),
                     padding = 10.dp,
-                    borderNull = true
                 )
                 LikeLionIconButton(
                     icon = ImageVector.vectorResource(id = R.drawable.close_24px),
                     padding = 10.dp,
-                    borderNull = true
                 )
             }
         }

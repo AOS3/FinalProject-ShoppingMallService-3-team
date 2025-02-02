@@ -76,7 +76,7 @@ fun ShopScreen(shopViewModel: ShopViewModel = hiltViewModel()) {
             .background(Color.White)
             .fillMaxSize()
             .padding(it))
-            {
+        {
 
             // 칩 그룹
             LikeLionChipGroup(

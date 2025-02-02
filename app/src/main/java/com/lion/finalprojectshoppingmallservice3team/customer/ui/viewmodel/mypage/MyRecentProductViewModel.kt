@@ -3,7 +3,6 @@ package com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.mypa
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.lion.finalprojectshoppingmallservice3team.Component.Product
 import com.lion.finalprojectshoppingmallservice3team.ShoppingApplication
 import com.lion.finalprojectshoppingmallservice3team.customer.data.model.ProductModel
 import dagger.hilt.android.lifecycle.HiltViewModel

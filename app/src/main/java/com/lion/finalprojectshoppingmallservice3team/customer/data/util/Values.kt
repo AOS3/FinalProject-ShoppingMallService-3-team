@@ -16,6 +16,16 @@ enum class LoginResult(val number:Int, val str:String){
     LOGIN_RESULT_SIGNOUT_MEMBER(4, "탈퇴한 회원"),
 }
 
+// 문의 상태
+enum class InquiryState(val number:Int, val str:String){
+    // 정상
+    INQUIRY_STATE_SUBMIT(1, "답변 대기"),
+    // 탈퇴
+    INQUIRY_STATE_SUCCESS(2, "답변 완료"),
+    // 탈퇴
+    INQUIRY_STATE_DELETE(2, "답변 삭제")
+}
+
 // 상품 판매상태
 enum class SellingState(val number:Int, val str:String){
     // 판매중
@@ -83,14 +93,8 @@ enum class ProductSubCategory(val str : String){
     PRODUCT_SUB_CATEGORY_KEYCAP("키캡"),
     // 포토카드
     PRODUCT_SUB_CATEGORY_PHOTO_CARD("포토카드"),
-    // 틴케이스
-    PRODUCT_SUB_CATEGORY_TIN_CASE("틴케이스"),
-    // 커버/클리너
-    PRODUCT_SUB_CATEGORY_COVER_CLEANER("커버/클리너"),
     // 가방
     PRODUCT_SUB_CATEGORY_BAG("가방"),
-    // 파우치
-    PRODUCT_SUB_CATEGORY_POUCH("파우치"),
     // 쿠션/방석
     PRODUCT_SUB_CATEGORY_CUSHION("쿠션/방석"),
     // 마우스패드
@@ -103,22 +107,12 @@ enum class ProductSubCategory(val str : String){
     PRODUCT_SUB_CATEGORY_GALAXY("갤럭시"),
     // 카드
     PRODUCT_SUB_CATEGORY_CARD("카드"),
-    // 스티커
-    PRODUCT_SUB_CATEGORY_STICKER("스티커"),
-    // 수첩
-    PRODUCT_SUB_CATEGORY_NOTEBOOK("수첩"),
-    // 메모 패드
-    PRODUCT_SUB_CATEGORY_MEMO_PAD("메모 패드"),
-    // 포스터
-    PRODUCT_SUB_CATEGORY_POSTER("포스터"),
     // 머그컵
     PRODUCT_SUB_CATEGORY_MUG("머그컵"),
     // 시계
     PRODUCT_SUB_CATEGORY_WATCH("시계"),
     // 컵받침
     PRODUCT_SUB_CATEGORY_COASTER("컵받침"),
-    // 기타
-    PRODUCT_SUB_CATEGORY_ETC("기타"),
     // 인형/피규어
     PRODUCT_SUB_CATEGORY_DOLL_FIGURE("인형/피규어"),
 }
@@ -137,15 +131,12 @@ object CategoryMapping {
             ProductSubCategory.PRODUCT_SUB_CATEGORY_KEYRING.str,
             ProductSubCategory.PRODUCT_SUB_CATEGORY_MIRROR_BUTTON.str,
             ProductSubCategory.PRODUCT_SUB_CATEGORY_KEYCAP.str,
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_PHOTO_CARD.str,
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_TIN_CASE.str,
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_COVER_CLEANER.str
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_PHOTO_CARD.str
 
         ),
         // 패션잡화
         ProductCategory.PRODUCT_CATEGORY_FASHION_ACCESSORIES.str to listOf(
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_BAG.str,
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_POUCH.str
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_BAG.str
         ),
         // 쿠션/패브릭
         ProductCategory.PRODUCT_CATEGORY_CUSHION_FABRIC.str to listOf(
@@ -164,18 +155,13 @@ object CategoryMapping {
         ),
         // 스티커/지류
         ProductCategory.PRODUCT_CATEGORY_STICKER_PAPER.str to listOf(
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_CARD.str,
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_STICKER.str,
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_NOTEBOOK.str,
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_MEMO_PAD.str,
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_POSTER.str
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_CARD.str
         ),
         // 리빙
         ProductCategory.PRODUCT_CATEGORY_LIVING.str to listOf(
             ProductSubCategory.PRODUCT_SUB_CATEGORY_MUG.str,
             ProductSubCategory.PRODUCT_SUB_CATEGORY_WATCH.str,
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_COASTER.str,
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_ETC.str
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_COASTER.str
         ),
         // 토이/취미
         ProductCategory.PRODUCT_CATEGORY_TOY_HOBBY.str to listOf(

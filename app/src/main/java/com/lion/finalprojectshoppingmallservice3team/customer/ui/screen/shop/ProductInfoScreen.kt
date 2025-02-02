@@ -278,9 +278,9 @@ fun ProductInfoScreen(
             LikeLionDivider()
 
             Column(modifier = Modifier
-                    .background(Color.White)
-                    .fillMaxWidth()
-                    .padding().padding(10.dp)
+                .background(Color.White)
+                .fillMaxWidth()
+                .padding().padding(10.dp)
             ) {
                 Text(
                     text = "상품 안내",

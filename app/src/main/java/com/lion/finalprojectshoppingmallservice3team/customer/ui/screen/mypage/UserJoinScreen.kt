@@ -1,5 +1,8 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,11 +20,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionImage
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
@@ -31,10 +36,18 @@ import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 
 @Composable
 fun UserJoinScreen(userJoinViewModel: UserJoinViewModel = hiltViewModel()) {
+    val context = LocalContext.current
+
+    // ActivityResultLauncher 설정
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+        userJoinViewModel.handleGoogleSignUpResult(context, task) // 결과 처리
+    }
+
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
-                backColor = Color.Transparent,
+                backColor = Color.White,
                 navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationIconOnClick = {
                     userJoinViewModel.navigationIconOnClick()
@@ -45,6 +58,7 @@ fun UserJoinScreen(userJoinViewModel: UserJoinViewModel = hiltViewModel()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(it)
                 .padding(horizontal = 10.dp),
             verticalArrangement = Arrangement.Center,
@@ -78,7 +92,7 @@ fun UserJoinScreen(userJoinViewModel: UserJoinViewModel = hiltViewModel()) {
                         .size(50.dp),
                     isCircular = true,
                     onClick = {
-
+                        userJoinViewModel.kakaoSignUp(context)
                     }
                 )
 
@@ -91,7 +105,7 @@ fun UserJoinScreen(userJoinViewModel: UserJoinViewModel = hiltViewModel()) {
                             .size(50.dp),
                         isCircular = true,
                         onClick = {
-
+                            userJoinViewModel.naverSignUp(context)
                         }
                     )
                 }
@@ -108,7 +122,7 @@ fun UserJoinScreen(userJoinViewModel: UserJoinViewModel = hiltViewModel()) {
                         borderColor = Color.LightGray, // 테두리 색상
                         isCircular = true,
                         onClick = {
-
+                            userJoinViewModel.googleSignUp(context, launcher)
                         }
                     )
                 }

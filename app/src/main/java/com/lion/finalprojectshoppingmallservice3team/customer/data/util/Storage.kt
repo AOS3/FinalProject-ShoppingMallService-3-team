@@ -1,7 +1,23 @@
 package com.lion.finalprojectshoppingmallservice3team.data
 
-import com.lion.finalprojectshoppingmallservice3team.Component.Product
 import java.util.UUID
+
+data class Product(
+    val productDocumentId: String,
+    val name: String,     // 상품 이름
+    val price: Long,    // 상품 가격
+    val imageUrl: String,// 상품 이미지 URL (일단 기본값)
+    val imageUrls: List<String> = emptyList(),
+    val description: String, // 상품 설명
+    val creator: String,  // 크리에이터 이름
+    val category: String, // 대카테고리 (예: 의류, 굿즈 등)
+    val subCategory: String, // 소카테고리 (예: 티셔츠, 키링 등)
+    var isFavorite: Boolean, // 좋아요
+    var isLimited: Boolean, // 한정판 여부
+    val stockQuantity: Int, // 재고 수
+    val rating: Float, // 상품 평점 (예: 4.5)
+    val reviewCount: Int // 리뷰 수
+)
 
 object Storage {
     val products = mutableListOf(

@@ -1,5 +1,7 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
@@ -40,7 +44,7 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
     Scaffold(
         topBar = {
             LikeLionTopAppBar(
-                backColor = Color.Transparent,
+                backColor = Color.White,
                 navigationIconImage = Icons.AutoMirrored.Filled.ArrowBack,
                 navigationIconOnClick = {
                     userJoinInfoViewModel.navigationIconOnClick()
@@ -51,8 +55,10 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .background(Color.White)
                 .padding(it)
-                .padding(horizontal = 15.dp),
+                .padding(horizontal = 15.dp)
+                .verticalScroll(state = rememberScrollState()),
             verticalArrangement = Arrangement.Center,
 
         ) {
@@ -137,7 +143,7 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
             }
 
             Row(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp)
+                modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp)
             ) {
                 Row(
                     modifier = Modifier.padding(end = 4.dp)
@@ -252,7 +258,7 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
             }
 
             Row(
-                modifier = Modifier.padding(bottom = 20.dp),
+                modifier = Modifier.padding(bottom = 10.dp),
             ) {
                 Icon(
                     imageVector = Icons.Default.Check,
@@ -274,6 +280,60 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
                     fontSize = 14.sp
                 )
             }
+
+            LikeLionOutlinedTextField(
+                textFieldValue = userJoinInfoViewModel.textFieldUserJoinNameValue,
+                label = "이름",
+                placeHolder = "이름을 입력해 주세요.",
+                modifier = Modifier.fillMaxWidth(),
+                inputCondition = "[^ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z]",
+                trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.TEXT,
+                onTrailingIconClick = {
+                    userJoinInfoViewModel.updateUserJoinButtonState()
+                },
+                inputType = LikeLionOutlinedTextFieldInputType.TEXT,
+                singleLine = true,
+                onValueChange = {
+                    userJoinInfoViewModel.updateUserJoinButtonState()
+                }
+            )
+
+
+            LikeLionOutlinedTextField(
+                textFieldValue = userJoinInfoViewModel.textFieldUserJoinPhoneValue,
+                paddingTop = 10.dp,
+                label = "연락처",
+                modifier = Modifier.fillMaxWidth(),
+                placeHolder = "하이픈(-) 없이 숫자만 입력해 주세요.",
+                trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.TEXT,
+                onTrailingIconClick = {
+                    userJoinInfoViewModel.updateUserJoinButtonState()
+                },
+                inputCondition = "[^0-9]",
+                singleLine = true,
+                inputType = LikeLionOutlinedTextFieldInputType.NUMBER,
+                onValueChange = {
+                    userJoinInfoViewModel.updateUserJoinButtonState()
+                }
+            )
+
+            LikeLionOutlinedTextField(
+                textFieldValue = userJoinInfoViewModel.textFieldUserJoinBirthValue,
+                paddingTop = 10.dp,
+                label = "생년월일",
+                modifier = Modifier.fillMaxWidth().padding(bottom = 10.dp),
+                placeHolder = "생년월일을 입력해 주세요.",
+                trailingIconMode = LikeLionOutlinedTextFieldEndIconMode.TEXT,
+                onTrailingIconClick = {
+                    userJoinInfoViewModel.updateUserJoinButtonState()
+                },
+                inputCondition = "[^0-9]",
+                singleLine = true,
+                inputType = LikeLionOutlinedTextFieldInputType.NUMBER,
+                onValueChange = {
+                    userJoinInfoViewModel.updateUserJoinButtonState()
+                }
+            )
 
             // 전체 동의
             LikeLionTriStateCheckBox(
@@ -349,33 +409,33 @@ fun UserJoinInfoScreen(userJoinInfoViewModel: UserJoinInfoViewModel = hiltViewMo
 //                }
 //            }
 //
-//            Row(
-//                modifier = Modifier.padding(bottom = 5.dp),
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                LikeLionCheckBox(
-//                    text = "개인정보 수집 ＊ 이용 동의",
-//                    modifier = Modifier.padding(start = 5.dp).size(14.dp),
-//                    fontSize = 14.sp,
-//                    checkedValue = userJoinInfoViewModel.checkBoxUserJoinInfo3Value,
-//                    textModifier = Modifier.padding(start = 15.dp),
-//                    onCheckedChange = {
-//                        userJoinInfoViewModel.checkBoxUserJoinInfoOnChanged()
-//                    },
-//                )
-//
-//                Row(
-//                    modifier = Modifier.fillMaxWidth(), // 가로 전체 크기 설정
-//                    horizontalArrangement = Arrangement.End // 오른쪽 정렬
-//                ) {
-//                    Text(
-//                        text = "보기",
-//                        color = Color.LightGray,
-//                        fontSize = 14.sp,
-//                        textDecoration = TextDecoration.Underline, // 밑줄 추가
-//                    )
-//                }
-//            }
+            Row(
+                modifier = Modifier.padding(top = 10.dp, bottom = 5.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                LikeLionCheckBox(
+                    text = "개인정보 수집 ＊ 이용 동의",
+                    modifier = Modifier.padding(start = 5.dp).size(14.dp),
+                    fontSize = 14.sp,
+                    checkedValue = userJoinInfoViewModel.checkBoxUserJoinInfo3Value,
+                    textModifier = Modifier.padding(start = 15.dp),
+                    onCheckedChange = {
+                        userJoinInfoViewModel.checkBoxUserJoinInfoOnChanged()
+                    },
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(), // 가로 전체 크기 설정
+                    horizontalArrangement = Arrangement.End // 오른쪽 정렬
+                ) {
+                    Text(
+                        text = "보기",
+                        color = Color.LightGray,
+                        fontSize = 14.sp,
+                        textDecoration = TextDecoration.Underline, // 밑줄 추가
+                    )
+                }
+            }
 
             Row(
                 modifier = Modifier.padding(bottom = 20.dp),

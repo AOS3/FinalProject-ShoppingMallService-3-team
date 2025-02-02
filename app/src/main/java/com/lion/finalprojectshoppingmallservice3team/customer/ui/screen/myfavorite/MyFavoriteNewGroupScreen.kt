@@ -18,8 +18,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextField
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTextIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.myfavorite.MyFavoriteNewGroupViewModel
 import com.lion.finalprojectshoppingmallservice3team.R
@@ -36,7 +38,6 @@ fun MyFavoriteNewGroupScreen(viewModel: MyFavoriteNewGroupViewModel = hiltViewMo
                 menuItems = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.close_24px),
-                        borderNull = true,
                         iconButtonOnClick = {
                             viewModel.backAllPop()
                         }
@@ -68,18 +69,16 @@ fun MyFavoriteNewGroupScreen(viewModel: MyFavoriteNewGroupViewModel = hiltViewMo
             Text(text = "크리에이터(0)")
             Spacer(modifier = Modifier.height(15.dp))
 
-            LikeLionIconButton(
-                icon = ImageVector.vectorResource(id = R.drawable.add_24px),
-                iconBackColor = MainColor,
-                iconColor = Color.White,
-                color = Color.White,
+            LikeLionTextIconButton(
                 text = "크리에이터 추가",
-                fontColor = MainColor,
-                fontSize = 20.sp,
-                size = 70.dp,
-                borderNull = true,
+                icon = ImageVector.vectorResource(id = R.drawable.add_24px),
+                iconColor = MainColor,
+//                iconBackColor = MainColor,
+//                iconColor = Color.White,
+                iconSize = 40.dp,
+                textColor = MainColor,
                 fillWidth = true,
-                iconButtonOnClick = { viewModel.creatorBottom()}
+                onClick = { viewModel.creatorBottom()}
             )
             LazyColumn {
                 
