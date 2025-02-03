@@ -2,8 +2,11 @@ package com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.home
 
 import android.content.Context
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lion.finalprojectshoppingmallservice3team.Component.ButtonItem
+import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.ShoppingApplication
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -18,6 +21,24 @@ class HomeViewModel @Inject constructor(
 
     val shoppingApplication = context as ShoppingApplication
 
+    // search 로 이동
+    fun searchOnClick(){
+        shoppingApplication.navHostController.navigate("search")
+    }
+    // 장바구니로 이동
+
+    // 크리에이터 See More 눌렀을때
+    fun seeMoreOnClick(){
+        shoppingApplication.navHostController.navigate("creatorRanking")
+    }
+
+    // WEEKLY RANKING 눌렀을 때
+    fun weeklyRankingImageOnClick(documentId:String) {
+        shoppingApplication.navHostController.navigate("CreatorShop/${documentId}")
+    }
+
+    // TopAppBar Title
+    val topAppBarTitle = mutableStateOf("Home")
 
     init {
         loadBannerImages()
@@ -45,19 +66,13 @@ class HomeViewModel @Inject constructor(
 
 
     /*****************************배너 아래 이동 화면*********************************/
-//    private val _circularBoxItems = mutableStateOf<List<CircularBoxItem>>(emptyList())
-//    val circularBoxItems: List<CircularBoxItem> get() = _circularBoxItems.value
 
-    private val _circularBoxItems = mutableStateOf(
-        listOf(
-            CircularBoxItem("https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg", "크리에이터", "action1"),
-            CircularBoxItem("https://example.com/image2.jpg", "Item 2", "action2"),
-            CircularBoxItem("https://example.com/image3.jpg", "Item 3", "action3"),
-            CircularBoxItem("https://example.com/image4.jpg", "Item 4", "action4"),
-            CircularBoxItem("https://example.com/image5.jpg", "Item 5", "action5")
+
+    val buttonItems = listOf(
+            ButtonItem("마크 BEST", R.drawable.marcshop, Color.Blue, "creatorRanking"),
+            ButtonItem("크리에이터 신청", R.drawable.product, Color.Yellow, "creatorApply"),
         )
-    )
-    val circularBoxItems: List<CircularBoxItem> get() = _circularBoxItems.value
+
 
 
 //    private fun loadCircularBoxItems() {
