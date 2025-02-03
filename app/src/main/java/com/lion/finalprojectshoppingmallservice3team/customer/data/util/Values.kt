@@ -95,6 +95,8 @@ enum class ProductSubCategory(val str : String){
     PRODUCT_SUB_CATEGORY_PHOTO_CARD("포토카드"),
     // 가방
     PRODUCT_SUB_CATEGORY_BAG("가방"),
+    // 파우치
+    PRODUCT_SUB_CATEGORY_POUCH("파우치"),
     // 쿠션/방석
     PRODUCT_SUB_CATEGORY_CUSHION("쿠션/방석"),
     // 마우스패드
@@ -132,11 +134,11 @@ object CategoryMapping {
             ProductSubCategory.PRODUCT_SUB_CATEGORY_MIRROR_BUTTON.str,
             ProductSubCategory.PRODUCT_SUB_CATEGORY_KEYCAP.str,
             ProductSubCategory.PRODUCT_SUB_CATEGORY_PHOTO_CARD.str
-
         ),
         // 패션잡화
         ProductCategory.PRODUCT_CATEGORY_FASHION_ACCESSORIES.str to listOf(
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_BAG.str
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_BAG.str,
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_POUCH.str
         ),
         // 쿠션/패브릭
         ProductCategory.PRODUCT_CATEGORY_CUSHION_FABRIC.str to listOf(

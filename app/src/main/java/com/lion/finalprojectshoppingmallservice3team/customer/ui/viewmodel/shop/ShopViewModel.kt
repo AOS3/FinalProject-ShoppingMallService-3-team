@@ -95,7 +95,8 @@ class ShopViewModel @Inject constructor(
         selectedCategory.value = category
         selectedTabs.value = categoryTabs[category] ?: listOf("전체 상품")
         selectedTabIndex.value = 0
-        filterProducts()
+        //filterProducts()
+        loadProductList()
     }
 
     // 탭 선택
@@ -163,7 +164,7 @@ class ShopViewModel @Inject constructor(
             filteredList = filteredList.filter { !it.productLimitedSalesPeriod.isBlank() }
         }
 
-        // 🔥 정렬 로직 추가
+        // 정렬 로직 추가
         filteredList = when (selectedSortOption.value) {
             "인기순" -> filteredList.sortedByDescending { it.productSalesCount }
             "최신순" -> filteredList.sortedByDescending { it.productCreatedAt }
