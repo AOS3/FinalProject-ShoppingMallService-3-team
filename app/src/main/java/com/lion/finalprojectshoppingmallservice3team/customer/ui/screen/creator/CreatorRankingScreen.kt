@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -207,7 +208,8 @@ fun CreatorRankingScreen(
 
 
             Column(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
             ) {
                 Box(
                     modifier = Modifier
@@ -230,11 +232,11 @@ fun CreatorRankingScreen(
     }
 }
 
-
-@Preview
-@Composable
-fun CreatorRankingScreenPreView() {
-    FinalProjectShoppingMallService3teamTheme {
-        CreatorRankingScreen()
-    }
-}
+//
+//@Preview
+//@Composable
+//fun CreatorRankingScreenPreView() {
+//    FinalProjectShoppingMallService3teamTheme {
+//        CreatorRankingScreen()
+//    }
+//}

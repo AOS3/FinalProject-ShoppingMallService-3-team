@@ -156,7 +156,9 @@ fun LikeLionProductItem(
                 modifier = Modifier
                     .padding(start = 5.dp)
                     .weight(1f)
-                    .clickable { onCreatorNameClick(product) }
+                    .clickable { onCreatorNameClick(product) },
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             IconButton(
                 onClick = { onLikeClick(product) },
