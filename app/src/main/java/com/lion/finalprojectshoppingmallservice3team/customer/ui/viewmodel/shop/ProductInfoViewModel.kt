@@ -103,4 +103,3 @@ class ProductInfoViewModel @Inject constructor(
         else
             ProductModel()
 }
-
