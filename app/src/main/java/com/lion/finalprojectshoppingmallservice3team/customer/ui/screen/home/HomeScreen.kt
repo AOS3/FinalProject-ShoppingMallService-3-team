@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -24,8 +25,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -52,6 +55,7 @@ import com.lion.finalprojectshoppingmallservice3team.Component.YouTubePlayer
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.home.HomeViewModel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -248,12 +252,36 @@ fun HomeScreen(
 
                 )
 
-                LikeLionProfileImg(
-                    imgUrl = "",
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 5.dp),
-                    iconTint = Color.White,
-                    profileBack = MainColor,
-                )
+                var selectedVideoId by remember { mutableStateOf("911eCyHPlHs") }
+
+
+                // 프로필 이미지들을 수평으로 배치
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(5) { index ->
+                        val videoIds = listOf(
+                            "911eCyHPlHs",
+                            "aIP2eW6JLjU",
+                            "0ZYpuXLeL2U",
+                            "PR3w_rPXtrw",
+                            "BUWz22XWiX4",
+                        )
+                        LikeLionProfileImg(
+                            imgUrl = "", // 각 크리에이터의 프로필 이미지
+                            modifier = Modifier
+                                .size(60.dp)
+                                .clickable {
+                                    selectedVideoId = videoIds[index]
+                                },
+                            iconTint = Color.White,
+                            profileBack = MainColor
+                        )
+                    }
+                }
 
                 // YouTubePlayer 가시성 체크 및 동작 제어
                 val isVisible = remember { mutableStateOf(false) }
@@ -273,7 +301,7 @@ fun HomeScreen(
                         }
                 ) {
                     YouTubePlayer(
-                        videoId = "911eCyHPlHs",
+                        videoId = selectedVideoId,
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(start = 16.dp, end = 16.dp),

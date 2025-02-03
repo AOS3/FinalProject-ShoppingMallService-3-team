@@ -35,7 +35,7 @@ fun LikeLionHomeCircleBox(
         ) {
             Surface(
                 shape = CircleShape,
-                color = Color.LightGray,
+                color = Color.White,
                 modifier = Modifier.fillMaxSize()
             ) {
                 Image(
