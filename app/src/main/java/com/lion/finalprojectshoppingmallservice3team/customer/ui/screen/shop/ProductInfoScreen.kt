@@ -1,16 +1,22 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop
 
+import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -39,6 +45,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionAccordion
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBottomSheet
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionDivider
@@ -51,6 +58,7 @@ import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.data.model.ProductModel
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.shop.ProductInfoViewModel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @Composable
@@ -58,12 +66,8 @@ fun ProductInfoScreen(
     productInfoViewModel: ProductInfoViewModel = hiltViewModel(),
     productDocumentId:String,
 ) {
-    var product by remember { mutableStateOf<ProductModel?>(null) }
-    var showBottomSheet by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
     val coroutineScope = rememberCoroutineScope()
-    val isFavorite by productInfoViewModel.isFavorite.collectAsState()
-
     // 일정 스크롤 거리 이상 시 FloatingActionButton을 표시하도록 하는 상태
     val showFab = remember { mutableStateOf(false) }
 
@@ -74,9 +78,7 @@ fun ProductInfoScreen(
     }
 
     LaunchedEffect(productDocumentId) {
-        productInfoViewModel.gettingProductData(productDocumentId) {
-            product = it
-        }
+        productInfoViewModel.gettingProductData(productDocumentId)
     }
 
 
@@ -114,59 +116,7 @@ fun ProductInfoScreen(
                 )
         },
         bottomBar = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .background(Color.White)
-                    .height(56.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                product?.let {
-                    // 좋아요 버튼
-                    IconButton(
-                        onClick = {
-                            productInfoViewModel.onLikeClick()
-                        }
-                    ) {
-                        Icon(
-                            painter = painterResource(
-                                id = if (isFavorite) R.drawable.favorite_fill_24px
-                                else R.drawable.favorite_24px
-                            ),
-                            contentDescription = "Like Button",
-                            tint = if (isFavorite) MainColor else Color.LightGray,
-                            modifier = Modifier.size(24.dp)
-                        )
-                    }
-
-
-                    if (it.productManagementAllQuantity == 0L){
-                        // 구매하기 버튼
-                        LikeLionFilledButton(
-                            text = "판매가 종료되었어요!",
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(start = 10.dp),
-                            contentColor = Color.White,
-                            containerColor = Color.LightGray,
-                            isEnabled = false
-                        )
-                    }
-                    else{
-                        // 구매하기 버튼
-                        LikeLionFilledButton(
-                            text = "구매하기",
-                            onClick = {
-                                showBottomSheet = true
-                            },
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(start = 10.dp),
-                        )
-                    }
-                }
-            }
+            BottomButton(productInfoViewModel.getProduct())
         },
         floatingActionButton = {
             if (showFab.value){
@@ -184,55 +134,31 @@ fun ProductInfoScreen(
                 }
             }
         },
-    ){
-        Column (modifier = Modifier
-            .background(Color.White)
-            .fillMaxSize()
-            .padding(it)
-            .verticalScroll(scrollState)
-        ){
-            product?.let {
-                // 이미지 슬라이더
-                LikeLionImageSlider(imageUrls = it.productImages)
+    ) {
+        Column(
+            modifier = Modifier
+                .background(Color.White)
+                .fillMaxSize()
+                .padding(it)
+                .verticalScroll(scrollState)
+        ) {
+            Log.d("st","${productInfoViewModel.update.value}")
+            ProductTitle(productInfoViewModel.getProduct())
 
-                Spacer(modifier = Modifier.height(10.dp))
-
-                // 크리에이터 이름
-                Text(
-                    text = it.productSellerName,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(10.dp)
-                )
-
-                // 상품명
-                Text(
-                    text = it.productName,
-                    fontSize = 20.sp,
-                    modifier = Modifier.padding(start = 10.dp, end = 10.dp))
-                // 상품 카테고리
-                Text(text = "${it.productCategory} > ${it.productSubCategory}",
-                    color = Color.Gray,
-                    modifier = Modifier.padding(start = 10.dp, end = 10.dp)
-                )
-                val formattedPrice = String.format("%,d", it.productPrice)
-                // 가격
-                Text(text = "${formattedPrice}원",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    modifier = Modifier.padding(10.dp,))
-            }
 
             Spacer(modifier = Modifier.height(10.dp))
 
             LikeLionDivider()
 
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(10.dp)
-            ) {
-                Row (modifier = Modifier
+            Column(
+                modifier = Modifier
                     .fillMaxWidth()
-                ){
+                    .padding(10.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
                     Text(
                         text = "배송안내",
                         color = Color.Gray,
@@ -253,7 +179,7 @@ fun ProductInfoScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Row (
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
@@ -277,10 +203,11 @@ fun ProductInfoScreen(
             }
             LikeLionDivider()
 
-            Column(modifier = Modifier
-                .background(Color.White)
-                .fillMaxWidth()
-                .padding().padding(10.dp)
+            Column(
+                modifier = Modifier
+                    .background(Color.White)
+                    .fillMaxWidth()
+                    .padding().padding(10.dp)
             ) {
                 Text(
                     text = "상품 안내",
@@ -293,22 +220,7 @@ fun ProductInfoScreen(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                product?.let { it ->
-                    Text(
-                        text = it.productInfoTitle,
-                        style = TextStyle(
-                            fontSize = 16.sp,
-                            lineHeight = 16.sp
-                        ),
-                    )
-                    Text(
-                        text = it.productInfoContent,
-                        style = TextStyle(
-                            fontSize = 14.sp,
-                            lineHeight = 14.sp
-                        ),
-                    )
-                }
+                ProductInfoView(productInfoViewModel.getProduct())
 
                 Spacer(modifier = Modifier.height(10.dp))
 
@@ -339,7 +251,7 @@ fun ProductInfoScreen(
 
                             Spacer(modifier = Modifier.height(10.dp))
 
-                            Row (
+                            Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ) {
@@ -360,7 +272,7 @@ fun ProductInfoScreen(
                                 )
                             }
 
-                            Row (
+                            Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ) {
@@ -382,7 +294,7 @@ fun ProductInfoScreen(
 
                             }
 
-                            Row (
+                            Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ) {
@@ -427,7 +339,7 @@ fun ProductInfoScreen(
 
                             Spacer(modifier = Modifier.height(10.dp))
 
-                            Row (
+                            Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ) {
@@ -448,7 +360,7 @@ fun ProductInfoScreen(
                                 )
                             }
 
-                            Row (
+                            Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ) {
@@ -469,7 +381,7 @@ fun ProductInfoScreen(
                                 )
                             }
 
-                            Row (
+                            Row(
                                 modifier = Modifier
                                     .fillMaxWidth(),
                             ) {
@@ -546,15 +458,129 @@ fun ProductInfoScreen(
             }
         }
         // LikeLionBottomSheet 표시
-        if (showBottomSheet) {
-            product?.let {
-                LikeLionBottomSheet(
-                    onDismissRequest = { showBottomSheet = false },
-                    productPrice = it.productPrice, // 상품 가격 전달
-                    selectedSize = null, // 사이즈 정보 없음
-                    selectedColor = null, // 컬러 정보 없음
-                )
+        if (productInfoViewModel.showBottomSheet.value) {
+
+            LikeLionBottomSheet(
+                onDismissRequest = { productInfoViewModel.showBottomSheet.value = false },
+                productPrice = productInfoViewModel.getProduct().productPrice, // 상품 가격 전달
+                selectedSize = null, // 사이즈 정보 없음
+                selectedColor = null, // 컬러 정보 없음
+            )
+        }
+    }
+}
+
+@SuppressLint("DefaultLocale")
+@Composable
+fun ProductTitle( it : ProductModel){
+    // 이미지 슬라이더
+    LikeLionImageSlider(imageUrls = it.productImages)
+
+    Spacer(modifier = Modifier.height(10.dp))
+
+    // 크리에이터 이름
+    Text(
+        text = it.productSellerName,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier.padding(10.dp)
+    )
+
+    // 상품명
+    Text(
+        text = it.productName,
+        fontSize = 20.sp,
+        modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+    )
+    // 상품 카테고리
+    Text(
+        text = "${it.productCategory} > ${it.productSubCategory}",
+        color = Color.Gray,
+        modifier = Modifier.padding(start = 10.dp, end = 10.dp)
+    )
+    val formattedPrice = String.format("%,d", it.productPrice)
+    // 가격
+    Text(
+        text = "${formattedPrice}원",
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp,
+        modifier = Modifier.padding(10.dp,)
+    )
+}
+
+@Composable
+fun ProductInfoView( it : ProductModel){
+    Text(
+        text = it.productInfoTitle,
+        style = TextStyle(
+            fontSize = 16.sp,
+            lineHeight = 16.sp
+        ),
+    )
+    Text(
+        text = it.productInfoContent,
+        style = TextStyle(
+            fontSize = 14.sp,
+            lineHeight = 14.sp
+        ),
+    )
+}
+
+@Composable
+fun BottomButton(
+    it : ProductModel,
+    viewModel: ProductInfoViewModel = hiltViewModel()
+){
+    val isFavorite by viewModel.isFavorite.collectAsState()
+    Row(
+        modifier = Modifier
+            .selectableGroup()
+            .windowInsetsPadding(WindowInsets.navigationBars)
+            .fillMaxWidth()
+            .padding(16.dp)
+            .background(Color.White)
+            .height(56.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // 좋아요 버튼
+        IconButton(
+            onClick = {
+                viewModel.onLikeClick()
             }
+        ) {
+            Icon(
+                painter = painterResource(
+                    id = if (isFavorite) R.drawable.favorite_fill_24px
+                    else R.drawable.favorite_24px
+                ),
+                contentDescription = "Like Button",
+                tint = if (isFavorite) MainColor else Color.LightGray,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+
+
+        if (it.productManagementAllQuantity == 0L) {
+            // 구매하기 버튼
+            LikeLionFilledButton(
+                text = "판매가 종료되었어요!",
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 10.dp),
+                contentColor = Color.White,
+                containerColor = Color.LightGray,
+                isEnabled = false
+            )
+        } else {
+            // 구매하기 버튼
+            LikeLionFilledButton(
+                text = "구매하기",
+                onClick = {
+                    viewModel.showBottomSheet.value = true
+                },
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 10.dp),
+            )
         }
     }
 }
