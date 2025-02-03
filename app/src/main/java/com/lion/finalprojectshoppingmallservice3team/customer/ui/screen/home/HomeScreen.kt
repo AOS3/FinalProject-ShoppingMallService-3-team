@@ -33,6 +33,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.lion.finalprojectshoppingmallservice3team.Component.AutoScrollingBanner
@@ -50,6 +51,7 @@ import java.util.Calendar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    windowInsetsController: WindowInsetsControllerCompat,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
 

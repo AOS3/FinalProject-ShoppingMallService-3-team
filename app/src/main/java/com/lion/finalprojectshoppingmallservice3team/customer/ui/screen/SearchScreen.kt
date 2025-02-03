@@ -109,7 +109,7 @@ fun SearchScreen(
                 // ChipGroup으로 최근 검색어 표시
                 LikeLionChipGroup(
                     modifier = Modifier.fillMaxWidth(),
-                    elements = viewModel.recentSearches.map { ChipState(it, mutableStateOf(false)) },
+                    elements = viewModel.shoppingApplication.recentSearches.map { ChipState(it, mutableStateOf(false)) },
                     chipStyle = ChipStyle(
                         selectedColor = MaterialTheme.colorScheme.primary,
                         unselectedColor = MaterialTheme.colorScheme.surface,
