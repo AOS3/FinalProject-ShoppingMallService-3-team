@@ -130,11 +130,11 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             val dummyProduct = listOf(
                 ProductVO().apply {
-                    productSellerName = "마젯"
-                    productName = "마짱이 터렛에디션 티셔츠"
-                    productPrice = 27000
+                    productSellerName = "미녕이데려오께"
+                    productName = "SD 아이돌 엽서"
+                    productPrice = 2500
                     productImages = listOf(
-                        "https://image1.marpple.co/files/u_2627081/2023/8/original/8b5410899a618e447e8eb73097eb44ddbd0e95ba1.png?q=92&w=300&f=webp&bg=f6f6f6"
+                        "https://image1.marpple.co/files/u_1880950/2022/2/original/8fd5dab60dfb5f3bc353950ea725fc18cd1f16791.png?q=92&w=300&f=webp&bg=f6f6f6"
                     )
                     productCategory = ProductCategory.PRODUCT_CATEGORY_CLOTHING.str
                     productSubCategory = ProductSubCategory.PRODUCT_SUB_CATEGORY_TSHIRT.str
@@ -148,6 +148,7 @@ class MainActivity : ComponentActivity() {
                     productCreatedAt = System.currentTimeMillis()
                     productUpdatedAt = System.currentTimeMillis()
                 },
+
                 )
             for (product in dummyProduct){
                 productService.registerProduct(product)
