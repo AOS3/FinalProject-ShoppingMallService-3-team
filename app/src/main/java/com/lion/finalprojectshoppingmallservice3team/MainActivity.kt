@@ -123,7 +123,7 @@ class MainActivity : ComponentActivity() {
         val productRepository = ProductRepository()
         productService = ProductService(productRepository)
 
-        addProductTest()
+        //addProductTest()
 
     }
     fun addProductTest(){
@@ -253,7 +253,6 @@ fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
 
                 isSplashCompleted = true
                 HomeScreen(
-                    navController,
                     windowInsetsController
                 )
             }
