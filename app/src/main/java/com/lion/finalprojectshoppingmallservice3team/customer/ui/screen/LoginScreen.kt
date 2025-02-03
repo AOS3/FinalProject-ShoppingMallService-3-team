@@ -1,4 +1,4 @@
-package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage
+package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -225,7 +225,7 @@ fun LoginScreen(loginViewModel: LoginViewModel = hiltViewModel()) {
                         .padding(start = 10.dp)
                         .clickable {
                             loginViewModel.buttonUserJoinClick()
-                    },
+                        },
                 )
             }
 
