@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -90,19 +91,25 @@ fun LikeLionProductItem(
                 shape = RoundedCornerShape(10.dp),
             ) {
                 Box (
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = if(product.productSellerName == "LZPP" || product.productName == "[PRE-ORDER] 아이돌 하루토 멀티 아크릴 스탠드 (남)" ||product.productName == "[PRE-ORDER] 아이돌 하루히 멀티 아크릴 스탠드 (여)" ){
+                        Modifier.fillMaxSize()
+                            .background(Color(0xFFFFFFFF))
+                    }else{
+                        Modifier.fillMaxSize()
+                            .background(Color(0xFFF6F6F6))
+                    },
                     contentAlignment = Alignment.Center
                 ){
                     LikeLionProductImage(
                         modifier = Modifier
                             .graphicsLayer {
                                 if(product.productManagementAllQuantity == 0L){
-                                    alpha = 0.5f
+                                    alpha = 0.3f
                                 }
                             },
                         imgUrl = product.productImages.firstOrNull() ?: "",
                         size = 200.dp,
-                        fixedImage = R.drawable.marcshop_logo
+                        fixedImage = R.drawable.marcshop_logo,
                     )
                 }
             }
@@ -156,7 +163,9 @@ fun LikeLionProductItem(
                 modifier = Modifier
                     .padding(start = 5.dp)
                     .weight(1f)
-                    .clickable { onCreatorNameClick(product) }
+                    .clickable { onCreatorNameClick(product) },
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             IconButton(
                 onClick = { onLikeClick(product) },
