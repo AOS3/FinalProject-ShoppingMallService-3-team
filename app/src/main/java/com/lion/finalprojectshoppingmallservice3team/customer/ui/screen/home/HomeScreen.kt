@@ -2,9 +2,12 @@ package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -16,10 +19,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,20 +37,29 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.lion.finalprojectshoppingmallservice3team.Component.AutoScrollingBanner
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionCircularBox
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionHomeCircleBox
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionProfileImg
 import com.lion.finalprojectshoppingmallservice3team.Component.WeeklyCreator
+import com.lion.finalprojectshoppingmallservice3team.Component.YouTubePlayer
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.home.HomeViewModel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
+import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    navController: NavController,
     homeViewModel: HomeViewModel = hiltViewModel()
 ) {
-    val circularBoxItems = homeViewModel.circularBoxItems
+
+    // 현재 월과 주 계산
+    val calendar = Calendar.getInstance()
+    val currentMonth = calendar.get(Calendar.MONTH) + 1 // Calendar.MONTH는 0부터 시작하므로 +1
+    val currentWeek = calendar.get(Calendar.WEEK_OF_MONTH)
+
+    val buttonItems = homeViewModel.buttonItems
+
 
 
     Scaffold(
@@ -48,19 +67,24 @@ fun HomeScreen(
             TopAppBar(
                 title = {
                     Text(
-                    text = "Home",
-                    fontWeight = FontWeight.Bold
-                )},
+                        text = homeViewModel.topAppBarTitle.value,
+                        fontWeight = FontWeight.Bold
+                    )
+                },
                 actions = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
+                        color = Color.Transparent,
+                        iconBackColor = Color.Transparent,
                         iconButtonOnClick = {
-                            navController.navigate("search")
+                            homeViewModel.searchOnClick()
                         },
                         borderNull = true,
                     )
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.baseline_shopping_cart_24),
+                        color = Color.Transparent,
+                        iconBackColor = Color.Transparent,
                         iconButtonOnClick = {
 
                         },
@@ -70,7 +94,13 @@ fun HomeScreen(
             )
         },
 
-    ) { paddingValues ->
+        ) { paddingValues ->
+        // LocalContext.current는 컴포저블 내부에서 호출
+        val context = LocalContext.current
+        val screenHeightPx = remember {
+            context.resources.displayMetrics.heightPixels.toFloat()
+        }
+
         Column(
             modifier = Modifier
                 .padding(paddingValues)
@@ -80,7 +110,9 @@ fun HomeScreen(
             // AutoScrollingBanner 호출
             AutoScrollingBanner(
                 bannerImages = listOf(
-                    R.drawable.marcshop_logo
+                    R.drawable.marcshop_logo,
+                    "https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg",
+                    R.drawable.product
                 ),
             )
 
@@ -88,19 +120,13 @@ fun HomeScreen(
 
             LazyRow(
                 modifier = Modifier.padding(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                items(circularBoxItems) { item ->
-                    LikeLionCircularBox(
-                        imgUrl = item.imgUrl,
-                        text = item.text,
-                        iconTint = Color.White,
-                        profileBack = MainColor,
-                        modifier = Modifier
-                            .clickable {
-                            handleCircularBoxClick(item.targetAction, navController)
-                        }
-                    )
+                items(buttonItems) { item ->
+                    LikeLionHomeCircleBox(item) { route ->
+                        homeViewModel.shoppingApplication.navHostController.navigate(route)
+                    }
                 }
             }
 
@@ -111,7 +137,8 @@ fun HomeScreen(
                 modifier = Modifier.padding(horizontal = 16.dp)
             ) {
                 Text(
-                    text = "그룹이름"
+                    text = "그룹이름",
+                    fontWeight = FontWeight.Bold
                 )
             }
 
@@ -136,6 +163,50 @@ fun HomeScreen(
             Column(
 
             ) {
+                // 상단 텍스트 (동적으로 월과 주 표시)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = "${currentMonth}월 ${currentWeek}주차 인기 크리에이터 랭킹",
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            color = Color.Gray,
+                        )
+                    )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            modifier = Modifier.padding(start = 8.dp),
+                            text = "WEEKLY RANKING",
+                            style = TextStyle(
+                                fontSize = 26.sp,
+                                color = Color.Black,
+                                fontWeight = FontWeight.Bold
+                            )
+                        )
+
+                        Spacer(modifier = Modifier.weight(1f)) // 텍스트를 오른쪽으로 밀기
+
+                        Text(
+                            text = "See More",
+                            style = TextStyle(fontSize = 12.sp, color = Color.Gray),
+                            modifier = Modifier
+                                .padding(end = 16.dp)
+                                .clickable {
+                                    homeViewModel.seeMoreOnClick()
+                                } // 클릭 이벤트 처리
+                        )
+                    }
+                }
                 WeeklyCreator(
                     rank = "1",
                     title = "허블사무소",
@@ -146,52 +217,61 @@ fun HomeScreen(
                         "https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg",
                         "https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg",
                         "https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg"
-                    )
+                    ),
                 )
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Column {
+            Column(
+            ) {
                 Text(
-                    text = "최애는 지금 영업 중"
+                    text = "최애는 지금 영업 중",
+                    modifier = Modifier.padding(horizontal = 16.dp)
                 )
                 Text(
                     text = "CAST ON-AIR",
                     fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+
                 )
 
                 LikeLionProfileImg(
                     imgUrl = "",
-                    modifier = Modifier.padding(5.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 5.dp),
                     iconTint = Color.White,
                     profileBack = MainColor,
                 )
-//                    YouTubePlayer(
-//                        videoId = "911eCyHPlHs",
-//                        modifier = Modifier
-//                            .padding(vertical = (16.dp))
-//                            .fillMaxSize()
-//                            .height(250.dp),
-//                    )
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-        }
-    }
-}
 
-// 클릭 이벤트 처리 함수
-private fun handleCircularBoxClick(targetAction: String, navController: NavController) {
-    when (targetAction) {
-        "action1" -> navController.navigate("search")
-        "action2" -> navController.navigate("screen2")
-        "action3" -> navController.navigate("screen3")
-        "action4" -> navController.navigate("screen4")
-        "action5" -> navController.navigate("screen5")
-        else -> {
-            // 기본 동작 또는 에러 처리
+                // YouTubePlayer 가시성 체크 및 동작 제어
+                val isVisible = remember { mutableStateOf(false) }
+
+                Box(
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                        .fillMaxWidth()
+                        .height(250.dp)
+                        .onGloballyPositioned { coordinates ->
+                            val positionY = coordinates.positionInWindow().y
+                            val heightPx = coordinates.size.height.toFloat()
+
+                            // 화면에 최소 30% 이상 보이는 경우를 기준으로 가시성 판단
+                            isVisible.value =
+                                positionY + heightPx * 0.3f > 0 && positionY < screenHeightPx * 0.7f
+                        }
+                ) {
+                    YouTubePlayer(
+                        videoId = "911eCyHPlHs",
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp),
+                        isPlaying = isVisible.value // 가시성에 따라 재생/일시정지 제어
+                    )
+                }
+            }
         }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 

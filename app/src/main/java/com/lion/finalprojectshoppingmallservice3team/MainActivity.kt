@@ -25,11 +25,16 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.lion.finalprojectshoppingmallservice3team.Seller.ui.screen.Item.ItemScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.home.HomeScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchFailScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchSuccessScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplySecondScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyThirdScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorRankingScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryListScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryReadScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryWriteScreen
@@ -78,8 +83,8 @@ fun ShoppingMain() {
     val shoppingApplication = LocalContext.current.applicationContext as ShoppingApplication
     shoppingApplication.navHostController = navController
     NavHost(
-        navController = navController,
-        startDestination = "splash",
+        navController = navController, //ProductMaking
+        startDestination = "splash",  //splash에서 잠시 바꿈 테스트 용
         enterTransition = {
             if (targetState.destination.route == "inquiryWrite" || targetState.destination.route == "modifyUserPw") {
                 fadeIn(
@@ -132,7 +137,7 @@ fun ShoppingMain() {
     ) {
         composable("splash") { SplashScreen(navController) }
         composable("login") { LoginScreen() }
-        composable("home") { HomeScreen(navController) }
+        composable("home") { HomeScreen() }
         composable("search") { SearchScreen(navController) }
         composable("searchFail") { SearchFailScreen(navController) }
         composable("searchSuccess") { SearchSuccessScreen(navController) }
@@ -148,6 +153,14 @@ fun ShoppingMain() {
         composable("inquiryList") { InquiryListScreen() }
         composable("inquiryRead") { InquiryReadScreen() }
         composable("inquiryWrite") { InquiryWriteScreen() }
+
+        // 크리에이터 신청 화면
+        composable("creatorApply") {CreatorApplyScreen()}
+        composable("creatorApplySecond") { CreatorApplySecondScreen()}
+        composable("creatorApplyThird") { CreatorApplyThirdScreen()}
+
+        // 크리에이터 랭킹 화면
+        composable("creatorRanking") { CreatorRankingScreen() }
 
         // shop 화면
         composable( "shop") { ShopScreen() }
@@ -205,6 +218,13 @@ fun ShoppingMain() {
             },
         ) { MyFavoriteBottomScreen() }
         composable("CreatorShop"){ CreatorShopScreen() }
+
+
+/*********************************************Seller******************************************/
+
+        // Item 마크샵 상품 만들기
+        composable("ProductMaking"){ ItemScreen() }
+
     }
 }
 
