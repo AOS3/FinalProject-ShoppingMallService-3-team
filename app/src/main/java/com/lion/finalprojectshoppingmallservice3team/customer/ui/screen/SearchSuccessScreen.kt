@@ -39,10 +39,10 @@ fun SearchSuccessScreen(
                         icon = ImageVector.vectorResource(id = R.drawable.arrow_back_24px),
                         color = Color.Transparent,
                         iconBackColor = Color.Transparent,
-                        padding = 10.dp,
                         iconButtonOnClick = {
                             navController.popBackStack()
                         },
+                        borderNull = true,
                     )
                 },
                 actions = {
@@ -50,21 +50,24 @@ fun SearchSuccessScreen(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
                         color = Color.Transparent,
                         iconBackColor = Color.Transparent,
-                        padding = 10.dp,
                         iconButtonOnClick = {
 //                            navController.navigate("search")
                         },
+                        borderNull = true,
                     )
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.baseline_shopping_cart_24),
                         color = Color.Transparent,
                         iconBackColor = Color.Transparent,
-                        padding = 10.dp,
+                        borderNull = true,
                     )
                 }
             )
+
         }
-    ) { paddingValues ->
+        )
+    { paddingValues ->
+
         Column(
             modifier = Modifier.padding(paddingValues)
         ) {

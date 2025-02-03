@@ -72,8 +72,8 @@ fun AutoScrollingBanner(
                             Image(
                                 bitmap = item.asImageBitmap(),
                                 contentDescription = "Banner $page",
-                                modifier = Modifier.fillMaxSize(),
-                                contentScale = ContentScale.FillBounds
+                                modifier = Modifier.size(300.dp),
+                                contentScale = ContentScale.Crop
                             )
                         }
 
@@ -81,8 +81,8 @@ fun AutoScrollingBanner(
                             Image(
                                 painter = painterResource(id = item),
                                 contentDescription = "Banner $page",
-                                modifier = Modifier.fillMaxSize(),
-                                contentScale = ContentScale.FillBounds
+                                modifier = Modifier.size(300.dp),
+                                contentScale = ContentScale.Crop
                             )
                         }
                     }

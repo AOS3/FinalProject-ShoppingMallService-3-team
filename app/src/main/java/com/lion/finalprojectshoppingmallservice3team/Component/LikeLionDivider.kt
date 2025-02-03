@@ -14,8 +14,7 @@ fun LikeLionDivider(
     paddingTop:Dp = 0.dp,
     color:Color = Color.LightGray,
     thickness:Dp = 1.dp,
-    modifier: Modifier = Modifier
-
+    modifier: Modifier = Modifier // modifire 추가
 ) {
     HorizontalDivider(
         modifier = modifier.fillMaxWidth().padding(top = paddingTop),
