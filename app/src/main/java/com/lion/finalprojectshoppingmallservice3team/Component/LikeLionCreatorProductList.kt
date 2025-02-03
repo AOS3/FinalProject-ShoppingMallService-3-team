@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.lion.finalprojectshoppingmallservice3team.R
+import com.lion.finalprojectshoppingmallservice3team.customer.data.model.ProductModel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 
 
@@ -41,10 +42,10 @@ import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 
 @Composable
 fun LikeLionCreatorProductList(
-    productList: List<Product>,
-    onCreatorNameClick: (Product) -> Unit,
-    onLikeClick: (Product) -> Unit,
-    onItemClick: (Product) -> Unit,
+    productList: List<ProductModel>,
+    onCreatorNameClick: (ProductModel) -> Unit,
+    onLikeClick: (ProductModel) -> Unit,
+    onItemClick: (ProductModel) -> Unit,
     rows: Int = 1,
     modifier: Modifier = Modifier
 ) {
