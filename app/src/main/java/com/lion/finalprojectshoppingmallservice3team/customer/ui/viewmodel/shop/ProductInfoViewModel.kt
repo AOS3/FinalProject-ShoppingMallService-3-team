@@ -1,9 +1,18 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.shop
 
 import android.content.Context
+import android.provider.SyncStateContract.Helpers.update
 import android.widget.Toast
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bumptech.glide.Glide.init
 import com.lion.finalprojectshoppingmallservice3team.ShoppingApplication
 import com.lion.finalprojectshoppingmallservice3team.customer.data.model.ProductModel
 import com.lion.finalprojectshoppingmallservice3team.customer.data.service.ProductService
@@ -21,6 +30,25 @@ class ProductInfoViewModel @Inject constructor(
 ) : ViewModel() {
 
     val shoppingApplication = context as ShoppingApplication
+
+    val uploadProduct :MutableLiveData<ProductModel?> = MutableLiveData(null)
+
+    val update = mutableStateOf(false)
+    var showBottomSheet = mutableStateOf(false)
+
+    val observer = Observer<ProductModel?>{
+        update.value = uploadProduct.value != null
+    }
+
+    init {
+        uploadProduct.observeForever(observer)
+    }
+
+    override fun onCleared() {
+        uploadProduct.value = null
+        uploadProduct.removeObserver(observer)
+        super.onCleared()
+    }
 
     // 뒤로가기 버튼
     fun navigationButtonClick(){
@@ -56,16 +84,23 @@ class ProductInfoViewModel @Inject constructor(
     }
 
 
-    fun gettingProductData(productDocumentId: String, onProductLoaded: (ProductModel) -> Unit) {
+    fun gettingProductData(productDocumentId: String) {
         // 실제 데이터베이스에서 상품 정보를 가져오는 로직
         viewModelScope.launch {
-            val product = productService.selectProductDataOneById(productDocumentId)
+            val newProduct = productService.selectProductDataOneById(productDocumentId)
             // 상품이 존재하면 콜백으로 전달
-            if (product != null) {
-                onProductLoaded(product)
+            if (newProduct != null) {
+                uploadProduct.value = newProduct
             } else {
 
             }
         }
     }
+
+    fun getProduct() =
+        if (update.value)
+            uploadProduct.value!!
+        else
+            ProductModel()
 }
+

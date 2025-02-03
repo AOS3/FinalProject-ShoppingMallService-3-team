@@ -221,7 +221,6 @@ fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
 
                 isSplashCompleted = true
                 HomeScreen(
-                    navController,
                     windowInsetsController
                 )
             }

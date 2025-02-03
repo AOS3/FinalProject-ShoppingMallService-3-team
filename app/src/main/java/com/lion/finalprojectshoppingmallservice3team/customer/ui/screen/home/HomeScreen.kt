@@ -86,6 +86,7 @@ fun HomeScreen(
                 actions = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
+                        color = Color.Transparent,
                         iconButtonOnClick = {
                             homeViewModel.searchOnClick()
                         },
@@ -275,30 +276,16 @@ fun HomeScreen(
                         videoId = "911eCyHPlHs",
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(horizontal = 16.dp),
+                            .padding(start = 16.dp, end = 16.dp),
                         isPlaying = isVisible.value // 가시성에 따라 재생/일시정지 제어
                     )
                 }
             }
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-    }
-}
-
-// 클릭 이벤트 처리 함수
-private fun handleCircularBoxClick(targetAction: String, navController: NavController) {
-    when (targetAction) {
-        "action1" -> navController.navigate("search")
-        "action2" -> navController.navigate("screen2")
-        "action3" -> navController.navigate("screen3")
-        "action4" -> navController.navigate("screen4")
-        "action5" -> navController.navigate("screen5")
-        else -> {
-            // 기본 동작 또는 에러 처리
+            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(60.dp))
         }
     }
 }
-
 
 
 //@Preview(showBackground = true, showSystemUi = true)
