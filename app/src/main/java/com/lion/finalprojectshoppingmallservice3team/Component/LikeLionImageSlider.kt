@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.lion.finalprojectshoppingmallservice3team.R
 
@@ -34,7 +35,7 @@ fun LikeLionImageSlider(imageUrls: List<String>) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color.LightGray)
+                    .background(Color(0xFFF6F6F6))
             ) {
                 LikeLionProductImage(
                     modifier = Modifier.align(Alignment.Center),
@@ -44,7 +45,8 @@ fun LikeLionImageSlider(imageUrls: List<String>) {
                         "" // 빈 URL 처리
                     },
                     size = 300.dp,
-                    fixedImage = R.drawable.marcshop_logo // 기본 이미지
+                    fixedImage = R.drawable.marcshop_logo, // 기본 이미지
+                    contentScale = ContentScale.Crop
                 )
             }
         }
