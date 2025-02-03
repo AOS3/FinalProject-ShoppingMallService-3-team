@@ -41,6 +41,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.lion.finalprojectshoppingmallservice3team.Seller.ui.screen.Item.ItemScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.home.HomeScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginScreen
 import androidx.navigation.navArgument
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBottomNavItems
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBottomNavigation
@@ -52,6 +55,14 @@ import com.lion.finalprojectshoppingmallservice3team.customer.data.vo.ProductVO
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchFailScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchSuccessScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplySecondScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyThirdScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorRankingScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryListScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryReadScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryWriteScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginMyPageScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserSettingScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplySecondScreen
@@ -112,11 +123,9 @@ class MainActivity : ComponentActivity() {
         productService = ProductService(productRepository)
 
 
+
     }
 }
-
-
-
 
 @Composable
 fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
@@ -302,6 +311,13 @@ fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
             composable("inquiryProductRead") { InquiryProductReadScreen() }
             // 취소/환불 FAQ
             composable("cancelRefundFAQ") { CancelRefundFAQScreen() }
+            // 크리에이터 신청 화면
+            composable("creatorApply") {CreatorApplyScreen()}
+            composable("creatorApplySecond") { CreatorApplySecondScreen()}
+            composable("creatorApplyThird") { CreatorApplyThirdScreen()}
+
+            // 크리에이터 랭킹 화면
+            composable("creatorRanking") { CreatorRankingScreen() }
 
             composable("myFavoriteGroup") { MyFavoriteGroupScreen() }
             composable("MyFavoriteNewGroup") { MyFavoriteNewGroupScreen() }
