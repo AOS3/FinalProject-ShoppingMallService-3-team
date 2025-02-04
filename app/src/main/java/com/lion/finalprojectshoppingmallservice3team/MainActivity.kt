@@ -74,6 +74,11 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.I
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryWriteScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginMyPageScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryListScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryReadScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryWriteScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginMyPageScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LogoutMyPageScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.ModifyUserPwScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.MyPostsScreen
@@ -113,7 +118,7 @@ class MainActivity : ComponentActivity() {
             }
         }
         val productRepository = ProductRepository()
-        val productService = ProductService(productRepository)
+        productService = ProductService(productRepository)
 
         //addProductTest()
 
