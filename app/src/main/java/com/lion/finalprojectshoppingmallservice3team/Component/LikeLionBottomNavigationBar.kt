@@ -112,14 +112,14 @@ fun LikeLionBottomNavigation(
                     label = {
                         Canvas(
                             modifier = Modifier
-                                .size(55.dp,24.dp)
+                                .size(55.dp,21.dp)
                                 .padding(bottom = 13.dp)
-                                .offset(x = (7).dp, y = (3).dp)
+                                .offset(x = (7).dp, y = (4.3).dp)
                                 .clip(RoundedCornerShape(200.dp)),
                             onDraw = {
                                 drawOval(
                                     color = if (selected) Color.Transparent.copy(0.65f) else Color.Transparent.copy(0.3f),
-                                    topLeft = Offset((-5).dp.toPx(), 2.dp.toPx()),
+                                    topLeft = Offset((-5).dp.toPx(), 0.dp.toPx()),
                                     size = Size(65.dp.toPx(), 10.dp.toPx()),
                                 )
                             }
