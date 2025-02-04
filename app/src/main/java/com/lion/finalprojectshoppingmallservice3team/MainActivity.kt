@@ -57,12 +57,6 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserSett
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplySecondScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyThirdScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorRankingScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryListScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryReadScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryWriteScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginMyPageScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserSettingScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorListScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorMainScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorNoticeScreen
@@ -74,6 +68,11 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.myfavori
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.myfavorite.MyFavoriteNewGroupScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.myfavorite.MyFavoriteScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.CancelRefundFAQScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryListScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryReadScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryWriteScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginMyPageScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LogoutMyPageScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.ModifyUserPwScreen
@@ -96,6 +95,7 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    private lateinit var productService: ProductService
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -117,6 +117,34 @@ class MainActivity : ComponentActivity() {
 
         //addProductTest()
 
+    }
+    fun addProductTest(){
+        lifecycleScope.launch {
+            val dummyProduct = listOf(
+                ProductVO().apply {
+                    productSellerName = "싸이코드 연이"
+                    productName = "연이 연극회 포토카드 I"
+                    productPrice = 7500
+                    productImages = listOf(
+                        "https://image1.marpple.co/files/u_2283949/2024/12/original/c9423a636433799ef63916c76fc95cd75e1859f01.png?q=92&w=600&f=webp&bg=f6f6f6"
+                    )
+                    productCategory = ProductCategory.PRODUCT_CATEGORY_GOODS.str
+                    productSubCategory = ProductSubCategory.PRODUCT_SUB_CATEGORY_PHOTO_CARD.str
+                    productLimitedSalesPeriod = "한정"
+                    productManagementAllQuantity = 0L
+                    productInfoTitle = "상품 상세 제목"
+                    productInfoContent = "상품 상세 내용"
+                    productReviewCount = 10L
+                    productRating = 5.0
+                    productSalesCount = 150L
+                    productCreatedAt = System.currentTimeMillis()
+                    productUpdatedAt = System.currentTimeMillis()
+                },
+                )
+            for (product in dummyProduct){
+                productService.registerProduct(product)
+            }
+        }
     }
 }
 
