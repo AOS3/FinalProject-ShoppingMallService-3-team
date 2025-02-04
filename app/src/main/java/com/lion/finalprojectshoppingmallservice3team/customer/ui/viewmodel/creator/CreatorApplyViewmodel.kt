@@ -66,6 +66,83 @@ class CreatorApplyViewmodel @Inject constructor(
 
 
 
+
+        if (companyName.value == "샌드박스"
+            || companyName.value == "미츄"
+            || companyName.value == "패러블") {
+            creatorModel.creatorComPosition = "사업자"
+        } else {
+            creatorModel.creatorComPosition = "개인"
+        }
+
+        creatorModel.creatorInquery = ""
+        creatorModel.creatorReturnNumber = ""
+        creatorModel.creatorfcmToken = ""
+        creatorModel.creatorId = shoppingApplication.loginCustomerModel.customerUserId
+        creatorModel.creatorUserName = shoppingApplication.loginCustomerModel.customerUserName
+        creatorModel.creatorPortfolioSite = portfolioSite.value
+        creatorModel.creatorUserAdvAgree = false
+//        customerModel.isAdult = checkBoxUserJoinInfo1Value.value
+//        customerModel.useAgree = checkBoxUserJoinInfo2Value.value
+        if (checkboxPersonalInfoAgree.value == true){
+            creatorModel.creatorPersonInfoAgree = "동의"
+        } else {
+            creatorModel.creatorPersonInfoAgree = "미동의"
+        }
+        creatorModel.creatorUserCreatedAt = System.currentTimeMillis()
+        creatorModel.creatorUserState = CreatorState.Creator_STATE_NORMAL
+
+        // 저장한다.
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val imageCompanyPaths = imageBitmapCompanyList.map { bitmap -> saveBitmapToFile(bitmap) } // Bitmap → 파일 변환
+                val uploadedCompanyUrls = customerService.uploadImages(imageCompanyPaths) // Firebase Storage 업로드
+                creatorModel.creatorCompanyFile = uploadedCompanyUrls.joinToString(",") // Firestore에 저장할 URL 리스트
+
+                val imagePortfolioPaths = imageBitmapPortfolioList.map { bitmap -> saveBitmapToFile(bitmap) } // Bitmap → 파일 변환
+                val uploadedPortfolioUrls = customerService.uploadImages(imagePortfolioPaths) // Firebase Storage 업로드
+                creatorModel.creatorPortfolioFile = uploadedPortfolioUrls.joinToString(",") // Firestore에 저장할 URL 리스트
+
+                val work1 = async(Dispatchers.IO) {
+                    creatorService.addCreatorData(creatorModel)
+                }
+                work1.await()
+
+                val shopModel = ShopModel().apply {
+                    shopName = creatorShopName.value
+                    shopDomainName = domainName.value
+                    shopCreatorName = shoppingApplication.loginCustomerModel.customerUserName
+                    shopBrandDescription = brandDescription.value
+                    shopComposition = creatorModel.creatorComPosition == "사업자"
+                    shopCompanyName = companyName.value
+                    shopBestSns = bestSns.value
+                    shopCreatedAt = System.currentTimeMillis()
+                    shopCreatorId = shoppingApplication.loginCustomerModel.customerUserId
+                    shopState = ShopState.Shop_STATE_NORMAL
+                }
+
+                val work2 = async(Dispatchers.IO) {
+                    shopService.addShopData(shopModel)
+                }
+                work2.await()
+
+                Toast.makeText(shoppingApplication, "크리에이터 신청이 완료되었습니다", Toast.LENGTH_SHORT).show()
+                shoppingApplication.navHostController.popBackStack("loginMyPage", inclusive = true)
+                shoppingApplication.navHostController.navigate("loginMyPage")
+            } catch (e: Exception) {
+                Toast.makeText(shoppingApplication, "이미지 업로드 실패: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    fun saveBitmapToFile(bitmap: Bitmap): String {
+        val file = File(shoppingApplication.filesDir, "image_${System.currentTimeMillis()}.jpg")
+        val outputStream = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
+        outputStream.flush()
+        outputStream.close()
+        return file.absolutePath
+
     fun onFileUpload() {
         fileUploaded = true
     }

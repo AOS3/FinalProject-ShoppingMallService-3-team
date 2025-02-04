@@ -9,6 +9,8 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lion.finalprojectshoppingmallservice3team.Component.ChipState
@@ -101,7 +103,6 @@ class ShopViewModel @Inject constructor(
         selectedCategory.value = category
         selectedTabs.value = categoryTabs[category] ?: listOf("전체 상품")
         selectedTabIndex.value = 0
-        //filterProducts()
         loadProductList()
     }
 
@@ -130,15 +131,17 @@ class ShopViewModel @Inject constructor(
     //******************상품***********
 
     //**************** 상품 필터링 *********************
-    private val _productList = mutableStateOf(mutableListOf<ProductModel>())
+    private val _productList = MutableLiveData(listOf<ProductModel>())
     private val _filteredProductList = MutableStateFlow(listOf<ProductModel>())
-    val filteredProductList: StateFlow<List<ProductModel>> = _filteredProductList.asStateFlow()
+    val filteredProductList: StateFlow<List<ProductModel>> = _filteredProductList
+
 
     // 상품 목록 로드
     fun loadProductList() {
 //        _productList.value = Storage.products
 //        filterProducts()
         viewModelScope.launch {
+            _filteredProductList.value = emptyList<ProductModel>()
             val productList = productService.selectAllProductData(selectedCategory.value)
             _productList.value = productList
             filterProducts()
@@ -150,7 +153,7 @@ class ShopViewModel @Inject constructor(
         val subCategory = selectedTabs.value[selectedTabIndex.value]
 
         // 상품 필터링 로직
-        var filteredList = _productList.value.filter {
+        var filteredList = _productList.value!!.filter {
             // '전체 상품' 카테고리일 때는 모든 상품을 포함
             if (category == ProductCategory.PRODUCT_CATEGORY_ALL.str) {
                 true // 전체 상품 카테고리일 땐 모든 상품을 포함
