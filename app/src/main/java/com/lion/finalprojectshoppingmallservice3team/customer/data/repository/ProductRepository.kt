@@ -50,7 +50,6 @@ class ProductRepository {
         return resultList
     }
 
-
     // 모든 상품 데이터를 가져오는 메서드
     suspend fun selectCreatorProductData(creatorId: String): MutableList<Map<String, *>> {
         val firestore = FirebaseFirestore.getInstance()
@@ -71,6 +70,7 @@ class ProductRepository {
             resultList.add(map)
         }
         return resultList
+    }
 
     // 누락데이터 입력
     suspend fun updateMissingField(productName: String, productImages:List<String>) {

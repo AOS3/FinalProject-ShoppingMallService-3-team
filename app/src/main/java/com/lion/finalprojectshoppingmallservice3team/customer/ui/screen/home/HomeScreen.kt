@@ -37,6 +37,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -68,7 +69,9 @@ fun HomeScreen(
 
     val buttonItems = homeViewModel.buttonItems
 
-
+    LaunchedEffect(windowInsetsController) {
+        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+    }
 
     Scaffold(
         topBar = {
