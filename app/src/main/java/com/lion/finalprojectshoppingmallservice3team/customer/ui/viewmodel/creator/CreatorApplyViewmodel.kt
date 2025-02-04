@@ -1,24 +1,44 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.creator
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.widget.Toast
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.state.ToggleableState
 import androidx.lifecycle.ViewModel
 import com.lion.finalprojectshoppingmallservice3team.ShoppingApplication
+import com.lion.finalprojectshoppingmallservice3team.creator.data.model.CreatorModel
+import com.lion.finalprojectshoppingmallservice3team.creator.data.model.ShopModel
+import com.lion.finalprojectshoppingmallservice3team.creator.data.service.CreatorService
+import com.lion.finalprojectshoppingmallservice3team.creator.data.service.ShopService
+import com.lion.finalprojectshoppingmallservice3team.creator.data.util.CreatorState
+import com.lion.finalprojectshoppingmallservice3team.creator.data.util.ShopState
+import com.lion.finalprojectshoppingmallservice3team.customer.data.service.CustomerService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 import javax.inject.Inject
 
 @HiltViewModel
 class CreatorApplyViewmodel @Inject constructor(
-    @ApplicationContext context: Context
+    @ApplicationContext context: Context,
+    val creatorService: CreatorService,
+    val customerService: CustomerService,
+    val shopService: ShopService
 ): ViewModel(){
 
     val shoppingApplication = context as ShoppingApplication
 
     // 샵 이름
-    var shopName by mutableStateOf("")
+    var creatorShopName by mutableStateOf("")
     // 도메인 명
     var domainName by mutableStateOf("")
     // 본인 또는 브랜드 소개
@@ -27,6 +47,23 @@ class CreatorApplyViewmodel @Inject constructor(
     var companyName by mutableStateOf("")
     // 회사 서류 제출
     var fileUploaded by mutableStateOf(false)
+    // 연락처
+    val creatorPhoneNumber = mutableStateOf("")
+    // 대표SNS
+    val bestSns = mutableStateOf("")
+    // 포트폴리오 사이트
+    val portfolioSite = mutableStateOf("")
+    // 전체 동의
+    val triCheckboxAllValue = mutableStateOf(ToggleableState.Off)
+    // 개인정보 동의
+    val checkboxPersonalInfoAgree = mutableStateOf(false)
+    // 여러 개의 이미지를 저장하는 상태 변수
+    val imageBitmapCompanyList = mutableStateListOf<Bitmap>()
+    val imageCompanyUriList = mutableStateListOf<String>()
+
+    // 여러 개의 이미지를 저장하는 상태 변수
+    val imageBitmapPortfolioList = mutableStateListOf<Bitmap>()
+    val imagePortfolioUriList = mutableStateListOf<String>()
 
     // 첫번쨰 화면
     fun navigationFirstIconOnClick(){
@@ -65,11 +102,28 @@ class CreatorApplyViewmodel @Inject constructor(
     }
 
 
+    fun modifyIsCreator() {
+        shoppingApplication.loginCustomerModel.isCreator = true
 
+        // 수정한다.
+        CoroutineScope(Dispatchers.Main).launch {
+            val work1 = async(Dispatchers.IO) {
+                customerService.updateIsCreatorData(shoppingApplication.loginCustomerModel)
+            }
+            work1.join()
+        }
+    }
+    // 가입 완료 버튼을 눌렀을 때
+    fun buttonSubmitOnClick(){
 
-        if (companyName.value == "샌드박스"
-            || companyName.value == "미츄"
-            || companyName.value == "패러블") {
+        modifyIsCreator()
+
+        // 저장할 데이터를 추출한다.
+        val creatorModel = CreatorModel()
+
+        if (companyName == "샌드박스"
+            || companyName == "미츄"
+            || companyName == "패러블") {
             creatorModel.creatorComPosition = "사업자"
         } else {
             creatorModel.creatorComPosition = "개인"
@@ -109,12 +163,12 @@ class CreatorApplyViewmodel @Inject constructor(
                 work1.await()
 
                 val shopModel = ShopModel().apply {
-                    shopName = creatorShopName.value
-                    shopDomainName = domainName.value
+                    shopName = creatorShopName
+                    shopDomainName = domainName
                     shopCreatorName = shoppingApplication.loginCustomerModel.customerUserName
-                    shopBrandDescription = brandDescription.value
+                    shopBrandDescription = brandDescription
                     shopComposition = creatorModel.creatorComPosition == "사업자"
-                    shopCompanyName = companyName.value
+                    shopCompanyName = companyName
                     shopBestSns = bestSns.value
                     shopCreatedAt = System.currentTimeMillis()
                     shopCreatorId = shoppingApplication.loginCustomerModel.customerUserId
@@ -142,6 +196,7 @@ class CreatorApplyViewmodel @Inject constructor(
         outputStream.flush()
         outputStream.close()
         return file.absolutePath
+    }
 
     fun onFileUpload() {
         fileUploaded = true
