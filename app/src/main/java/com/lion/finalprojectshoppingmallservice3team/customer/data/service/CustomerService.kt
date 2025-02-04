@@ -1,8 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.data.service
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.net.Uri
 import com.google.firebase.firestore.FirebaseFirestore
 import com.kakao.sdk.user.model.User
 import com.lion.finalprojectshoppingmallservice3team.customer.data.model.CustomerModel
@@ -10,7 +8,6 @@ import com.lion.finalprojectshoppingmallservice3team.customer.data.repository.Cu
 import com.lion.finalprojectshoppingmallservice3team.customer.data.util.LoginResult
 import com.lion.finalprojectshoppingmallservice3team.customer.data.util.UserState
 import com.lion.finalprojectshoppingmallservice3team.customer.data.vo.CustomerVO
-import java.io.File
 
 class CustomerService(val customerRepository: CustomerRepository) {
     // 사용자 정보를 추가하는 메서드
