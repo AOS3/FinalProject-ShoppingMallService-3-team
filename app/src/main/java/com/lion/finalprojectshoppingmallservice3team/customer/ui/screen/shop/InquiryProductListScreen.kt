@@ -27,7 +27,7 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.shop.
 @Composable
 fun InquiryProductListScreen (
     inquiryProductListViewModel: InquiryProductListViewModel = hiltViewModel(),
-    ){
+){
 
     // 샘플 데이터
     val inquiryList = remember {
