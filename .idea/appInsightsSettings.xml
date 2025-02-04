@@ -9,9 +9,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.lion.finalprojectshoppingmallservice3team" />
-                  <option name="mobileSdkAppId" value="1:67862628057:android:6caddb0af7982dd42420c8" />
-                  <option name="projectId" value="likelion-9a591" />
-                  <option name="projectNumber" value="67862628057" />
+                  <option name="mobileSdkAppId" value="1:389261570917:android:017787b452b65f067fa78c" />
+                  <option name="projectId" value="shoppingmall-7dd46" />
+                  <option name="projectNumber" value="389261570917" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

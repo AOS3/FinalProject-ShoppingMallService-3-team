@@ -23,10 +23,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,22 +56,27 @@ import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButto
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionSearchBar
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.R
+import com.lion.finalprojectshoppingmallservice3team.creator.data.model.ShopModel
 import com.lion.finalprojectshoppingmallservice3team.customer.data.model.CustomerModel
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.creator.CreatorMainViewModel
 import me.onebone.toolbar.CollapsingToolbarScaffold
 import me.onebone.toolbar.CollapsingToolbarScaffoldState
 import me.onebone.toolbar.ScrollStrategy
 import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
+import java.util.stream.Collectors.toList
 
 @Composable
 fun CreatorMainScreen(viewModel: CreatorMainViewModel = hiltViewModel()) {
     val state = rememberCollapsingToolbarScaffoldState()
-    var list: MutableList<CustomerModel> = MutableList(10, { CustomerModel() })
+
     var enabled by remember { mutableStateOf(true) }
     val defaultPadding = 20.dp
     var titlePadding by remember { mutableStateOf(defaultPadding) }
     MaterialTheme.colorScheme.primary
     var selectedTabIndex by remember { mutableStateOf(0) }
+    Log.d("st","${state.offsetY}")
+    titlePadding = collapsingState(state,defaultPadding)
+
     Scaffold(
         modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom))
     ) {
@@ -124,27 +132,10 @@ fun CreatorMainScreen(viewModel: CreatorMainViewModel = hiltViewModel()) {
                     }
                 }
             ) {
-                Log.d("st","${state.offsetY}")
-                titlePadding = collapsingState(state,defaultPadding)
 
-                // 탭에 따른 화면 변경
-                when (selectedTabIndex) {
-                    0 -> // 크리에이터 리스트 표시
-                    {
 
-                        LikeLionBigUserListView(
-                            list,
-                            modifier = Modifier.padding(top =
-                            if (viewModel.companyEnabled.value) 130.dp
-                            else 90.dp),
-                            entryPaddingValues = 40.dp
-                        ) // 크리에이터 목록 화면
-                    }
-
-                    //1 -> MyCheerScreen()  // 응원하기 화면
-                }
-                Box {
-                    Column {
+                Box{
+                    Column{
                         Spacer(
                             Modifier
                                 .fillMaxWidth()
@@ -161,122 +152,132 @@ fun CreatorMainScreen(viewModel: CreatorMainViewModel = hiltViewModel()) {
                                 }
                             )
                         }
-                        if (viewModel.companyEnabled.value && viewModel.companyCurrent.value == ""){
-                            Column (
-                               modifier = Modifier
-                                   .fillMaxWidth()
-                                   .background(Color.White)
-                            )  {
-                                viewModel.companyList.addAll(List(100){"항목"})
-                                // 검색 뷰
+                        if (viewModel.current.value == "기업") {
+                            if (viewModel.companySearch.value == "") {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .background(Color.White)
+                                ) {
+                                    //viewModel.companyList.addAll(List(100) { "항목" })
+                                    // 검색 뷰
 
-                                LikeLionSearchBar(
-                                    searchValue = viewModel.searchText,
-                                    placeholder = "기업명을 입력해주세요",
-                                    searchResultComposable = {
-                                        LazyColumn {
-                                            itemsIndexed(viewModel.companyList.filter {
-                                                   it.contains(viewModel.searchText.value)
-                                            }){position,item ->
-                                                val text = buildAnnotatedString {
-                                                    val startIndex = item.indexOf(viewModel.searchText.value)
-                                                    append(
-                                                        item.substring(0,startIndex)
-                                                    )
-                                                    withStyle(
-                                                        style = SpanStyle(
-                                                            color = Color.Blue,
-                                                            fontWeight = FontWeight.Bold
-                                                        )
-                                                    ){
+                                    LikeLionSearchBar(
+                                        searchValue = viewModel.searchText,
+                                        placeholder = "기업명을 입력해주세요",
+                                        searchResultComposable = {
+                                            LazyColumn {
+                                                itemsIndexed(viewModel.companyList.filter {
+                                                    it.contains(viewModel.searchText.value)
+                                                }) { position, item ->
+                                                    val text = buildAnnotatedString {
+                                                        val startIndex =
+                                                            item.indexOf(viewModel.searchText.value)
                                                         append(
-                                                            item.substring(startIndex,startIndex + viewModel.searchText.value.length)
+                                                            item.substring(0, startIndex)
+                                                        )
+                                                        withStyle(
+                                                            style = SpanStyle(
+                                                                color = Color.Blue,
+                                                                fontWeight = FontWeight.Bold
+                                                            )
+                                                        ) {
+                                                            append(
+                                                                item.substring(
+                                                                    startIndex,
+                                                                    startIndex + viewModel.searchText.value.length
+                                                                )
+                                                            )
+                                                        }
+                                                        append(
+                                                            item.substring(startIndex + viewModel.searchText.value.length)
                                                         )
                                                     }
-                                                    append(
-                                                        item.substring(startIndex + viewModel.searchText.value.length)
-                                                    )
-                                                }
-                                                Column(
-                                                    modifier = Modifier
-                                                        .fillMaxWidth()
-                                                        .clickable {
-
-                                                        },
-                                                ) {
-                                                    Text(
-                                                        text = text,
+                                                    Column(
                                                         modifier = Modifier
-                                                            .padding(10.dp)
                                                             .fillMaxWidth()
-                                                    )
-                                                    LikeLionDivider(
-                                                        color = Color.LightGray
-                                                    )
+                                                            .clickable {
+                                                                viewModel.clickSystem(viewModel.companyList[position])
+                                                            },
+                                                    ) {
+                                                        Text(
+                                                            text = text,
+                                                            modifier = Modifier
+                                                                .padding(10.dp)
+                                                                .fillMaxWidth()
+                                                        )
+                                                        LikeLionDivider(
+                                                            color = Color.LightGray
+                                                        )
+                                                    }
                                                 }
                                             }
-                                        }
-                                    },
-                                    composableContent = {
+                                        },
+                                        composableContent = {
 
-                                    },
-                                    contentComposable = {
-                                        LazyColumn {
-                                            items(viewModel.companyList.size){position ->
-                                                Column(
-                                                    modifier = Modifier
-                                                        .fillMaxWidth()
-                                                        .clickable {
-
-                                                        },
-                                                ) {
-                                                    Text(
-                                                        text = viewModel.companyList[position],
+                                        },
+                                        contentComposable = {
+                                            LazyColumn {
+                                                items(viewModel.companyList.size) { position ->
+                                                    Column(
                                                         modifier = Modifier
-                                                            .padding(10.dp)
                                                             .fillMaxWidth()
-                                                    )
-                                                    LikeLionDivider(
-                                                        color = Color.LightGray
-                                                    )
+                                                            .clickable {
+                                                                viewModel.clickSystem(viewModel.companyList[position])
+                                                            },
+                                                    ) {
+                                                        Text(
+                                                            text = viewModel.companyList[position],
+                                                            modifier = Modifier
+                                                                .padding(10.dp)
+                                                                .fillMaxWidth()
+                                                        )
+                                                        LikeLionDivider(
+                                                            color = Color.LightGray
+                                                        )
+                                                    }
                                                 }
                                             }
-                                        }
-                                    },
-                                    onSearch = {
-                                        viewModel.companyCurrent.value = viewModel.searchText.value
-                                    },
-                                )
-                            }
-                        }else{
-                            Spacer(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .background(Color.White)
-                                    .padding(top = 20.dp)
-                                    .verticalScroll(rememberScrollState()))
-                            if (viewModel.companyCurrent.value != ""){
-                                Row(
-                                    modifier = Modifier.background(Color.White).fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.Start,
-                                    verticalAlignment = Alignment.CenterVertically,
-                                ) {
-                                    Spacer(Modifier.width(20.dp))
-                                    LikeLionIconButton(
-                                        icon = ImageVector.vectorResource(R.drawable.search_24px),
-                                        iconButtonOnClick = {
-                                            viewModel.companyCurrent.value = ""
-                                        }
+                                        },
+                                        onSearch = {
+                                            viewModel.searchSystem()
+                                        },
                                     )
+                                }
+                            } else {
+                                Spacer(
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .background(Color.White)
+                                        .padding(top = 20.dp)
+                                        .verticalScroll(rememberScrollState())
+                                )
+                                if (viewModel.companySearch.value.toString() != "") {
+                                    Row(
+                                        modifier = Modifier.background(Color.White).fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.Start,
+                                        verticalAlignment = Alignment.CenterVertically,
+                                    ) {
+                                        Spacer(Modifier.width(20.dp))
+                                        LikeLionIconButton(
+                                            icon = ImageVector.vectorResource(R.drawable.search_24px),
+                                            iconButtonOnClick = {
+                                                viewModel.companySearch.value = ""
+                                                viewModel.searchFilterList.value = listOf()
+                                            }
+                                        )
+                                        Log.d("st", viewModel.companySearch.value)
+                                        Text(text = viewModel.companySearch.value)
 
-                                    Text(text = viewModel.companyCurrent.value)
+                                    }
 
                                 }
-
                             }
-                            val list = listOf("유튜버", "틱톡커", "포토그래퍼",)
+                        }
+
+                            val tabList = listOf("유튜버", "틱톡커", "포토그래퍼",)
                             LikeLionFixedTabs(
-                                tabTitleWithCounts = list,
+                                tabTitleWithCounts = tabList,
                                 selectedTabIndex = selectedTabIndex,
                                 onTabSelected = { index ->
                                     selectedTabIndex = index
@@ -286,12 +287,48 @@ fun CreatorMainScreen(viewModel: CreatorMainViewModel = hiltViewModel()) {
                                     .height(40.dp)
                             )
                             LikeLionDivider()
-                        }
+                            // 탭에 따른 화면 변경
+                            when(selectedTabIndex){
+                                0 ->{
+                                    LikeLionBigUserListView(
+                                        if (viewModel.tab.value == "기업")viewModel.searchFilterList.value
+                                        else viewModel.creatorList.value,
+                                        modifier = Modifier.background(Color(0x0F585759)).fillMaxHeight(),
+                                        entryPaddingValues = 20.dp,
+                                        bottomPaddingValues = 80.dp,
+                                        productService = viewModel.productService
+                                    ) // 크리에이터 목록 화면
+                                }
+                                1 ->{
+                                    Row(
+                                        modifier = Modifier.fillMaxSize().padding(bottom = 300.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        Text(text = "해당 크리에이터는 없습니다")
+                                    }
+
+                                }
+                                2 ->{
+                                    Row(
+                                        modifier = Modifier.fillMaxSize().padding(bottom = 300.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        Text(text = "해당 크리에이터는 없습니다")
+                                    }
+
+                                }
+                            }
+
+
 
 
 
                     }
                 }
+
+
             }
 
         }

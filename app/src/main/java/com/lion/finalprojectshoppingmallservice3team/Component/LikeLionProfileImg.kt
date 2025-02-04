@@ -8,6 +8,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -87,10 +88,11 @@ fun LikeLionProfileImg(
         horizontalAlignment = Alignment.CenterHorizontally) {
         // bitmap에 데이터가 있다면? -> 이미지를 다운 받았다면
         bitmap.value?.asImageBitmap()?.let {
-            Image(bitmap = it
-                , contentScale = contentScale
-                , contentDescription = null
-                , modifier = imageModifier
+            Image(bitmap = it,
+                contentScale = ContentScale.Crop,
+                contentDescription = null,
+                modifier = imageModifier
+                    .fillMaxSize()
             )
         } ?: Image(
             painter = painterResource(id = R.drawable.ic_empty_person_24), // 다운 받은 이미지가 없는 경우
