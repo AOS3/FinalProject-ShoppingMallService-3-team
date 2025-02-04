@@ -2,6 +2,7 @@ package com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.crea
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -38,15 +39,15 @@ class CreatorApplyViewmodel @Inject constructor(
     val shoppingApplication = context as ShoppingApplication
 
     // 샵 이름
-    var creatorShopName by mutableStateOf("")
+    val creatorShopName = mutableStateOf("")
     // 도메인 명
-    var domainName by mutableStateOf("")
+    val domainName = mutableStateOf("")
     // 본인 또는 브랜드 소개
-    var brandDescription by mutableStateOf("")
+    val brandDescription = mutableStateOf("")
     // 회사명
-    var companyName by mutableStateOf("")
+    val companyName = mutableStateOf("")
     // 회사 서류 제출
-    var fileUploaded by mutableStateOf(false)
+    val fileUploaded = mutableStateOf(false)
     // 연락처
     val creatorPhoneNumber = mutableStateOf("")
     // 대표SNS
@@ -57,6 +58,7 @@ class CreatorApplyViewmodel @Inject constructor(
     val triCheckboxAllValue = mutableStateOf(ToggleableState.Off)
     // 개인정보 동의
     val checkboxPersonalInfoAgree = mutableStateOf(false)
+
     // 여러 개의 이미지를 저장하는 상태 변수
     val imageBitmapCompanyList = mutableStateListOf<Bitmap>()
     val imageCompanyUriList = mutableStateListOf<String>()
@@ -65,14 +67,108 @@ class CreatorApplyViewmodel @Inject constructor(
     val imageBitmapPortfolioList = mutableStateListOf<Bitmap>()
     val imagePortfolioUriList = mutableStateListOf<String>()
 
+    fun getFileNameFromUri(uri: String): String {
+        return Uri.parse(uri).lastPathSegment ?: "알 수 없는 파일"
+    }
+
+    // 이미지 삭제 버튼을 눌렀을 때
+    fun deleteCompanyImageOnClick(){
+        // 카메라나 앨범에서 가져온 사진이 있다면 삭제한다.
+        imageBitmapCompanyList.clear()
+    }
+
+    // 이미지 삭제 버튼을 눌렀을 때
+    fun deletePortfolioImageOnClick(){
+        // 카메라나 앨범에서 가져온 사진이 있다면 삭제한다.
+        imageBitmapPortfolioList.clear()
+    }
+
+    // 약관 체크박스를 눌렀을 때 호출되는 메서드
+    fun triCheckboxAllValueOnClick(){
+        if(triCheckboxAllValue.value == ToggleableState.On){
+//            checkBoxUserJoinInfo1Value.value = true
+//            checkBoxUserJoinInfo2Value.value = true
+            checkboxPersonalInfoAgree.value = true
+            updateApplySubmitButtonState()
+        } else if(triCheckboxAllValue.value == ToggleableState.Off){
+//            checkBoxUserJoinInfo1Value.value = false
+//            checkBoxUserJoinInfo2Value.value = false
+            checkboxPersonalInfoAgree.value = false
+            updateApplySubmitButtonState()
+        }
+    }
+
+    // 약관 요소들의 상태가 변경되었을 때
+    fun checkBoxOnChanged(){
+        // 체크된 체박스의 개수
+        var checkedCount = 0
+
+//        if(checkBoxUserJoinInfo1Value.value == true){
+//            checkedCount++
+//        }
+//        if(checkBoxUserJoinInfo2Value.value == true){
+//            checkedCount++
+//        }
+//        if(checkBoxUserJoinInfo3Value.value == true){
+//            checkedCount++
+//        }
+        if(checkboxPersonalInfoAgree.value == true){
+            checkedCount++
+        }
+
+        triCheckboxAllValue.value = if(checkedCount == 1){
+            ToggleableState.On
+        } else if(checkedCount == 0){
+            ToggleableState.Off
+        } else {
+            ToggleableState.Indeterminate
+        }
+
+        // 상태 업데이트 호출
+        updateApplySubmitButtonState()
+    }
+
+    val isButtonSecondEnabled = mutableStateOf(false)
+    val isButtonThirdEnabled = mutableStateOf(false)
+    val isButtonSubmitEnabled = mutableStateOf(false)
+
+    fun updateApplySecondButtonState() {
+        // 조건: 아이디 중복 확인, 닉네임 중복 확인, 비밀번호 조건 만족, 약관 필수 체크
+        isButtonSecondEnabled.value =
+            creatorShopName.value.isNotBlank() &&
+                    domainName.value.isNotBlank() &&
+                    brandDescription.value.isNotBlank() &&
+                    companyName.value.isNotBlank()
+    }
+
+    fun updateApplyThirdButtonState() {
+        // 조건: 아이디 중복 확인, 닉네임 중복 확인, 비밀번호 조건 만족, 약관 필수 체크
+        isButtonThirdEnabled.value =
+            creatorPhoneNumber.value.isNotBlank() &&
+                    bestSns.value.isNotBlank() ||
+                    portfolioSite.value.isNotBlank() ||
+                    companyName.value.isNotBlank()
+    }
+
+    fun updateApplySubmitButtonState() {
+        // 조건: 아이디 중복 확인, 닉네임 중복 확인, 비밀번호 조건 만족, 약관 필수 체크
+        isButtonSubmitEnabled.value =
+            creatorShopName.value.isNotBlank() &&
+                    domainName.value.isNotBlank() &&
+                    brandDescription.value.isNotBlank() &&
+                    companyName.value.isNotBlank() &&
+                    creatorPhoneNumber.value.isNotBlank() &&
+                    bestSns.value.isNotBlank() ||
+                    portfolioSite.value.isNotBlank() ||
+                    companyName.value.isNotBlank() ||
+                    checkboxPersonalInfoAgree.value
+    }
+
     // 첫번쨰 화면
     fun navigationFirstIconOnClick(){
         shoppingApplication.navHostController.popBackStack("creatorApply", inclusive = true)
-        shoppingApplication.navHostController.navigate("home"){
-            launchSingleTop = true // 중복 생성 방지
-
-        }
     }
+
     fun buttonFirstNextOnClick(){
         shoppingApplication.navHostController.navigate("creatorApplySecond")
     }
@@ -94,13 +190,12 @@ class CreatorApplyViewmodel @Inject constructor(
         shoppingApplication.navHostController.popBackStack("creatorApplyThird", inclusive = true)
         shoppingApplication.navHostController.navigate("creatorApplySecond"){
             launchSingleTop = true // 중복 생성 방지
-
         }
     }
+
     fun buttonThirdNextOnClick(){
         shoppingApplication.navHostController.navigate("")
     }
-
 
     fun modifyIsCreator() {
         shoppingApplication.loginCustomerModel.isCreator = true
@@ -113,6 +208,7 @@ class CreatorApplyViewmodel @Inject constructor(
             work1.join()
         }
     }
+
     // 가입 완료 버튼을 눌렀을 때
     fun buttonSubmitOnClick(){
 
@@ -121,9 +217,9 @@ class CreatorApplyViewmodel @Inject constructor(
         // 저장할 데이터를 추출한다.
         val creatorModel = CreatorModel()
 
-        if (companyName == "샌드박스"
-            || companyName == "미츄"
-            || companyName == "패러블") {
+        if (companyName.value == "샌드박스"
+            || companyName.value == "미츄"
+            || companyName.value == "패러블") {
             creatorModel.creatorComPosition = "사업자"
         } else {
             creatorModel.creatorComPosition = "개인"
@@ -163,12 +259,12 @@ class CreatorApplyViewmodel @Inject constructor(
                 work1.await()
 
                 val shopModel = ShopModel().apply {
-                    shopName = creatorShopName
-                    shopDomainName = domainName
+                    shopName = creatorShopName.value
+                    shopDomainName = domainName.value
                     shopCreatorName = shoppingApplication.loginCustomerModel.customerUserName
-                    shopBrandDescription = brandDescription
+                    shopBrandDescription = brandDescription.value
                     shopComposition = creatorModel.creatorComPosition == "사업자"
-                    shopCompanyName = companyName
+                    shopCompanyName = companyName.value
                     shopBestSns = bestSns.value
                     shopCreatedAt = System.currentTimeMillis()
                     shopCreatorId = shoppingApplication.loginCustomerModel.customerUserId
@@ -196,9 +292,5 @@ class CreatorApplyViewmodel @Inject constructor(
         outputStream.flush()
         outputStream.close()
         return file.absolutePath
-    }
-
-    fun onFileUpload() {
-        fileUploaded = true
     }
 }
