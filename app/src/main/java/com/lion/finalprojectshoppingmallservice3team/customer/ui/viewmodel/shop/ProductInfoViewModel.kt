@@ -70,7 +70,6 @@ class ProductInfoViewModel @Inject constructor(
 
     // 장바구니 담기 버튼
     fun shoppingCartButtonOnClick(){
-        Toast.makeText(shoppingApplication, "상품을 장바구니에 담았습니다.", Toast.LENGTH_LONG).show()
         shoppingApplication.navHostController.navigate("shoppingCart")
     }
 
@@ -103,4 +102,3 @@ class ProductInfoViewModel @Inject constructor(
         else
             ProductModel()
 }
-

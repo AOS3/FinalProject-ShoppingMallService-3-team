@@ -41,9 +41,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.lion.finalprojectshoppingmallservice3team.Seller.ui.screen.Item.ItemScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.home.HomeScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginScreen
 import androidx.navigation.navArgument
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBottomNavItems
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBottomNavigation
@@ -55,6 +52,8 @@ import com.lion.finalprojectshoppingmallservice3team.customer.data.vo.ProductVO
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchFailScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchSuccessScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.ShoppingCartScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserSettingScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplySecondScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyThirdScreen
@@ -64,24 +63,16 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.I
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryWriteScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginMyPageScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserSettingScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplySecondScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyThirdScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorListScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorMainScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorNoticeScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorRankingScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorShopScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.home.HomeScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.myfavorite.MyFavoriteBottomScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.myfavorite.MyFavoriteGroupScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.myfavorite.MyFavoriteNewGroupScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.myfavorite.MyFavoriteScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.CancelRefundFAQScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryListScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryReadScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryWriteScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginMyPageScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LogoutMyPageScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.ModifyUserPwScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.MyPostsScreen
@@ -93,6 +84,7 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.Inq
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.InquiryProductReadScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.InquiryProductWriteScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ProductInfoScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ShopOrderSheetWriteScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop.ShopScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.creator.CreatorApplyViewmodel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.FinalProjectShoppingMallService3teamTheme
@@ -102,7 +94,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private lateinit var productService: ProductService
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -122,10 +113,13 @@ class MainActivity : ComponentActivity() {
         val productRepository = ProductRepository()
         productService = ProductService(productRepository)
 
-
+        //addProductTest()
 
     }
 }
+
+
+
 
 @Composable
 fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
@@ -342,8 +336,8 @@ fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
                 },
             ) { MyFavoriteBottomScreen() }
 
-
-
+            composable("shoppingCart"){ ShoppingCartScreen() }
+            composable("shopOrderSheetWrite") {ShopOrderSheetWriteScreen()}
             composable("CreatorShop"){ CreatorShopScreen() }
 
             composable("creatorList"){ CreatorListScreen() }

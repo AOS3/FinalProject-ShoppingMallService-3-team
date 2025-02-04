@@ -2,17 +2,22 @@ package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop
 
 import android.annotation.SuppressLint
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -56,6 +61,7 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.shop.
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import androidx.compose.ui.text.style.*
 
 @Composable
 fun ProductInfoScreen(
@@ -100,6 +106,7 @@ fun ProductInfoScreen(
                         icon = ImageVector.vectorResource(R.drawable.shopping_cart_24px),
                         iconButtonOnClick = {
                             // 장바구니 이동
+                            productInfoViewModel.shoppingCartButtonOnClick()
                         },
                         color = Color.Transparent,
                         iconBackColor = Color.Transparent,
@@ -166,7 +173,9 @@ fun ProductInfoScreen(
                         text = "기본배송비 3,000원\n일반 택배(택배사)",
                         style = TextStyle(
                             fontSize = 14.sp,
-                            lineHeight = 16.sp
+                            lineHeight = 16.sp,
+                            hyphens = Hyphens.Auto,
+                            textMotion = TextMotion.Static,
                         ),
                         modifier = Modifier.weight(3f)
                     )
@@ -529,6 +538,8 @@ fun BottomButton(
     val isFavorite by viewModel.isFavorite.collectAsState()
     Row(
         modifier = Modifier
+            .selectableGroup()
+            .windowInsetsPadding(WindowInsets.navigationBars)
             .fillMaxWidth()
             .padding(16.dp)
             .background(Color.White)

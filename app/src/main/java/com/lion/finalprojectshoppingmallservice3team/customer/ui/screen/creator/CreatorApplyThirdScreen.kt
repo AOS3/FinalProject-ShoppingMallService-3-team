@@ -42,7 +42,6 @@ import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionFilledBut
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextField
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionOutlinedTextFieldInputType
-import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTriStateCheckBox
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.creator.CreatorApplyViewmodel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
@@ -73,6 +72,19 @@ fun CreatorApplyThirdScreen(creatorApplyViewModel: CreatorApplyViewmodel = hiltV
                 },
             )
         },
+        bottomBar = {
+            LikeLionFilledButton(
+                text = "신청하기",
+                containerColor = MainColor,
+                contentColor = Color.White,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                onClick = {
+
+                }
+            )
+        }
     ) { paddingValue ->
 
         val scrollState = rememberScrollState()
@@ -128,7 +140,7 @@ fun CreatorApplyThirdScreen(creatorApplyViewModel: CreatorApplyViewmodel = hiltV
                     .fillMaxWidth()
                     .padding(16.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
-            ) {
+            ){
                 Column {
                     Text(
                         text = "개인정보 수집*이용 동의",
@@ -137,11 +149,7 @@ fun CreatorApplyThirdScreen(creatorApplyViewModel: CreatorApplyViewmodel = hiltV
                         modifier = Modifier.padding(start = 16.dp, top = 16.dp)
                     )
 
-                    LikeLionTriStateCheckBox(
-                        stateValue = creatorApplyViewModel.triCheckboxAllValue,
-                        onClick = {
-                            creatorApplyViewModel.triCheckboxAllValueOnClick()
-                        },
+                    LikeLionCheckBox(
                         text = "전체 항목에 동의 합니다.",
                         fontSize = 14.sp,
                         textModifier = Modifier
@@ -153,14 +161,10 @@ fun CreatorApplyThirdScreen(creatorApplyViewModel: CreatorApplyViewmodel = hiltV
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.Top,
                         horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
+                    ){
                         LikeLionCheckBox(
-                            checkedValue = creatorApplyViewModel.checkboxPersonalInfoAgree,
-                            onCheckedChange = {
-                                creatorApplyViewModel.checkBoxOnChanged()
-                            },
                             text = "*개인 정보 수집 및 이용에 관한\n" +
-                                    "내용을 모두 확인하였으며 동의합니다",
+                                        "내용을 모두 확인하였으며 동의합니다",
                             fontSize = 14.sp,
                             textModifier = Modifier.scale(1f),
                             modifier = Modifier
@@ -185,24 +189,24 @@ fun CreatorApplyThirdScreen(creatorApplyViewModel: CreatorApplyViewmodel = hiltV
                             .padding(16.dp),
                         colors = CardDefaults.cardColors(containerColor = Color.LightGray.copy(alpha = 0.2f)),
                     ) {
-                        Row(
-                            modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = ImageVector.vectorResource(R.drawable.check_24px),
-                                contentDescription = null,
-                                tint = Color.DarkGray
-                            )
+                         Row(
+                             modifier = Modifier.padding(start = 16.dp, top = 16.dp),
+                             verticalAlignment = Alignment.CenterVertically
+                         ) {
+                             Icon(
+                                 imageVector = ImageVector.vectorResource(R.drawable.error_outline_24),
+                                 contentDescription = null,
+                                 tint = Color.DarkGray
+                             )
 
-                            Text(
-                                text = "꼭 읽어주세요!",
-                                style = MaterialTheme.typography.titleMedium,
-                                fontWeight = FontWeight.Bold,
-                                color = Color.DarkGray,
-                                modifier = Modifier.padding(start = 4.dp)
-                            )
-                        }
+                                 Text(
+                                     text = "꼭 읽어주세요!",
+                                     style = MaterialTheme.typography.titleMedium,
+                                     fontWeight = FontWeight.Bold,
+                                     color = Color.DarkGray,
+                                     modifier = Modifier.padding(start = 4.dp)
+                                 )
+                         }
 
                         Text(
                             text = "· 판매하는 콘텐츠의 저작권은 판매 주체인 크리에이터\n" +
@@ -231,25 +235,7 @@ fun CreatorApplyThirdScreen(creatorApplyViewModel: CreatorApplyViewmodel = hiltV
                                     " 할 수 있습니다.",
                             style = MaterialTheme.typography.bodyMedium,
                             color = Color.Gray,
-                            modifier = Modifier.padding(
-                                start = 16.dp,
-                                bottom = 16.dp,
-                                top = 8.dp,
-                                end = 16.dp
-                            ),
-                        )
-
-                        LikeLionFilledButton(
-                            text = "신청하기",
-                            isEnabled = creatorApplyViewModel.isButtonSubmitEnabled.value,
-                            containerColor = MainColor,
-                            contentColor = Color.White,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp),
-                            onClick = {
-                                creatorApplyViewModel.buttonSubmitOnClick()
-                            }
+                            modifier = Modifier.padding(start = 16.dp, bottom = 16.dp, top = 8.dp, end = 16.dp),
                         )
                     }
                 }

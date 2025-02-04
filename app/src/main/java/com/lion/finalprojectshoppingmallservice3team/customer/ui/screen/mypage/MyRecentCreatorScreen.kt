@@ -24,7 +24,8 @@ fun MyRecentCreatorScreen(myRecentCreatorViewModel: MyRecentCreatorViewModel = h
         Column(
             modifier = Modifier.fillMaxSize().background(Color.White).padding(it)
         ) { // 화면에 데이터를 표시
-            LikeLionBigUserListView(randomUsers = recentCreators) }
+            //LikeLionBigUserListView(randomUsers = recentCreators)
+        }
     }
 
 }

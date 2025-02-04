@@ -14,6 +14,10 @@ class ShopModel {
     var shopName: String = ""
     // 샵 크리에이터 아이디
     var shopCreatorId: String = ""
+    // 샵 기업 유무
+    var shopComposition: Boolean = false
+    // 샵 기업 이름
+    var shopCompanyName: String = ""
     // 크리에이터 도메인
     var shopDomainName: String = ""
     // 대표 sns
@@ -39,6 +43,8 @@ class ShopModel {
         shopVO.shopCreatorName = shopCreatorName
         shopVO.shopName = shopName
         shopVO.shopCreatorId = shopCreatorId
+        shopVO.shopComposition = shopComposition
+        shopVO.shopCompanyName = shopCompanyName
         shopVO.shopDomainName = shopDomainName
         shopVO.shopBestSns = shopBestSns
         shopVO.shopBrandDescription = shopBrandDescription

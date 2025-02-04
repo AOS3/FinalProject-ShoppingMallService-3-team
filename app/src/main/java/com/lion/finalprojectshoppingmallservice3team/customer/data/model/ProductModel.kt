@@ -8,7 +8,7 @@ class ProductModel {
     var productSellerName : String = ""
     var productName : String = ""
     var productPrice : Long = 0L
-    var productImages : List<String> = emptyList()
+    var productImages : List<String> = listOf(" ")
     var productOpenStatus : String = ""
     var productSellingStatus : String = ""
     var productDiscount : Long = 0L

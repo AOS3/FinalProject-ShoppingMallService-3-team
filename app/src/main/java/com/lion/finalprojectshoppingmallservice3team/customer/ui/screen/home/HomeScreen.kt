@@ -19,6 +19,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -50,6 +53,7 @@ import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionCircularB
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionHomeCircleBox
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionProfileImg
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.Component.WeeklyCreator
 import com.lion.finalprojectshoppingmallservice3team.Component.YouTubePlayer
 import com.lion.finalprojectshoppingmallservice3team.R
@@ -80,17 +84,16 @@ fun HomeScreen(
     Scaffold(
         contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Bottom),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = homeViewModel.topAppBarTitle.value,
-                        fontWeight = FontWeight.Bold
-                    )
-                },
-                actions = {
+            LikeLionTopAppBar(
+                title = homeViewModel.topAppBarTitle.value,
+                backColor = MaterialTheme.colors.background,
+                navigationIconImage = null,
+                navigationIconOnClick = {},
+                menuItems = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
                         color = Color.Transparent,
+                        iconBackColor = Color.Transparent,
                         iconButtonOnClick = {
                             homeViewModel.searchOnClick()
                         },
@@ -105,7 +108,7 @@ fun HomeScreen(
                         },
                         borderNull = true,
                     )
-                },
+                }
             )
         },
 
@@ -304,7 +307,7 @@ fun HomeScreen(
                         videoId = selectedVideoId,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(start = 16.dp, end = 16.dp),
+                            .padding(horizontal = 16.dp),
                         isPlaying = isVisible.value // 가시성에 따라 재생/일시정지 제어
                     )
                 }

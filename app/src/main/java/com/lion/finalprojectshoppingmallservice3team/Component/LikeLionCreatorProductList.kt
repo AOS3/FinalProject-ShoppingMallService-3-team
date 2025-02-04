@@ -1,9 +1,12 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -32,12 +35,14 @@ fun LikeLionCreatorProductList(
         contentPadding = PaddingValues(horizontal = 10.dp)
     ) {
         items(productList) { product ->
-            LikeLionProductItem(
-                product = product,
-                onCreatorNameClick = onCreatorNameClick,
-                onLikeClick = onLikeClick,
-                onItemClick = onItemClick
-            )
+            Box(modifier = Modifier.width(200.dp)){
+                LikeLionProductItem(
+                    product = product,
+                    onCreatorNameClick = onCreatorNameClick,
+                    onLikeClick = onLikeClick,
+                    onItemClick = onItemClick
+                )
+            }
         }
     }
 }
