@@ -114,7 +114,7 @@ class MainActivity : ComponentActivity() {
             }
         }
         val productRepository = ProductRepository()
-        productService = ProductService(productRepository)
+        val productService = ProductService(productRepository)
 
         //addProductTest()
 
