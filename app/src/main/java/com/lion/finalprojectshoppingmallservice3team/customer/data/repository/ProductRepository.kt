@@ -71,4 +71,16 @@ class ProductRepository {
         }
         return resultList
     }
+
+    // 누락데이터 입력
+    suspend fun updateMissingField(productName: String, productImages:List<String>) {
+        val firestore = FirebaseFirestore.getInstance()
+        val collectionReference = firestore.collection("ProductData")
+        val querySnapshot = collectionReference
+            .whereEqualTo("productName", productName).get().await()
+        for (document in querySnapshot.documents) {
+            val documentRef = document.reference
+            documentRef.update("productImages", productImages).await()
+        }
+    }
 }
