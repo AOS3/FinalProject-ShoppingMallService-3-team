@@ -361,10 +361,9 @@ class LoginViewModel @Inject constructor(
                         customerService.selectUserDataByUserIdOne(loginUserId)
                     }
                     val loginCustomerModel = work2.await()
-
+                    shoppingApplication.isLoggedIn.value = true
                     // Application 객체에 로그인한 사용자의 정보를 담고 게시판 메인 화면으로 이동한다.
                     shoppingApplication.loginCustomerModel = loginCustomerModel
-                    shoppingApplication.isLoggedIn.value = true
                     shoppingApplication.navHostController.popBackStack("logoutMyPage", inclusive = true)
                     shoppingApplication.navHostController.navigate("loginMyPage") {
                         popUpTo("login") { inclusive = true }
