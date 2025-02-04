@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,7 +38,7 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.shop.
 @Composable
 fun ShopScreen(shopViewModel: ShopViewModel = hiltViewModel()) {
     val filteredProducts by shopViewModel.filteredProductList.collectAsState()
-
+    Log.d("st","$filteredProducts")
     LaunchedEffect(Unit) {
         shopViewModel.loadProductList()
     }
@@ -72,6 +73,7 @@ fun ShopScreen(shopViewModel: ShopViewModel = hiltViewModel()) {
             )
         },
     ) {
+
         Column(modifier = Modifier
             .background(Color.White)
             .fillMaxSize()
@@ -103,15 +105,20 @@ fun ShopScreen(shopViewModel: ShopViewModel = hiltViewModel()) {
             // 체크박스와 드롭다운 메뉴
             FilterSection(shopViewModel)
 
-            // 상품 리스트를 2열 그리드로 표시
-            LikeLionProductList(
-                productList = filteredProducts,
+            if (filteredProducts.isEmpty()){
 
-                onCreatorNameClick = { /*크리에이터 화면으로 이동*/ },
-                onItemClick = {shopViewModel.listItemImageOnClick(it.productDocumentId)},
-                onLikeClick = { shopViewModel.onLikeClick(it) },
-                columns = 2
-            )
+            }else{
+                // 상품 리스트를 2열 그리드로 표시
+                LikeLionProductList(
+                    productList = filteredProducts,
+
+                    onCreatorNameClick = { /*크리에이터 화면으로 이동*/ },
+                    onItemClick = {shopViewModel.listItemImageOnClick(it.productDocumentId)},
+                    onLikeClick = { shopViewModel.onLikeClick(it) },
+                    columns = 2
+                )
+            }
+
 
         }
     }

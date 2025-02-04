@@ -72,7 +72,7 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                 },
 
             )
-        }
+        },
     ) {
         Column(
             modifier = Modifier
@@ -350,7 +350,7 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
 
             LikeLionFilledButton(
                 text = "마크샵 크리에이터 신청하기",
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().padding(bottom = 80.dp),
                 contentColor = MainColor,
                 containerColor = SubColor,
                 onClick = {

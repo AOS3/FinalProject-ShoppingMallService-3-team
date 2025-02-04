@@ -15,6 +15,9 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -31,11 +34,13 @@ import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.lion.finalprojectshoppingmallservice3team.Component.AutoScrollingBanner
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionCircularBox
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionProfileImg
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.Component.WeeklyCreator
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.home.HomeViewModel
@@ -57,13 +62,12 @@ fun HomeScreen(
     Scaffold(
         contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Bottom),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                    text = "Home",
-                    fontWeight = FontWeight.Bold
-                )},
-                actions = {
+            LikeLionTopAppBar(
+                title = "Home",
+                backColor = MaterialTheme.colors.background,
+                navigationIconImage = null,
+                navigationIconOnClick = {},
+                menuItems = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
                         iconButtonOnClick = {
@@ -76,7 +80,7 @@ fun HomeScreen(
 
                         },
                     )
-                },
+                }
             )
         },
 
@@ -90,7 +94,7 @@ fun HomeScreen(
             // AutoScrollingBanner 호출
             AutoScrollingBanner(
                 bannerImages = listOf(
-                    R.drawable.marcshop_logo
+                    R.drawable.marcshop_logo,
                 ),
             )
 

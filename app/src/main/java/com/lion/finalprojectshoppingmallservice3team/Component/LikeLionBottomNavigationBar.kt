@@ -1,14 +1,30 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import android.R.attr.contentDescription
+import android.R.attr.fontWeight
+import android.R.attr.onClick
+import androidx.compose.foundation.Canvas
+import com.lion.finalprojectshoppingmallservice3team.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.Interaction
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.selection.selectableGroup
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Mood
+import androidx.compose.material.minimumInteractiveComponentSize
+import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -17,8 +33,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -33,12 +55,11 @@ fun LikeLionBottomNavigation(
 ) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
     NavigationBar (
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(80.dp)
-            .padding(0.dp),
-
-        containerColor = Color.LightGray.copy(alpha = 0.5f),
+        modifier = Modifier.fillMaxWidth()
+            .selectableGroup()
+            .windowInsetsPadding(WindowInsets.navigationBars)
+            .height(70.dp),
+        containerColor = Color.LightGray.copy(alpha = 0.7f),
         contentColor = Color.Transparent,
     ) {
         Row (
@@ -59,24 +80,64 @@ fun LikeLionBottomNavigation(
                         override fun tryEmit(interaction: Interaction) = true
                     }
                 }
-
                 NavigationBarItem(
                     modifier = Modifier
                         .background(Color.Transparent),
                     icon = {
-                        Icon(imageVector = item.icon,
-                            modifier = Modifier
-                                .size(28.dp)
-                                .offset(y = (4).dp),
-                            tint = if (selected) MainColor else Color.Black,
-                            contentDescription = item.label) },
+                        Box {
+                            val shadow = if (item.icon == Icons.Default.Mood)
+                                ImageVector.vectorResource(R.drawable.radio_button_checked_24px)
+                            else item.icon
+                            Icon(imageVector = shadow,
+                                modifier = Modifier
+                                    .size(width = 27.dp, height = 26.dp)
+                                    .offset(x = (1).dp, y = (4).dp),
+                                tint = if (selected) Color(0xFF8369A8).copy(0.2f) else Color.Black.copy(0.25f),
+                                contentDescription = item.label)
+                            Icon(imageVector = item.icon,
+                                modifier = Modifier
+                                    .size(26.dp)
+                                    .offset(y = (3).dp),
+                                tint = if (selected) MainColor else Color.Black,
+                                contentDescription = item.label)
+
+                        }
+
+                    },
                     label = {
-                        Text(text = item.label,
+                        Canvas(
                             modifier = Modifier
-                                .padding(0.dp)
-                                .offset(y = (-4).dp),
-                            fontSize = 10.sp,
-                            color = if (selected) MainColor else Color.Black)
+                                .size(50.dp,30.dp)
+                                .padding(bottom = 13.dp)
+                                .offset(x = (6).dp, y = (0).dp)
+                                .background(Color.White),
+                            onDraw = {
+                                drawOval(
+                                    color = Color.Transparent.copy(0.3f),
+                                    topLeft = Offset(0.dp.toPx(), 10.dp.toPx()),
+                                    size = Size(50.dp.toPx(), 5.dp.toPx()),
+                                )
+                            }
+                        )
+                            Box(
+                                modifier = Modifier
+                                    .background(Color.Transparent)
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .padding(bottom = 13.dp)
+                                    .offset(y = (-3).dp)
+                            ) {
+
+                                Text(text = item.label,
+                                    modifier = Modifier
+                                        .padding(top = 2.dp, start = 5.dp, end = 5.dp, bottom = 2.dp),
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = if (selected) MainColor else Color.Black
+                                )
+
+
+                            }
+
                     },
                     selected = selected,
                     colors = NavigationBarItemDefaults.colors(

@@ -48,4 +48,17 @@ class ProductService(val productRepository: ProductRepository, /*val sellerRepos
         }
         return productList
     }
+
+    // 모든 상품 이미지를 가져오는 메서드
+    suspend fun selectCreatorProductData(creatorId: String): MutableList<String> {
+        // 상품 정보를 가져온다.
+        val productList = mutableListOf<String>()
+        val resultList = productRepository.selectCreatorProductData(creatorId)
+
+        resultList.forEach {
+            val productVO = it["productVO"] as ProductVO
+            productList.add(productVO.productImages.first())
+        }
+        return productList
+    }
 }

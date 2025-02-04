@@ -226,10 +226,12 @@ class CreatorApplyViewmodel @Inject constructor(
         creatorModel.creatorCompanyName = companyName.value
         creatorModel.creatorComNumber = 0L
 
-        if (companyName.value.equals("개인")) {
-            creatorModel.creatorComPosition = "개인"
-        } else {
+        if (companyName.value == "샌드박스"
+            || companyName.value == "미츄"
+            || companyName.value == "패러블") {
             creatorModel.creatorComPosition = "사업자"
+        } else {
+            creatorModel.creatorComPosition = "개인"
         }
 
         creatorModel.creatorInquery = ""
@@ -270,6 +272,8 @@ class CreatorApplyViewmodel @Inject constructor(
                     shopDomainName = domainName.value
                     shopCreatorName = shoppingApplication.loginCustomerModel.customerUserName
                     shopBrandDescription = brandDescription.value
+                    shopComposition = creatorModel.creatorComPosition == "사업자"
+                    shopCompanyName = companyName.value
                     shopBestSns = bestSns.value
                     shopCreatedAt = System.currentTimeMillis()
                     shopCreatorId = shoppingApplication.loginCustomerModel.customerUserId
