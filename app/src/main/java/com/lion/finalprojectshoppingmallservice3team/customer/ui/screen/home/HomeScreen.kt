@@ -6,14 +6,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
@@ -38,7 +34,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -69,12 +64,8 @@ fun HomeScreen(
     val buttonItems = homeViewModel.buttonItems
 
 
-    LaunchedEffect(Unit) {
-        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
-    }
 
     Scaffold(
-        contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Bottom),
         topBar = {
             TopAppBar(
                 title = {
@@ -87,6 +78,7 @@ fun HomeScreen(
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
                         color = Color.Transparent,
+                        iconBackColor = Color.Transparent,
                         iconButtonOnClick = {
                             homeViewModel.searchOnClick()
                         },
@@ -276,7 +268,7 @@ fun HomeScreen(
                         videoId = "911eCyHPlHs",
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(start = 16.dp, end = 16.dp),
+                            .padding(horizontal = 16.dp),
                         isPlaying = isVisible.value // 가시성에 따라 재생/일시정지 제어
                     )
                 }
