@@ -41,9 +41,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.lion.finalprojectshoppingmallservice3team.Seller.ui.screen.Item.ItemScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.home.HomeScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginScreen
 import androidx.navigation.navArgument
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBottomNavItems
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionBottomNavigation
@@ -55,14 +52,7 @@ import com.lion.finalprojectshoppingmallservice3team.customer.data.vo.ProductVO
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchFailScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.SearchSuccessScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplySecondScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyThirdScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorRankingScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryListScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryReadScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryWriteScreen
-import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginMyPageScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.ShoppingCartScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserSettingScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplySecondScreen
@@ -70,6 +60,7 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorListScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorMainScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorNoticeScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorRankingScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorShopScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.home.HomeScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.myfavorite.MyFavoriteBottomScreen
@@ -130,25 +121,24 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             val dummyProduct = listOf(
                 ProductVO().apply {
-                    productSellerName = "미녕이데려오께"
-                    productName = "SD 아이돌 엽서"
-                    productPrice = 2500
+                    productSellerName = "싸이코드 연이"
+                    productName = "연이 연극회 포토카드 I"
+                    productPrice = 7500
                     productImages = listOf(
-                        "https://image1.marpple.co/files/u_1880950/2022/2/original/8fd5dab60dfb5f3bc353950ea725fc18cd1f16791.png?q=92&w=300&f=webp&bg=f6f6f6"
+                        "https://image1.marpple.co/files/u_2283949/2024/12/original/c9423a636433799ef63916c76fc95cd75e1859f01.png?q=92&w=600&f=webp&bg=f6f6f6"
                     )
-                    productCategory = ProductCategory.PRODUCT_CATEGORY_CLOTHING.str
-                    productSubCategory = ProductSubCategory.PRODUCT_SUB_CATEGORY_TSHIRT.str
+                    productCategory = ProductCategory.PRODUCT_CATEGORY_GOODS.str
+                    productSubCategory = ProductSubCategory.PRODUCT_SUB_CATEGORY_PHOTO_CARD.str
                     productLimitedSalesPeriod = "한정"
-                    productManagementAllQuantity = 100L
+                    productManagementAllQuantity = 0L
                     productInfoTitle = "상품 상세 제목"
                     productInfoContent = "상품 상세 내용"
-                    productReviewCount = 0L
-                    productRating = 0.0
-                    productSalesCount = 40L
+                    productReviewCount = 10L
+                    productRating = 5.0
+                    productSalesCount = 150L
                     productCreatedAt = System.currentTimeMillis()
                     productUpdatedAt = System.currentTimeMillis()
                 },
-
                 )
             for (product in dummyProduct){
                 productService.registerProduct(product)
@@ -375,7 +365,7 @@ fun ShoppingMain(windowInsetsController: WindowInsetsControllerCompat) {
                 },
             ) { MyFavoriteBottomScreen() }
 
-
+            composable("shoppingCart"){ ShoppingCartScreen() }
             composable("shopOrderSheetWrite") {ShopOrderSheetWriteScreen()}
             composable("CreatorShop"){ CreatorShopScreen() }
 

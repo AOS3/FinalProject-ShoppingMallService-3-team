@@ -2,6 +2,7 @@ package com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.shop
 
 import android.annotation.SuppressLint
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -104,6 +105,7 @@ fun ProductInfoScreen(
                         icon = ImageVector.vectorResource(R.drawable.shopping_cart_24px),
                         iconButtonOnClick = {
                             // 장바구니 이동
+                            productInfoViewModel.shoppingCartButtonOnClick()
                         },
                         color = Color.Transparent,
                         iconBackColor = Color.Transparent,

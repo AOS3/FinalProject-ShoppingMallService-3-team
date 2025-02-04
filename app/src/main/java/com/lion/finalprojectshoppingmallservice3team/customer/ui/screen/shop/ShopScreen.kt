@@ -60,7 +60,7 @@ fun ShopScreen(shopViewModel: ShopViewModel = hiltViewModel()) {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(R.drawable.shopping_cart_24px),
                         iconButtonOnClick = {
-                            // 장바구니 이동
+                            shopViewModel.shoppingCartButtonOnClick()
                         },
                         color = Color.Transparent,
                         iconBackColor = Color.Transparent,

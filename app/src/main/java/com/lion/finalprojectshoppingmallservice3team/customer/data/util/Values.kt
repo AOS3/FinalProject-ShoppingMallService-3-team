@@ -97,6 +97,8 @@ enum class ProductSubCategory(val str : String){
     PRODUCT_SUB_CATEGORY_BAG("가방"),
     // 파우치
     PRODUCT_SUB_CATEGORY_POUCH("파우치"),
+    // 신발/슬리퍼
+    PRODUCT_SUB_CATEGORY_SHOES_SNEAKERS("신발/슬리퍼"),
     // 쿠션/방석
     PRODUCT_SUB_CATEGORY_CUSHION("쿠션/방석"),
     // 마우스패드
@@ -109,6 +111,10 @@ enum class ProductSubCategory(val str : String){
     PRODUCT_SUB_CATEGORY_GALAXY("갤럭시"),
     // 카드
     PRODUCT_SUB_CATEGORY_CARD("카드"),
+    // 포스터
+    PRODUCT_SUB_CATEGORY_POSTER("포스터"),
+    // 페이퍼굿즈
+    PRODUCT_SUB_CATEGORY_PAPER_GOODS("페이퍼굿즈"),
     // 머그컵
     PRODUCT_SUB_CATEGORY_MUG("머그컵"),
     // 시계
@@ -138,7 +144,8 @@ object CategoryMapping {
         // 패션잡화
         ProductCategory.PRODUCT_CATEGORY_FASHION_ACCESSORIES.str to listOf(
             ProductSubCategory.PRODUCT_SUB_CATEGORY_BAG.str,
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_POUCH.str
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_POUCH.str,
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_SHOES_SNEAKERS.str
         ),
         // 쿠션/패브릭
         ProductCategory.PRODUCT_CATEGORY_CUSHION_FABRIC.str to listOf(
@@ -157,7 +164,9 @@ object CategoryMapping {
         ),
         // 스티커/지류
         ProductCategory.PRODUCT_CATEGORY_STICKER_PAPER.str to listOf(
-            ProductSubCategory.PRODUCT_SUB_CATEGORY_CARD.str
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_CARD.str,
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_POSTER.str,
+            ProductSubCategory.PRODUCT_SUB_CATEGORY_PAPER_GOODS.str
         ),
         // 리빙
         ProductCategory.PRODUCT_CATEGORY_LIVING.str to listOf(
