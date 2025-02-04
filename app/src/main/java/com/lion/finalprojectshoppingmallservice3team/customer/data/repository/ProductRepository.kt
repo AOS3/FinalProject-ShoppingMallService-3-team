@@ -50,15 +50,25 @@ class ProductRepository {
         return resultList
     }
 
-    // 누락데이터 입력
-    suspend fun updateMissingField(productName: String, productImages:List<String>) {
+    // 모든 상품 데이터를 가져오는 메서드
+    suspend fun selectCreatorProductData(creatorId: String): MutableList<Map<String, *>> {
         val firestore = FirebaseFirestore.getInstance()
         val collectionReference = firestore.collection("ProductData")
-        val querySnapshot = collectionReference
-            .whereEqualTo("productName", productName).get().await()
-        for (document in querySnapshot.documents) {
-            val documentRef = document.reference
-            documentRef.update("productImages", productImages).await()
+        val result =
+            collectionReference.whereEqualTo("productSellerId", creatorId)
+                .orderBy("productSalesCount", Query.Direction.DESCENDING).limit(4).get().await()
+
+        // 반환할 리스트
+        val resultList = mutableListOf<Map<String, *>>()
+        result.forEach {
+            val map = mapOf(
+                // 문서의 Id
+                "productDocumentId" to it.id,
+                // 데이터를 가지고 있는 객체
+                "productVO" to it.toObject(ProductVO::class.java)
+            )
+            resultList.add(map)
         }
+        return resultList
     }
 }
