@@ -64,6 +64,15 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.I
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryWriteScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginMyPageScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserSettingScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplySecondScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorApplyThirdScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorRankingScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryListScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryReadScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.InquiryWriteScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.mypage.LoginMyPageScreen
+import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.UserSettingScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorListScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorMainScreen
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.screen.creator.CreatorNoticeScreen
