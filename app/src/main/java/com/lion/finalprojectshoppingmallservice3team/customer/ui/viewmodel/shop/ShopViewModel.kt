@@ -1,6 +1,7 @@
 package com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.shop
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -42,6 +43,11 @@ class ShopViewModel @Inject constructor(
 
     // TopAppBar Title
     val topAppBarTitle = mutableStateOf("Shop")
+
+    // 장바구니 버튼
+    fun shoppingCartButtonOnClick(){
+        shoppingApplication.navHostController.navigate("shoppingCart")
+    }
 
     // 좋아요 상태를 관리하는 Map
     private val _favoriteState = MutableStateFlow<Map<String, Boolean>>(emptyMap())
@@ -167,7 +173,7 @@ class ShopViewModel @Inject constructor(
             filteredList = filteredList.filter { !it.productLimitedSalesPeriod.isBlank() }
         }
 
-        // 🔥 정렬 로직 추가
+        // 정렬 로직 추가
         filteredList = when (selectedSortOption.value) {
             "인기순" -> filteredList.sortedByDescending { it.productSalesCount }
             "최신순" -> filteredList.sortedByDescending { it.productCreatedAt }

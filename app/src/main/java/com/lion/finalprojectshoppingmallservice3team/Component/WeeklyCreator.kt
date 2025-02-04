@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -61,84 +62,42 @@ fun WeeklyCreator(
     title: String,
     subtitle: String,
     imageUrl: String,
-    items: MutableList<String>,
+    items: MutableList<String> = mutableListOf(),
     navigationIconOnClick: () -> Unit = {},
+    modifier: Modifier = Modifier,
     onSeeMoreClick: () -> Unit = {}
 ) {
-
-    // 현재 월과 주 계산
-    val calendar = Calendar.getInstance()
-    val currentMonth = calendar.get(Calendar.MONTH) + 1 // Calendar.MONTH는 0부터 시작하므로 +1
-    val currentWeek = calendar.get(Calendar.WEEK_OF_MONTH)
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        // 상단 텍스트 (동적으로 월과 주 표시)
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.Start
-        ) {
-            Text(
-                modifier = Modifier.padding(start = 8.dp),
-                text = "${currentMonth}월 ${currentWeek}주차 인기 크리에이터 랭킹",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    color = Color.Gray,
-                )
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    modifier = Modifier.padding(start = 8.dp),
-                    text = "WEEKLY RANKING",
-                    style = TextStyle(
-                        fontSize = 26.sp,
-                        color = Color.Black,
-                        fontWeight = FontWeight.Bold
-                    )
-                )
-
-                Spacer(modifier = Modifier.weight(1f)) // 텍스트를 오른쪽으로 밀기
-
-                Text(
-                    text = "See More",
-                    style = TextStyle(fontSize = 12.sp, color = Color.Gray),
-                    modifier = Modifier
-                        .padding(end = 16.dp)
-                        .clickable { onSeeMoreClick() } // 클릭 이벤트 처리
-                )
-            }
-        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Card(
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
+                .wrapContentHeight()
                 .padding(8.dp),
             onClick = navigationIconOnClick
         ) {
             Box {
-                // 블러 처리된 배경 이미지 추가
-                if (imageUrl.isNotEmpty()) {
 
-                    LikeLionProductImage(
-                        imgUrl = imageUrl,
-                        contentScale = ContentScale.FillBounds,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .blur(16.dp),
-                        size = 500.dp
-                    )
-                }
+                    // 블러 처리된 배경 이미지 추가
+                    if (imageUrl.isNotEmpty()) {
+
+                        LikeLionProductImage(
+                            imgUrl = imageUrl,
+                            contentScale = ContentScale.FillBounds,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .blur(16.dp),
+                            size = 500.dp
+                        )
+                    }
 
                 Box(
                     contentAlignment = Alignment.Center,
@@ -151,7 +110,7 @@ fun WeeklyCreator(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(start = 8.dp, top = 8.dp),
+                        .padding(start = 16.dp, top = 8.dp),
 
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.Start

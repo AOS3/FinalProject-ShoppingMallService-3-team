@@ -1,5 +1,6 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,10 +26,11 @@ fun LikeLionOutlinedButton(
 ) {
     OutlinedButton(
         modifier = modifier
-            .fillMaxWidth()
             .padding(top = paddingTop),
         shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp),
-        onClick = onClick
+        onClick = onClick,
+        // 내부 여백 없애는 속성 수정함
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
     ) {
         Text(text = text)
 
