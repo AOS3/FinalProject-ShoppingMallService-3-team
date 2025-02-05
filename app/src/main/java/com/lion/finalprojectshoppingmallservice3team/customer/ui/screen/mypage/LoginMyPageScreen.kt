@@ -348,15 +348,17 @@ fun LoginMyPageScreen(loginMyPageViewModel: LoginMyPageViewModel = hiltViewModel
                 color = Color.Black,
             )
 
-            LikeLionFilledButton(
-                text = "마크샵 크리에이터 신청하기",
-                modifier = Modifier.fillMaxWidth().padding(bottom = 80.dp),
-                contentColor = MainColor,
-                containerColor = SubColor,
-                onClick = {
-                    loginMyPageViewModel.creatorApplyOnClick()
-                }
-            )
+            if (loginMyPageViewModel.shoppingApplication.loginCustomerModel.isCreator == false) {
+                LikeLionFilledButton(
+                    text = "마크샵 크리에이터 신청하기",
+                    modifier = Modifier.fillMaxWidth().padding(bottom = 80.dp),
+                    contentColor = MainColor,
+                    containerColor = SubColor,
+                    onClick = {
+                        loginMyPageViewModel.creatorApplyOnClick()
+                    }
+                )
+            }
         }
     }
 }
