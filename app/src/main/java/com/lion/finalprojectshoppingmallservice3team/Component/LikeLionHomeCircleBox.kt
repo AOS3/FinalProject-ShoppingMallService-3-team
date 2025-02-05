@@ -35,7 +35,7 @@ fun LikeLionHomeCircleBox(
         ) {
             Surface(
                 shape = CircleShape,
-                color = Color.LightGray,
+                color = Color.White,
                 modifier = Modifier.fillMaxSize()
             ) {
                 Image(
@@ -56,5 +56,5 @@ data class ButtonItem(
     val text: String,
     val imageResId: Int,
     val backgroundColor: Color,
-    val route: String // 네비게이션 경로
+    val route: String,
 )

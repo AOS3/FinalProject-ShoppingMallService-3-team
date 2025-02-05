@@ -33,20 +33,36 @@ fun YouTubePlayer(
 
     var youTubePlayerRef by remember { mutableStateOf<YouTubePlayer?>(null) }
 
+    // videoId가 변경될 때마다 영상을 업데이트하기 위한 LaunchedEffect 추가
+    LaunchedEffect(videoId) {
+        youTubePlayerRef?.cueVideo(videoId, 0f)
+    }
+
     AndroidView(
         factory = { context ->
             YouTubePlayerView(context).apply {
+                enableAutomaticInitialization = false
                 addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-                    override fun onReady(youTubePlayer: YouTubePlayer) {
-                        youTubePlayerRef = youTubePlayer
+                    override fun onReady(player: YouTubePlayer) {
+                        youTubePlayerRef = player
 //                        youTubePlayer.loadVideo(videoId, 0f) // 영상 로드 및 시작 시간 설정 / loadVideo는 자동재생임
-                        youTubePlayer.cueVideo(videoId, 0f) // 자동 재생 없이 영상 로드
-                        youTubePlayer.setVolume(0) // 기본 음소거 설정
+                        player.cueVideo(videoId, 0f) // 자동 재생 없이 영상 로드
+                        player.setVolume(0) // 기본 음소거 설정
                     }
                 })
             }
         },
-        modifier = modifier.fillMaxWidth().height(250.dp)
+        modifier = modifier
+            .fillMaxWidth()
+            .height(250.dp),
+//        update = { view ->
+//            // 현재 재생 중인 비디오와 요청된 비디오가 다른 경우 업데이트
+//            youTubePlayerRef?.let { player ->
+//                if (player.getCurrentVideoId() != videoId) {
+//                    player.cueVideo(videoId, 0f)
+//                }
+//            }
+//        }
     )
 
     // 재생/일시정지 제어

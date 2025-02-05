@@ -2,6 +2,7 @@ package com.lion.finalprojectshoppingmallservice3team.Component
 
 import android.graphics.Bitmap
 import android.net.Uri
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,6 +43,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -62,7 +64,9 @@ fun WeeklyCreator(
     title: String,
     subtitle: String,
     imageUrl: String,
-    items: MutableList<String> = mutableListOf(),
+    @DrawableRes drawableRes: Int? = null,
+    @DrawableRes subDrawableRes: Int? = null,
+    items: MutableList<WeeklyItem> = mutableListOf(),
     navigationIconOnClick: () -> Unit = {},
     modifier: Modifier = Modifier,
     onSeeMoreClick: () -> Unit = {}
@@ -73,9 +77,7 @@ fun WeeklyCreator(
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-
         Spacer(modifier = Modifier.height(8.dp))
-
         Card(
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
             modifier = Modifier
@@ -85,37 +87,43 @@ fun WeeklyCreator(
             onClick = navigationIconOnClick
         ) {
             Box {
-
-                    // 블러 처리된 배경 이미지 추가
-                    if (imageUrl.isNotEmpty()) {
-
-                        LikeLionProductImage(
-                            imgUrl = imageUrl,
-                            contentScale = ContentScale.FillBounds,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .blur(16.dp),
-                            size = 500.dp
-                        )
-                    }
+                // 배경 이미지: drawableRes가 있으면 drawable 리소스 사용, 없으면 imageUrl로 로드
+                if (subDrawableRes != null) {
+                    Image(
+                        painter = painterResource(id = subDrawableRes),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .blur(16.dp)
+                            .size(500.dp),
+                        contentScale = ContentScale.FillBounds,
+                    )
+                } else if (imageUrl.isNotEmpty()) {
+                    // 네트워크 또는 URL로 이미지를 로드하는 함수 (ex. Coil을 사용하는 LikeLionProductImage)
+                    LikeLionProductImage(
+                        imgUrl = imageUrl,
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .blur(16.dp),
+                        size = 500.dp
+                    )
+                }
 
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.fillMaxSize()
                 ) {
-
-
+                    // 필요한 경우 중앙에 다른 콘텐츠 표시
                 }
 
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(start = 16.dp, top = 8.dp),
-
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.Start
                 ) {
-
                     // 랭킹 텍스트
                     Text(
                         text = "WEEKLY RANKING",
@@ -130,38 +138,40 @@ fun WeeklyCreator(
                         color = Color.White
                     )
 
-//                Spacer(modifier = Modifier.height(8.dp))
-
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(4.dp),
-
                         verticalArrangement = Arrangement.Top,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        // 상단 랭킹 및 하트 이미지
+                        // 프로필 이미지 (동일하게 drawableRes가 있으면 drawable 리소스, 없으면 네트워크 URL)
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .size(250.dp)
                                 .clip(CircleShape)
-
                         ) {
-                            LikeLionProfileImg(
-                                imgUrl = imageUrl,
-                                iconTint = Color.Transparent,
-                                profileBack = Color.Transparent,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                            )
+                            if (drawableRes != null) {
+                                Image(
+                                    painter = painterResource(id = drawableRes),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            } else if (imageUrl.isNotEmpty()) {
+                                LikeLionProfileImg(
+                                    imgUrl = imageUrl,
+                                    iconTint = Color.Transparent,
+                                    profileBack = Color.Transparent,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier.fillMaxSize()
+                                )
+                            }
                         }
                     }
 
-
                     Column(
-//                    modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.Start
                     ) {
@@ -181,28 +191,35 @@ fun WeeklyCreator(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-
-//                     하단 아이템 리스트 (이미지 버튼들)
+                    // 하단 아이템 리스트 (이미지 버튼들)
                     Row(
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(8.dp),
-
-                        ) {
+                            .padding(8.dp)
+                    ) {
                         items.forEach { item ->
-
-                            LikeLionProductImage(
-                                imgUrl = item,
-                                size = 80.dp,
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .clip(RoundedCornerShape(8.dp))
-                                    .clickable {
-                                        navigationIconOnClick()
-                                    }
-                            )
+                            if (item.drawableRes != null) {
+                                Image(
+                                    painter = painterResource(id = item.drawableRes),
+                                    contentDescription = null,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .size(80.dp)
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .clickable { navigationIconOnClick() }
+                                )
+                            } else if (item.imageUrl.isNotEmpty()) {
+                                LikeLionProductImage(
+                                    imgUrl = item.imageUrl,
+                                    size = 80.dp,
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .clickable { navigationIconOnClick() }
+                                )
+                            }
                         }
                     }
                 }
@@ -210,3 +227,9 @@ fun WeeklyCreator(
         }
     }
 }
+
+data class WeeklyItem(
+    val imageUrl: String = "",
+    @DrawableRes val drawableRes: Int? = null
+)
+
