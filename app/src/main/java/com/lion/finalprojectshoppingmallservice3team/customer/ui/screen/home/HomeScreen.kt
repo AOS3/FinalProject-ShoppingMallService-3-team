@@ -6,22 +6,32 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,31 +39,38 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.lion.finalprojectshoppingmallservice3team.Component.AutoScrollingBanner
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionCircularBox
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionHomeCircleBox
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionHomeProfileImg
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionProfileImg
+import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionTopAppBar
 import com.lion.finalprojectshoppingmallservice3team.Component.WeeklyCreator
+import com.lion.finalprojectshoppingmallservice3team.Component.WeeklyItem
 import com.lion.finalprojectshoppingmallservice3team.Component.YouTubePlayer
 import com.lion.finalprojectshoppingmallservice3team.R
+import com.lion.finalprojectshoppingmallservice3team.customer.data.model.CustomerModel
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.home.HomeViewModel
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     windowInsetsController: WindowInsetsControllerCompat,
-    homeViewModel: HomeViewModel = hiltViewModel()
+    homeViewModel: HomeViewModel = hiltViewModel(),
 ) {
 
     // 현재 월과 주 계산
@@ -63,18 +80,23 @@ fun HomeScreen(
 
     val buttonItems = homeViewModel.buttonItems
 
+    LaunchedEffect(windowInsetsController) {
+        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+    }
 
+    LaunchedEffect(Unit) {
+        windowInsetsController.show(WindowInsetsCompat.Type.systemBars())
+    }
 
     Scaffold(
+        contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Bottom),
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = homeViewModel.topAppBarTitle.value,
-                        fontWeight = FontWeight.Bold
-                    )
-                },
-                actions = {
+            LikeLionTopAppBar(
+                title = homeViewModel.topAppBarTitle.value,
+                backColor = MaterialTheme.colors.background,
+                navigationIconImage = null,
+                navigationIconOnClick = {},
+                menuItems = {
                     LikeLionIconButton(
                         icon = ImageVector.vectorResource(id = R.drawable.search_24px),
                         color = Color.Transparent,
@@ -93,7 +115,7 @@ fun HomeScreen(
                         },
                         borderNull = true,
                     )
-                },
+                }
             )
         },
 
@@ -113,9 +135,9 @@ fun HomeScreen(
             // AutoScrollingBanner 호출
             AutoScrollingBanner(
                 bannerImages = listOf(
-                    R.drawable.marcshop_logo,
-                    "https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg",
-                    R.drawable.product
+                    R.drawable.kim,
+                    R.drawable.haruto,
+                    R.drawable.creatorapply
                 ),
             )
 
@@ -150,10 +172,16 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
 
-                items(8) { index ->
-                    LikeLionProfileImg(
-                        imgUrl = "",
-                        modifier = Modifier.padding(horizontal = 5.dp),
+                items(3) { index ->
+                    val profileImages = listOf(
+                        R.drawable.kim2,
+                        R.drawable.sola,
+                        R.drawable.cho,
+                    )
+                    LikeLionHomeProfileImg(
+                        imageResId = profileImages[index],
+                        modifier = Modifier
+                            .size(60.dp),
                         iconTint = Color.White,
                         profileBack = MainColor,
                     )
@@ -210,17 +238,20 @@ fun HomeScreen(
                         )
                     }
                 }
+                val itemList = mutableListOf(
+                    WeeklyItem(drawableRes = R.drawable.solatem),
+                    WeeklyItem(drawableRes = R.drawable.solatem2),
+                    WeeklyItem(drawableRes = R.drawable.solatem3),
+                    WeeklyItem(drawableRes = R.drawable.solatem2),
+                )
                 WeeklyCreator(
                     rank = "1",
-                    title = "허블사무소",
-                    subtitle = "유튜버",
-                    imageUrl = "https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg",
-                    items = mutableListOf(
-                        "https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg",
-                        "https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg",
-                        "https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg",
-                        "https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg"
-                    ),
+                    title = "솔라시도",
+                    subtitle = "",
+                    imageUrl = "",
+                    drawableRes = R.drawable.sola2,
+                    subDrawableRes = R.drawable.sola3,
+                    items = itemList,
                 )
             }
 
@@ -240,12 +271,43 @@ fun HomeScreen(
 
                 )
 
-                LikeLionProfileImg(
-                    imgUrl = "",
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 5.dp),
-                    iconTint = Color.White,
-                    profileBack = MainColor,
-                )
+                var selectedVideoId by remember { mutableStateOf("iL_AKp8gIIY") }
+
+
+                // 프로필 이미지들을 수평으로 배치
+                LazyRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(5) { index ->
+                        val videoIds = listOf(
+                            "iL_AKp8gIIY",
+                            "wQZii4spXaU",
+                            "xkezGew-WwE",
+                            "BUWz22XWiX4",
+                            "z1D9V1oZLCg",
+                        )
+                        val profileImages = listOf(
+                            R.drawable.kim2,
+                            R.drawable.bum,
+                            R.drawable.sola,
+                            R.drawable.cho,
+                            R.drawable.haruto2
+                            )
+                        LikeLionHomeProfileImg(
+                            imageResId = profileImages[index], // 각 크리에이터의 프로필 이미지
+                            modifier = Modifier
+                                .size(60.dp)
+                                .clickable {
+                                    selectedVideoId = videoIds[index]
+                                },
+                            iconTint = Color.White,
+                            profileBack = MainColor
+                        )
+                    }
+                }
 
                 // YouTubePlayer 가시성 체크 및 동작 제어
                 val isVisible = remember { mutableStateOf(false) }
@@ -265,7 +327,7 @@ fun HomeScreen(
                         }
                 ) {
                     YouTubePlayer(
-                        videoId = "911eCyHPlHs",
+                        videoId = selectedVideoId,
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(horizontal = 16.dp),

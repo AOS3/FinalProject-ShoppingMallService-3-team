@@ -61,6 +61,7 @@ import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.shop.
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import androidx.compose.ui.text.style.*
 
 @Composable
 fun ProductInfoScreen(
@@ -172,7 +173,9 @@ fun ProductInfoScreen(
                         text = "기본배송비 3,000원\n일반 택배(택배사)",
                         style = TextStyle(
                             fontSize = 14.sp,
-                            lineHeight = 16.sp
+                            lineHeight = 16.sp,
+                            hyphens = Hyphens.Auto,
+                            textMotion = TextMotion.Static,
                         ),
                         modifier = Modifier.weight(3f)
                     )

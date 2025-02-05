@@ -1,5 +1,7 @@
 package com.lion.finalprojectshoppingmallservice3team.Component
 
+import androidx.annotation.DrawableRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.lion.finalprojectshoppingmallservice3team.ui.theme.MainColor
 
@@ -84,39 +87,50 @@ fun LikeLionCreatorCard(
                     color = if (creator.isExpanded) Color.White else Color.Black // 텍스트 색상 변경
                 )
 
-                LikeLionProfileImg(
-                    imgUrl = creator.imageRes,
-                    modifier = Modifier.size(48.dp).clip(CircleShape),
-                    iconTint = Color.White,
-                    profileBack = Color.LightGray,
-                )
+                if (creator.drawableRes != null) {
+                    Image(
+                        painter = painterResource(id = creator.drawableRes),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.Crop
+                    )
+                } else if (creator.imageUrl.isNotEmpty()) {
+                    LikeLionProfileImg(
+                        imgUrl = creator.imageUrl,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .clip(CircleShape),
+                        iconTint = Color.White,
+                        profileBack = Color.LightGray,
+                        contentScale = ContentScale.Crop
+                    )
+                }
 
                 Spacer(modifier = Modifier.width(16.dp))
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = creator.name,
                         style = MaterialTheme.typography.titleMedium,
-                        color = if (creator.isExpanded) Color.White else Color.Black // 텍스트 색상 변경
+                        color = if (creator.isExpanded) Color.White else Color.Black
                     )
-                    Text(text = creator.category,
+                    Text(
+                        text = creator.category,
                         style = MaterialTheme.typography.bodyMedium,
-                        color = if (creator.isExpanded) Color.White else Color.Gray // 텍스트 색상 변경
+                        color = if (creator.isExpanded) Color.White else Color.Gray
                     )
                 }
                 IconButton(onClick = { onExpandClick(!creator.isExpanded) }) {
                     Icon(
-                        imageVector =
-                        if (creator.isExpanded) Icons.Default.ArrowUpward else Icons.Default.ArrowDownward,
-                        contentDescription =
-                        if (creator.isExpanded) "접기" else "펼치기",
-                        tint =
-                        if (creator.isExpanded) Color.White else Color.Black
+                        imageVector = if (creator.isExpanded) Icons.Default.ArrowUpward else Icons.Default.ArrowDownward,
+                        contentDescription = if (creator.isExpanded) "접기" else "펼치기",
+                        tint = if (creator.isExpanded) Color.White else Color.Black
                     )
                 }
             }
             // 드롭다운이 활성화되었을 때 추가 콘텐츠 표시
             if (creator.isExpanded) {
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -125,17 +139,27 @@ fun LikeLionCreatorCard(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     // 최대 4개의 이미지만 표시
-                    creator.products.take(4).forEach {  productImageUrl ->
-                        LikeLionProductImage(
-                            imgUrl = productImageUrl, // 이미지 URL
-                            size = 80.dp, // 이미지 크기
-                            contentScale = ContentScale.Crop,
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(8.dp)) // 모서리 둥글게 처리
-                                .clickable {
-
-                                }
-                        )
+                    creator.products.take(4).forEach { product ->
+                        if (product.drawableRes != null) {
+                            Image(
+                                painter = painterResource(id = product.drawableRes),
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .size(80.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .clickable { /* 클릭 시 처리 */ }
+                            )
+                        } else if (product.imageUrl.isNotEmpty()) {
+                            LikeLionProductImage(
+                                imgUrl = product.imageUrl,
+                                size = 80.dp,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .clickable { /* 클릭 시 처리 */ }
+                            )
+                        }
                     }
                 }
             }
@@ -147,7 +171,13 @@ data class Creator(
     val rank: Int,
     val name: String,
     val category: String,
-    val imageRes: String,
-    val products: List<String>, // 추가 이미지 리스트
+    val imageUrl: String = "",
+    @DrawableRes val drawableRes: Int? = null,
+    val products: List<ProductImages>, // 추가 이미지 리스트
     var isExpanded: Boolean = false // 드롭다운 상태
+)
+
+data class ProductImages(
+    val imageUrl: String = "",
+    @DrawableRes val drawableRes: Int? = null
 )
