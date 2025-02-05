@@ -185,6 +185,10 @@ class CreatorApplyViewmodel @Inject constructor(
         shoppingApplication.navHostController.navigate("creatorApplyThird")
     }
 
+    fun onFileUpload() {
+        fileUploaded.value = true
+    }
+
     // 세번쨰 화면
     fun navigationThirdIconOnClick(){
         shoppingApplication.navHostController.popBackStack("creatorApplyThird", inclusive = true)

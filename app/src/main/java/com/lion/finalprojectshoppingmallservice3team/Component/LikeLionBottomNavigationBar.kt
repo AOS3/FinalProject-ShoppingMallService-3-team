@@ -19,9 +19,11 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Mood
 import androidx.compose.material.minimumInteractiveComponentSize
 import androidx.compose.material3.Card
@@ -41,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -88,11 +91,13 @@ fun LikeLionBottomNavigation(
                             val shadow = if (item.icon == Icons.Default.Mood)
                                 ImageVector.vectorResource(R.drawable.radio_button_checked_24px)
                             else item.icon
+                            val mainShadowColor = if(item.icon == Icons.Default.Home) Color.Black
+                                else Color(0xFF8369A8)
                             Icon(imageVector = shadow,
                                 modifier = Modifier
                                     .size(width = 27.dp, height = 26.dp)
-                                    .offset(x = (1).dp, y = (4).dp),
-                                tint = if (selected) Color(0xFF8369A8).copy(0.2f) else Color.Black.copy(0.25f),
+                                    .offset(x = (1).dp, y = (3.8).dp),
+                                tint = if (selected) mainShadowColor.copy(0.35f) else Color.Black.copy(0.25f),
                                 contentDescription = item.label)
                             Icon(imageVector = item.icon,
                                 modifier = Modifier
@@ -107,15 +112,15 @@ fun LikeLionBottomNavigation(
                     label = {
                         Canvas(
                             modifier = Modifier
-                                .size(50.dp,30.dp)
+                                .size(55.dp,21.dp)
                                 .padding(bottom = 13.dp)
-                                .offset(x = (6).dp, y = (0).dp)
-                                .background(Color.White),
+                                .offset(x = (7).dp, y = (4.3).dp)
+                                .clip(RoundedCornerShape(200.dp)),
                             onDraw = {
                                 drawOval(
-                                    color = Color.Transparent.copy(0.3f),
-                                    topLeft = Offset(0.dp.toPx(), 10.dp.toPx()),
-                                    size = Size(50.dp.toPx(), 5.dp.toPx()),
+                                    color = if (selected) Color.Transparent.copy(0.65f) else Color.Transparent.copy(0.3f),
+                                    topLeft = Offset((-5).dp.toPx(), 0.dp.toPx()),
+                                    size = Size(65.dp.toPx(), 10.dp.toPx()),
                                 )
                             }
                         )
@@ -125,13 +130,15 @@ fun LikeLionBottomNavigation(
                                     .clip(RoundedCornerShape(10.dp))
                                     .padding(bottom = 13.dp)
                                     .offset(y = (-3).dp)
+                                    .wrapContentWidth()
                             ) {
 
                                 Text(text = item.label,
                                     modifier = Modifier
-                                        .padding(top = 2.dp, start = 5.dp, end = 5.dp, bottom = 2.dp),
+                                        .fillMaxWidth(),
                                     fontSize = 11.sp,
                                     fontWeight = FontWeight.Bold,
+                                    textAlign = TextAlign.Center,
                                     color = if (selected) MainColor else Color.Black
                                 )
 

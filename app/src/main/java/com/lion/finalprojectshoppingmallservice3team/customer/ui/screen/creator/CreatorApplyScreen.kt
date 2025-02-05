@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
@@ -173,6 +174,7 @@ fun CreatorApplyScreen(creatorApplyViewModel: CreatorApplyViewmodel = hiltViewMo
                 modifier = Modifier
                     .padding(paddingValue)
                     .fillMaxSize()
+                    .imePadding()
                     .background(MainColor.copy(alpha = 0.1f))
                     .verticalScroll(scrollState),
                 horizontalAlignment = Alignment.CenterHorizontally
