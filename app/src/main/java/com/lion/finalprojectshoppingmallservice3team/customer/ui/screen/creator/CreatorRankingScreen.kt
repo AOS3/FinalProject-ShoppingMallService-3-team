@@ -50,7 +50,9 @@ import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionCreatorPr
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionIconButton
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionProductList
 import com.lion.finalprojectshoppingmallservice3team.Component.LikeLionRankingList
+import com.lion.finalprojectshoppingmallservice3team.Component.ProductImages
 import com.lion.finalprojectshoppingmallservice3team.Component.WeeklyCreator
+import com.lion.finalprojectshoppingmallservice3team.Component.WeeklyItem
 import com.lion.finalprojectshoppingmallservice3team.R
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.creator.CreatorRankingViewModel
 import com.lion.finalprojectshoppingmallservice3team.customer.ui.viewmodel.shop.ShopViewModel
@@ -121,15 +123,27 @@ fun CreatorRankingScreen(
                 rank = 2,
                 name = "싸이코드 하루토",
                 category = "유튜버",
-                imageRes = "",
-                products = listOf("https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg","https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg","https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg","https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg",)
+                imageUrl = "",
+                drawableRes = R.drawable.haruto2,
+                products = listOf(
+                    ProductImages(drawableRes = R.drawable.harutotem),
+                    ProductImages(drawableRes = R.drawable.harutotem2),
+                    ProductImages(drawableRes = R.drawable.harutotem3),
+                    ProductImages(drawableRes = R.drawable.harutotem4)
+                )
             ),
             Creator(
                 rank = 3,
                 name = "싸이코드 연이",
                 category = "크리에이터",
-                imageRes = "",
-                products = listOf("https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg","https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg",),
+                imageUrl = "",
+                drawableRes = R.drawable.yeon,
+                products = listOf(
+                    ProductImages(drawableRes = R.drawable.yeontem),
+                    ProductImages(drawableRes = R.drawable.yeontem2),
+                    ProductImages(drawableRes = R.drawable.yeontem3),
+                    ProductImages(drawableRes = R.drawable.yeontem4),
+                ),
                 isExpanded = false // 기본적으로 닫힘 상태
             )
         )
@@ -193,17 +207,21 @@ fun CreatorRankingScreen(
                     )
                 }
 
+                val itemList = mutableListOf(
+                    WeeklyItem(drawableRes = R.drawable.solatem),
+                    WeeklyItem(drawableRes = R.drawable.solatem2),
+                    WeeklyItem(drawableRes = R.drawable.solatem3),
+                    WeeklyItem(drawableRes = R.drawable.solatem2),
+                )
+
                 WeeklyCreator(
                     rank = "1",
-                    title = "허블사무소",
-                    subtitle = "유튜버",
-                    imageUrl = "https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg",
-                    items = mutableListOf(
-                        "https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg",
-                        "https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg",
-                        "https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg",
-                        "https://raw.githubusercontent.com/Fastcampus-Android-Lecture-Project-2023/part4-chapter3/main/part4-chapter3-10/app/src/main/res/drawable-xhdpi/wall.jpg"
-                    )
+                    title = "솔라시도",
+                    subtitle = "",
+                    imageUrl = "",
+                    drawableRes = R.drawable.sola2,
+                    subDrawableRes = R.drawable.sola3,
+                    items = itemList,
                 )
             }
 

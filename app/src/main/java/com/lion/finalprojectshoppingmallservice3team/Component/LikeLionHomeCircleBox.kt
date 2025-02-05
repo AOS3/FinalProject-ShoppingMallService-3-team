@@ -56,5 +56,5 @@ data class ButtonItem(
     val text: String,
     val imageResId: Int,
     val backgroundColor: Color,
-    val route: String // 네비게이션 경로
+    val route: String,
 )

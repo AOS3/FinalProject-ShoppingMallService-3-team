@@ -69,7 +69,7 @@ class HomeViewModel @Inject constructor(
 
 
     val buttonItems = listOf(
-            ButtonItem("마크 BEST", R.drawable.marcbest, Color.Blue, "creatorRanking"),
+            ButtonItem("마크 BEST", R.drawable.marcbest, Color.Blue, "shop"),
             ButtonItem("크리에이터 신청", R.drawable.homecreator, Color.Yellow, "creatorApply"),
         )
 
